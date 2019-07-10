@@ -31,15 +31,12 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Menu 1</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">Menu 2</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Menu 3</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Menu 2</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Menu 3</a></li>
                 </ul>
-                <partial name="_LoginPartial" />
             </div>
         </div>
     </nav>
-
-    <partial name="_CookieConsentPartial" />
 
     <div class="container body-content">
         @RenderBody()
