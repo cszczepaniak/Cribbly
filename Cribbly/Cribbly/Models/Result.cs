@@ -7,5 +7,7 @@ namespace Cribbly.Models
 {
     public class Result
     {
+        public int Score { get; set; }
+        public char WinLoss { get; set; }
     }
 }
