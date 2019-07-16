@@ -75,7 +75,7 @@ namespace Cribbly.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new User
+                var user = new ApplicationUser
                 {
                     UserName = Input.Email,
                     Email = Input.Email,
