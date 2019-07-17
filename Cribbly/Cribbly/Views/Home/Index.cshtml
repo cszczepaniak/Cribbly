@@ -1,7 +1,31 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <h1>Welcome to Cribbly!</h1>
 
-<partial name="_LoginPartial" />
+@if (SignInManager.IsSignedIn(User))
+{
+    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })" method="post" id="logoutForm" class="">
+        <ul class="">
+            <li>
+                <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+            </li>
+            <li>
+                <button type="submit" class="">Logout</button>
+            </li>
+        </ul>
+    </form>
+}
+else
+{
+    <ul class="">
+        <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+        <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+    </ul>
+}
