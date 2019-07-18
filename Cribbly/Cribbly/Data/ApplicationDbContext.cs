@@ -13,5 +13,7 @@ namespace Cribbly.Data
             : base(options)
         {
         }
+        public DbSet<Cribbly.Models.Team> Teams { get; set; }
+        public DbSet<Cribbly.Models.ApplicationUser> ApplicationUsers { get; set; }
     }
 }
