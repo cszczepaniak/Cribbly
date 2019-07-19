@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cribbly.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190716234535_user")]
-    partial class user
+    [Migration("20190719021143_a")]
+    partial class a
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,6 +18,29 @@ namespace Cribbly.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("Cribbly.Models.Team", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Division")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20);
+
+                    b.Property<string>("PlayerOne")
+                        .IsRequired();
+
+                    b.Property<string>("PlayerTwo")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Teams");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {

@@ -9,7 +9,6 @@ namespace Cribbly.Models
 {
     public class Team
     {
-        [Key]
         public int Id { get; set; }
         [Required]
         [StringLength(20, ErrorMessage = "Team name cannot be more than 20 characters")]
