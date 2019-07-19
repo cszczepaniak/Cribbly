@@ -46,8 +46,10 @@ namespace Cribbly.Controllers
         // GET: Teams/Create
         public IActionResult Register()
         {
-            //var users = _context.ApplicationUsers.ToListAsync();
-            return View();
+            Team team = new Team();
+            TeamRegView model = new TeamRegView(_context, team);
+
+            return View(model);
         }
 
         // POST: Teams/Create
