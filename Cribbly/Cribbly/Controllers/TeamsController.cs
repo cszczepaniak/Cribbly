@@ -46,16 +46,8 @@ namespace Cribbly.Controllers
         // GET: Teams/Create
         public IActionResult Register()
         {
-            
+            //var users = _context.ApplicationUsers.ToListAsync();
             return View();
-        }
-
-        // GET: PlayerSelect (DOES NOT WORK YET)
-
-        public async Task<IActionResult> PlayerSelect()
-        {
-            var users = await _context.ApplicationUsers.ToListAsync();
-            return PartialView(users);
         }
 
         // POST: Teams/Create
