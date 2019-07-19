@@ -20,12 +20,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="PlayerOne" class="control-label"></label>
-                <input asp-for="PlayerOne" class="form-control" />
+                <select asp-for="PlayerOne" class="form-control">
+                    <partial name="PlayerSelect" />
+                </select>
                 <span asp-validation-for="PlayerOne" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PlayerTwo" class="control-label"></label>
-                <input asp-for="PlayerTwo" class="form-control" />
+                <select asp-for="PlayerTwo" class="form-control">
+                    <partial name="PlayerSelect" />
+                </select>
                 <span asp-validation-for="PlayerTwo" class="text-danger"></span>
             </div>
             <div class="form-group">

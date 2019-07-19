@@ -1,0 +1,7 @@
+﻿@model IEnumerable<Cribbly.Models.ApplicationUser>
+
+    @foreach (var user in Model)
+    {
+    <option>@Html.DisplayFor(modelItem => user.FirstName) @Html.DisplayFor(modelItem => user.LastName)</option>
+    }
+
