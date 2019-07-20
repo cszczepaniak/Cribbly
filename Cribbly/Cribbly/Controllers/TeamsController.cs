@@ -64,9 +64,16 @@ namespace Cribbly.Controllers
             {
                 _context.Add(team._team);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(RegisterConfirm));
             }
             return View(team);
+        }
+
+        // GET: Teams/RegisterConfirm
+
+        public IActionResult RegisterConfirm()
+        {
+            return View();
         }
 
         // GET: Teams/Edit/5
