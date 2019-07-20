@@ -82,7 +82,8 @@ namespace Cribbly.Controllers
             //Get the ApplicationUser class for the players on the newly registered team
             var newPlayers = await _context.ApplicationUsers
                 .Select(n => n)
-                .Where(n => (n.FirstName + " " + n.LastName) == team._team.PlayerOne || (n.FirstName + " " + n.LastName) == team._team.PlayerTwo)
+                .Where(n => (n.FirstName + " " + n.LastName) == team._team.PlayerOne || 
+                            (n.FirstName + " " + n.LastName) == team._team.PlayerTwo)
                 .ToListAsync();
 
             //Data validated, add to DB
@@ -142,6 +143,7 @@ namespace Cribbly.Controllers
                 return NotFound();
             }
 
+            //Data validated, update DB with changes
             if (ModelState.IsValid)
             {
                 try
@@ -181,6 +183,7 @@ namespace Cribbly.Controllers
 
             var team = await _context.Teams
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (team == null)
             {
                 return NotFound();
