@@ -25,5 +25,10 @@ namespace Cribbly.Models
                 _players.Add(player.FirstName + " " + player.LastName);
             }
         }
+
+        public TeamRegView()
+        {
+
+        }
     }
 }

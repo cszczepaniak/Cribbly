@@ -5,11 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using Cribbly.Data;
 using Cribbly.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cribbly.Controllers
 {
+    [Authorize]
     public class TeamsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,7 +21,7 @@ namespace Cribbly.Controllers
         {
             _context = context;
         }
-
+        
         // GET: Teams
         public async Task<IActionResult> Index()
         {
@@ -55,11 +58,11 @@ namespace Cribbly.Controllers
         // POST: Teams/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register([Bind("Id,Name,PlayerOne,PlayerTwo,Division")] Team team)
+        public async Task<IActionResult> Register(TeamRegView team)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(team);
+                _context.Add(team._team);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
