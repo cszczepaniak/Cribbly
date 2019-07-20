@@ -81,7 +81,8 @@ namespace Cribbly.Areas.Identity.Pages.Account
                     Email = Input.Email,
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
-                    IsAdmin = false
+                    IsAdmin = false,
+                    HasTeam = false
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);

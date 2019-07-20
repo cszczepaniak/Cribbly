@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Cribbly.Controllers
 {
+    //Require user to be logged in to access any endpoint below
     [Authorize]
     public class TeamsController : Controller
     {
@@ -21,12 +22,24 @@ namespace Cribbly.Controllers
         {
             _context = context;
         }
-        
+
+        /*
+         * ==============================
+         * VIEW ALL TEAMS (Admin)
+         * ==============================
+         */
+
         // GET: Teams
         public async Task<IActionResult> Index()
         {
             return View(await _context.Teams.ToListAsync());
         }
+
+        /*
+         * ==============================
+         * VIEW YOUR TEAM (User)
+         * ==============================
+         */
 
         // GET: Teams/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -46,7 +59,13 @@ namespace Cribbly.Controllers
             return View(team);
         }
 
-        // GET: Teams/Create
+        /*
+         * ==============================
+         * REGISTER TEAM
+         * ==============================
+         */
+
+        // GET: Teams/Register
         public IActionResult Register()
         {
             Team team = new Team();
@@ -55,17 +74,19 @@ namespace Cribbly.Controllers
             return View(model);
         }
 
-        // POST: Teams/Create
+        // POST: Teams/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(TeamRegView team)
         {
+            //Data validated, add to DB
             if (ModelState.IsValid)
             {
                 _context.Add(team._team);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(RegisterConfirm));
             }
+            //Data is not valid, return to previous page
             return View(team);
         }
 
@@ -75,6 +96,12 @@ namespace Cribbly.Controllers
         {
             return View();
         }
+
+        /*
+        * ==============================
+        * EDIT YOUR TEAM
+        * ==============================
+        */
 
         // GET: Teams/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -124,6 +151,12 @@ namespace Cribbly.Controllers
             }
             return View(team);
         }
+
+        /*
+        * ==============================
+        * DELETE YOUR TEAM
+        * ==============================
+        */
 
         // GET: Teams/Delete/5
         public async Task<IActionResult> Delete(int? id)
