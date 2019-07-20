@@ -79,10 +79,23 @@ namespace Cribbly.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(TeamRegView team)
         {
+            //Get the ApplicationUser class for the players on the newly registered team
+            var newPlayers = await _context.ApplicationUsers
+                .Select(n => n)
+                .Where(n => (n.FirstName + " " + n.LastName) == team._team.PlayerOne || (n.FirstName + " " + n.LastName) == team._team.PlayerTwo)
+                .ToListAsync();
+
             //Data validated, add to DB
             if (ModelState.IsValid)
             {
                 _context.Add(team._team);
+
+                //For each new player, change HasTeam property to true
+                foreach (var player in newPlayers)
+                {
+                    player.HasTeam = true;
+                }
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(RegisterConfirm));
             }
