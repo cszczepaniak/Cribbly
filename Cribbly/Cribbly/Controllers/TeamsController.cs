@@ -9,6 +9,7 @@ using System.ComponentModel.DataAnnotations;
 using Cribbly.Data;
 using Cribbly.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Cribbly.Controllers
 {
@@ -28,8 +29,9 @@ namespace Cribbly.Controllers
          * VIEW ALL TEAMS (Admin)
          * ==============================
          */
-
+        public List<IdentityRole> _roles;
         // GET: Teams
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Teams.ToListAsync());

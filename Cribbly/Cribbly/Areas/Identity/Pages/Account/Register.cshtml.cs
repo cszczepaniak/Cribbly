@@ -24,7 +24,7 @@ namespace Cribbly.Areas.Identity.Pages.Account
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            ILogger<RegisterModel> logger,
+        ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -75,17 +75,20 @@ namespace Cribbly.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
+                //New ApplicationUser object
                 var user = new ApplicationUser
                 {
                     UserName = Input.Email,
                     Email = Input.Email,
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
-                    IsAdmin = false,
                     HasTeam = false
                 };
-
+                //Add user record to DB
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                //Give them the role of "user"
+                await _userManager.AddToRoleAsync(user, "User");
+                //Logging info
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
@@ -97,9 +100,11 @@ namespace Cribbly.Areas.Identity.Pages.Account
                         values: new { userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
+                    //Send confirmation email
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
+                    //Sign in and redirect to home page
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
