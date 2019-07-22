@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cribbly.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190719021143_a")]
-    partial class a
+    [Migration("20190722021609_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -160,11 +160,9 @@ namespace Cribbly.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.Property<string>("LoginProvider")
-                        .HasMaxLength(128);
+                    b.Property<string>("LoginProvider");
 
-                    b.Property<string>("ProviderKey")
-                        .HasMaxLength(128);
+                    b.Property<string>("ProviderKey");
 
                     b.Property<string>("ProviderDisplayName");
 
@@ -195,11 +193,9 @@ namespace Cribbly.Migrations
                 {
                     b.Property<string>("UserId");
 
-                    b.Property<string>("LoginProvider")
-                        .HasMaxLength(128);
+                    b.Property<string>("LoginProvider");
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(128);
+                    b.Property<string>("Name");
 
                     b.Property<string>("Value");
 
@@ -214,7 +210,7 @@ namespace Cribbly.Migrations
 
                     b.Property<string>("FirstName");
 
-                    b.Property<bool>("IsAdmin");
+                    b.Property<bool>("HasTeam");
 
                     b.Property<string>("LastName");
 

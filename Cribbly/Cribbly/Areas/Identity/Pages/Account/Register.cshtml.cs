@@ -18,17 +18,20 @@ namespace Cribbly.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-        ILogger<RegisterModel> logger,
+            RoleManager<IdentityRole> roleManager,
+            ILogger<RegisterModel> logger,  
             IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _logger = logger;
             _emailSender = emailSender;
         }
@@ -85,14 +88,26 @@ namespace Cribbly.Areas.Identity.Pages.Account
                     HasTeam = false
                 };
                 //Add user record to DB
-                var result = await _userManager.CreateAsync(user, Input.Password);
-                //Give them the role of "user"
-                await _userManager.AddToRoleAsync(user, "User");
+                IdentityResult result = await _userManager.CreateAsync(user, Input.Password);
+
+                //Create roles if they do not exist
+                var roleInit = new RoleInit(_roleManager);
+                await roleInit.CreateRoles();
+
+                //Give them the role of "user", unless they pass the AdminTag test
+                if (roleInit.AdminTag(Input.LastName)) {
+
+                   IdentityResult addAdmin = await _userManager.AddToRoleAsync(user, "Admin");
+
+                } else
+                {
+                    IdentityResult addUser = await _userManager.AddToRoleAsync(user, "User");
+                };
+                
                 //Logging info
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
