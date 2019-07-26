@@ -2,7 +2,7 @@
 @using Cribbly.Data;
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-@inject ApplicationDbContext Context;
+@inject ApplicationDbContext _context;
 
 <div class="container">
     <div class="navbar-header">
@@ -15,33 +15,35 @@
         <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Cribbly</a>
     </div>
     <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
+        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })" method="post" id="logoutForm" class="navbar-right">
+            <ul class="nav navbar-nav">
 
-            @if (SignInManager.IsSignedIn(User))
-            {
-                var user = @Context.ApplicationUsers.FirstOrDefault(m => m.Email == UserManager.GetUserName(User));
-
-                if (user.HasTeam == true)
+                @if (SignInManager.IsSignedIn(User))
                 {
-                    <li><a asp-controller="Teams" asp-action="MyTeam/@user.TeamId">My Team</a></li>
-                };
+                    var user = @_context.ApplicationUsers.FirstOrDefault(m => m.Email == UserManager.GetUserName(User));
 
-                if (user.HasTeam == false)
+                    if (user.HasTeam == true)
+                    {
+                        <li><a asp-controller="Teams" asp-action="MyTeam/@user.TeamId">My Team</a></li>
+                    };
+
+                    if (user.HasTeam == false)
+                    {
+                        <li><a asp-controller="Teams" asp-action="Register">Register Team</a></li>
+                    }
+
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Standings</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Final Bracket</a></li>
+                    <li><a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@user.FirstName @user.LastName</a></li>
+                    <li><button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button></li>
+                }
+                else
                 {
-                    <li><a asp-controller="Teams" asp-action="Register">Register Team</a></li>
+                    <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+                    <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
                 }
 
-                <li><a asp-area="" asp-controller="Home" asp-action="Index">Standings</a></li>
-                <li><a asp-area="" asp-controller="Home" asp-action="Index">Final Bracket</a></li>
-                <li><a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@user.FirstName @user.LastName</a></li>
-                <li><a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">Logout</a></li>
-            }
-            else
-            {
-                <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
-                <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
-            }
-
-        </ul>
+            </ul>
+        </form>
     </div>
 </div>
