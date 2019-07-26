@@ -9,31 +9,13 @@
 
 <h1>Welcome to Cribbly!</h1>
 
-@if (SignInManager.IsSignedIn(User))
-{
-    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })" method="post" id="logoutForm" class="">
-        <ul class="">
-            <li>
-                <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-            </li>
-            <li>
-                <button type="submit" class="">Logout</button>
-            </li>
-        </ul>
-    </form>
-    if (User.IsInRole("Admin"))
-    {
+<p>Navigate to the page of your choosing in the top bar</p>
+
+@{ if (User.IsInRole("Admin"))
+   {
         <a asp-controller="Teams" asp-action="Index">Teams</a>
         <a>Manage Tournament</a>
         <a>Standings</a>
         <a>Bracket</a>
-    }
-
-}
-else
-{
-    <ul class="">
-        <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
-        <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
-    </ul>
-}
+   }
+ }

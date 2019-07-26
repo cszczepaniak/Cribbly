@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<div class="container">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Cribbly</a>
+    </div>
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <li><a asp-controller="Teams" asp-route="MyTeam/@UserManager.GetUserName(User)">My Team</a></li>
+                <li><a asp-area="" asp-controller="Home" asp-action="Index">Standings</a></li>
+                <li><a asp-area="" asp-controller="Home" asp-action="Index">Final Bracket</a></li>
+                <li><a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account Settings</a></li>
+                <li><a asp-area="Identity" asp-page="/Account/Logout">Logout</a></li>
+            }
+            else
+            {
+                <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+                <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+            }
+
+        </ul>
+    </div>
+</div>

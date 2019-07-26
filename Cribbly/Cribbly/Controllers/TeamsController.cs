@@ -30,7 +30,7 @@ namespace Cribbly.Controllers
 
         // GET: Teams
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> AdminView()
         {
             return View(await _context.Teams.ToListAsync());
         }
@@ -41,8 +41,8 @@ namespace Cribbly.Controllers
          * ==============================
          */
 
-        // GET: Teams/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: Teams/MyTeam
+        public async Task<IActionResult> MyTeam(int? id)
         {
             if (id == null)
             {
@@ -133,7 +133,7 @@ namespace Cribbly.Controllers
             return View(team);
         }
 
-        // POST: Teams/Edit/5
+        // POST: Teams/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,PlayerOne,PlayerTwo,Division")] Team team)
@@ -162,7 +162,7 @@ namespace Cribbly.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(AdminView));
             }
             return View(team);
         }
@@ -200,7 +200,7 @@ namespace Cribbly.Controllers
             var team = await _context.Teams.FindAsync(id);
             _context.Teams.Remove(team);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToRoute("Home/Index");
         }
 
         private bool TeamExists(int id)

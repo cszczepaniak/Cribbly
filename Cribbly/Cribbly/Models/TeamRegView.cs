@@ -18,7 +18,9 @@ namespace Cribbly.Models
             _team = team;
             _players = new List<string>();
 
-            var players =  _context.ApplicationUsers.Select(n => new { n.FirstName, n.LastName, n.HasTeam }).Where(n => n.HasTeam == false);
+            var players =  _context.ApplicationUsers
+                .Select(n => new { n.FirstName, n.LastName, n.HasTeam })
+                .Where(n => n.HasTeam == false && n.LastName != "_admin");
 
             foreach (var player in players)
             {
