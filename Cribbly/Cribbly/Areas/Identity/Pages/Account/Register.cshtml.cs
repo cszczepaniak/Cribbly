@@ -86,7 +86,8 @@ namespace Cribbly.Areas.Identity.Pages.Account
                     Email = Input.Email,
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
-                    HasTeam = false
+                    HasTeam = false,
+                    TeamId = 0
                 };
                 //Add user record to DB
                 IdentityResult result = await _userManager.CreateAsync(user, Input.Password);

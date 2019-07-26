@@ -42,23 +42,28 @@ namespace Cribbly.Controllers
          */
 
         // GET: Teams/MyTeam
-        public async Task<IActionResult> MyTeam(int? id)
+        public async Task<IActionResult> MyTeam(int id)
         {
-            if (id == null)
+            if (id == 0)
             {
-                return NotFound();
+                return RedirectToAction(nameof(TeamNotFound));
             }
 
             var team = await _context.Teams
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (team == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(TeamNotFound));
             }
 
             return View(team);
         }
 
+        public IActionResult TeamNotFound()
+        {
+            return View();
+        }
         /*
          * ==============================
          * REGISTER TEAM
@@ -95,6 +100,7 @@ namespace Cribbly.Controllers
                 foreach (var player in newPlayers)
                 {
                     player.HasTeam = true;
+                    player.TeamId = team._team.Id;
                 }
 
                 await _context.SaveChangesAsync();
