@@ -91,19 +91,28 @@ namespace Cribbly.Controllers
                             (n.FirstName + " " + n.LastName) == team._team.PlayerTwo)
                 .ToListAsync();
 
+            //Seed random 6 digit numbers for Team Id
+            Random rnd = new Random();
+            int id = rnd.Next(100000, 999999);
+
             //Data validated, add to DB
             if (ModelState.IsValid)
             {
+                //Set Team Id
+                team._team.Id = id;
+                //Add team to DB
                 _context.Add(team._team);
 
+  
                 //For each new player, change HasTeam property to true
                 foreach (var player in newPlayers)
                 {
                     player.HasTeam = true;
-                    player.TeamId = team._team.Id;
+                    player.TeamId = id;
                 }
-
+                //Save DB changes
                 await _context.SaveChangesAsync();
+                //Return confirmation page
                 return RedirectToAction(nameof(RegisterConfirm));
             }
             //Data is not valid, return to previous page
@@ -142,7 +151,7 @@ namespace Cribbly.Controllers
         // POST: Teams/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,PlayerOne,PlayerTwo,Division")] Team team)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,PlayerOne,PlayerTwo")] Team team)
         {
             if (id != team.Id)
             {
@@ -204,7 +213,23 @@ namespace Cribbly.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var team = await _context.Teams.FindAsync(id);
+
+            //Get the ApplicationUser class for the players on the deleted team
+            var newPlayers = await _context.ApplicationUsers
+                .Select(n => n)
+                .Where(n => (n.FirstName + " " + n.LastName) == team.PlayerOne ||
+                            (n.FirstName + " " + n.LastName) == team.PlayerTwo)
+                .ToListAsync();
+
             _context.Teams.Remove(team);
+
+            //Reset user team attributes to not being on a team
+            foreach (var player in newPlayers)
+            {
+                player.HasTeam = true;
+                player.TeamId = 0;
+            }
+
             await _context.SaveChangesAsync();
             return RedirectToRoute("Home/Index");
         }

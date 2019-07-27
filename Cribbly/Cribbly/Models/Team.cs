@@ -19,7 +19,5 @@ namespace Cribbly.Models
         [Required]
         [Display(Name = "Player Two")]
         public string PlayerTwo { get; set; }
-        [Required]
-        public string Division { get; set; }
     }
 }
