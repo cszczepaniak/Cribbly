@@ -1,4 +1,8 @@
-﻿@model Cribbly.Models.TeamRegView
+﻿@using Microsoft.AspNetCore.Identity;
+@using Cribbly.Data;
+@model Cribbly.Models.TeamRegView
+@inject ApplicationDbContext _context;
+@inject UserManager<IdentityUser> UserManager
 
 @{
     ViewData["Title"] = "Register";
@@ -20,12 +24,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="_team.PlayerOne" class="control-label"></label>
-                <select asp-for="_team.PlayerOne" class="form-control">
-                    @foreach (string player in Model._players)
-                    {
-                        <option>@player</option>
-                    }
-                </select>
+                @{
+                    var user = _context.ApplicationUsers.FirstOrDefault(m => m.Email == UserManager.GetUserName(User));
+                    string userName = user.FirstName + " " + user.LastName;
+
+                    <input asp-for="_team.PlayerOne" class="form-control" value="@userName" disabled />
+
+                }
                 <span asp-validation-for="_team.PlayerOne" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -33,6 +38,11 @@
                 <select asp-for="_team.PlayerTwo" class="form-control">
                     @foreach (string player in Model._players)
                     {
+                        if (player == userName)
+                        {
+                            continue;
+                        }
+
                         <option>@player</option>
                     }
                 </select>
