@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cribbly.Data;
 
+
 namespace Cribbly.Models
 {
     public class TeamRegView

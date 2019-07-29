@@ -9,9 +9,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
 
-<h4>Team</h4>
+
+<h2>Register New Team</h2>
+
+<h4>Enter info below</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -19,16 +21,18 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="_team.Name" class="control-label"></label>
-                <input asp-for="_team.Name" class="form-control" />
+                <input asp-for="_team.Name" class="form-control" name="Name"/>
                 <span asp-validation-for="_team.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="_team.PlayerOne" class="control-label"></label>
                 @{
-                    var user = _context.ApplicationUsers.FirstOrDefault(m => m.Email == UserManager.GetUserName(User));
+                    var user = _context.ApplicationUsers.
+                        FirstOrDefault(m => m.Email == UserManager.GetUserName(User));
+
                     string userName = user.FirstName + " " + user.LastName;
 
-                    <input asp-for="_team.PlayerOne" class="form-control" value="@userName" disabled />
+                    <input asp-for="_team.PlayerOne" class="form-control" value="@userName" readonly />
 
                 }
                 <span asp-validation-for="_team.PlayerOne" class="text-danger"></span>
@@ -36,7 +40,8 @@
             <div class="form-group">
                 <label asp-for="_team.PlayerTwo" class="control-label"></label>
                 <select asp-for="_team.PlayerTwo" class="form-control">
-                    @foreach (string player in Model._players)
+
+                    @foreach (var player in Model._players)
                     {
                         if (player == userName)
                         {
@@ -49,11 +54,12 @@
                 <span asp-validation-for="_team.PlayerTwo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Register Team" class="btn btn-default" />
+                <input type="submit" value="Register Team" class="btn btn-default" id="submit"/>
             </div>
         </form>
     </div>
 </div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
