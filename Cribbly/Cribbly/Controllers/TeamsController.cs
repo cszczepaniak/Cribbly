@@ -29,6 +29,7 @@ namespace Cribbly.Controllers
          */
 
         // GET: Teams
+        //User must be Admin to access
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AdminView()
         {
@@ -44,19 +45,23 @@ namespace Cribbly.Controllers
         // GET: Teams/MyTeam
         public async Task<IActionResult> MyTeam(int id)
         {
+            //User does not have a TeamID yet
             if (id == 0)
             {
                 return RedirectToAction(nameof(TeamNotFound));
             }
 
+            //Get user's team object
             var team = await _context.Teams
                 .FirstOrDefaultAsync(m => m.Id == id);
 
+            //Something went wrong fetching the data, return 404
             if (team == null)
             {
                 return RedirectToAction(nameof(TeamNotFound));
             }
 
+            //No errors, return View with team obj
             return View(team);
         }
 
@@ -73,6 +78,7 @@ namespace Cribbly.Controllers
         // GET: Teams/Register
         public IActionResult Register()
         {
+            //Instantiate model class
             Team team = new Team();
             TeamRegView model = new TeamRegView(_context, team);
 
@@ -104,7 +110,7 @@ namespace Cribbly.Controllers
                 _context.Add(team._team);
 
   
-                //For each new player, change HasTeam property to true
+                //For each new player, change HasTeam property to true and add TeamID
                 foreach (var player in newPlayers)
                 {
                     player.HasTeam = true;
@@ -121,7 +127,6 @@ namespace Cribbly.Controllers
         }
 
         // GET: Teams/RegisterConfirm
-
         public IActionResult RegisterConfirm()
         {
             return View();
@@ -136,12 +141,16 @@ namespace Cribbly.Controllers
         // GET: Teams/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            //Invalid route. Team ID must be specified
             if (id == null)
             {
                 return NotFound();
             }
+            //Find team
 
             var team = await _context.Teams.FindAsync(id);
+
+            //Something went wrong fetching the data, return 404
             if (team == null)
             {
                 return NotFound();
@@ -154,6 +163,7 @@ namespace Cribbly.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,PlayerOne,PlayerTwo")] Team team)
         {
+            //The wrong team is attempting to be edited, return error
             if (id != team.Id)
             {
                 return NotFound();
@@ -169,6 +179,7 @@ namespace Cribbly.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+                    //There was a problem posting the data, return error
                     if (!TeamExists(team.Id))
                     {
                         return NotFound();
@@ -180,6 +191,7 @@ namespace Cribbly.Controllers
                 }
                 return RedirectToAction(nameof(AdminView));
             }
+            //Data edited, return View
             return View(team);
         }
 

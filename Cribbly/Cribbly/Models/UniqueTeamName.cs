@@ -22,7 +22,7 @@ namespace Cribbly.Models
                 //Return Validation error
                 return new ValidationResult("Sorry, that team name is taken");
             }
-
+            //Data is valid, proceed
             return base.IsValid(value, validationContext);
         }
 
