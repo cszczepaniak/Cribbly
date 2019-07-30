@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Threading;
 using System.ComponentModel.DataAnnotations;
 using Cribbly.Data;
 
 namespace Cribbly.Models
 {
-    public class UniqueTeamName : ValidationAttribute
+    public class UniqueTeamName : RequiredAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
@@ -21,7 +22,9 @@ namespace Cribbly.Models
                 //Return Validation error
                 return new ValidationResult("Sorry, that team name is taken");
             }
-            return base.GetValidationResult(value, new ValidationContext(this));
+
+            return base.IsValid(value, validationContext);
         }
+
     }
 }
