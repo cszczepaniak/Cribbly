@@ -13,7 +13,6 @@ namespace Cribbly.Models
 #nullable enable
         public Standing? _standing { get; set; }
 
-
         public UserDataView(ApplicationDbContext context, Team team, Standing? standing)
         {
             _context = context;
