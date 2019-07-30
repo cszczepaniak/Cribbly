@@ -116,7 +116,8 @@ namespace Cribbly.Controllers
                 return RedirectToAction(nameof(RegisterConfirm));
             }
             //Data is not valid, return to previous page
-            return View(team);
+            TeamRegView model = new TeamRegView(_context, team._team);
+            return View(model);
         }
 
         // GET: Teams/RegisterConfirm
