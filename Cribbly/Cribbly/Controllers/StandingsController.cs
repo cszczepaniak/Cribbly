@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Cribbly.Data;
 using Cribbly.Models;
@@ -45,15 +46,21 @@ namespace Cribbly.Controllers
                 standing.TeamName = team.Name;
                 _context.Standings.Add(standing);
             }
+
+            Random rnd = new Random();
+
             //For all users with no team, pair them up with another user who also does not have a team
             foreach (var player in teamlessUsers)
             {
-                //DateTime seed = new DateTime().Ticks;
                 //Seed random 6 digit numbers for Team Id
-                //Random rnd = new Random(seed);
-                //int id = rnd.Next(100000, 999999);
+                int id = rnd.Next(100000, 999999);
+
 
             }
+            //MySql.Data.MySqlClient.MySqlConnection dbConn = new MySql.Data.MySqlClient.MySqlConnection("server = 35.202.200.178; user id = cribbly; password = Cr!bbly123; database = cribblydb");
+            //INSERT INTO `cribblydb`.`Teams` (`Id`, `Name`, `PlayerOne`, `PlayerTwo`) VALUES ('', '', '', '');
+            //UPDATE `cribblydb`.`AspNetUsers` SET `HasTeam` = b'1', `TeamId` = '' WHERE (`Id` = '');
+
             //Throw up an alert and display left over user if we have an odd number of teamless players
 
             return View();
