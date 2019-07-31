@@ -36,7 +36,35 @@ namespace Cribbly.Controllers
         {
             //Get ApplicationDbContext
             //Find all users where HasTeam = 0
-            var teamlessUsers = _context.ApplicationUsers.Where(m => m.HasTeam == false);
+            var teamlessUsers = _context.ApplicationUsers.Where(m => m.HasTeam == false).ToList();
+            List<Team> newTeams = new List<Team>();
+            Random rnd = new Random();
+
+            //For all users with no team, pair them up with another user who also does not have a team
+            for (var i = 0; i < teamlessUsers.Count; i++)
+            {
+                string p1 = teamlessUsers[i].FirstName + " " + teamlessUsers[i].LastName;
+                string p2 = teamlessUsers[i + 1].FirstName + " " + teamlessUsers[i + 1].LastName;
+                //Seed random 6 digit numbers for Team Id
+                int id = rnd.Next(100000, 999999);
+                Team team = new Team()
+                {
+                    Id = id,
+                    Name = p1 + " / " + p2,
+                    PlayerOne = p1,
+                    PlayerTwo = p2
+                };
+                newTeams.Add(team);
+                teamlessUsers.RemoveRange(i, 2);
+                teamlessUsers[i].HasTeam = teamlessUsers[i + 1].HasTeam = true;
+                teamlessUsers[i].TeamId = teamlessUsers[i + 1].TeamId = id;
+                i = 0;
+
+            }
+            _context.Teams.AddRange(newTeams);
+            _context.SaveChanges();
+            //Throw up an alert and display left over user if we have an odd number of teamless players
+
             //Find all teams
             var allTeams = _context.Teams.ToList();
             //Populate all completed teams in the Standings table
@@ -46,23 +74,6 @@ namespace Cribbly.Controllers
                 standing.TeamName = team.Name;
                 _context.Standings.Add(standing);
             }
-
-            Random rnd = new Random();
-
-            //For all users with no team, pair them up with another user who also does not have a team
-            foreach (var player in teamlessUsers)
-            {
-                //Seed random 6 digit numbers for Team Id
-                int id = rnd.Next(100000, 999999);
-
-
-            }
-            //MySql.Data.MySqlClient.MySqlConnection dbConn = new MySql.Data.MySqlClient.MySqlConnection("server = 35.202.200.178; user id = cribbly; password = Cr!bbly123; database = cribblydb");
-            //INSERT INTO `cribblydb`.`Teams` (`Id`, `Name`, `PlayerOne`, `PlayerTwo`) VALUES ('', '', '', '');
-            //UPDATE `cribblydb`.`AspNetUsers` SET `HasTeam` = b'1', `TeamId` = '' WHERE (`Id` = '');
-
-            //Throw up an alert and display left over user if we have an odd number of teamless players
-
             return View();
         }
 
