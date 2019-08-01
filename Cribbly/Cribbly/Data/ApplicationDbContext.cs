@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Cribbly.Models;
 
 namespace Cribbly.Data
 {
@@ -12,5 +13,8 @@ namespace Cribbly.Data
             : base(options)
         {
         }
+        public DbSet<Cribbly.Models.Team> Teams { get; set; }
+        public DbSet<Cribbly.Models.ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<Cribbly.Models.Standing> Standings { get; set; }
     }
 }

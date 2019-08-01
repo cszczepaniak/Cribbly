@@ -1,5 +1,21 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <h1>Welcome to Cribbly!</h1>
+
+<p>Navigate to the page of your choosing in the top bar</p>
+
+@{ if (User.IsInRole("Admin"))
+   {
+        <a asp-controller="Teams" asp-action="AdminView">Teams</a>
+        <a>Manage Tournament</a>
+        <a>Standings</a>
+        <a>Bracket</a>
+   }
+ }

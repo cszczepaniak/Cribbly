@@ -6,12 +6,11 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Cribbly.Models
 {
-    public class User : IdentityUser
+    public class ApplicationUser : IdentityUser
     {
-        private int id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Password { get; set; }
-        public bool IsAdmin { get; set; }
+        public bool HasTeam { get; set; }
+        public int TeamId { get; set; }
     }
 }
