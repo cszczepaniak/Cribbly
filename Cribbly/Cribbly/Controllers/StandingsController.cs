@@ -43,6 +43,7 @@ namespace Cribbly.Controllers
             {
                 try
                 {
+                    //Get first and last names of users
                     string p1 = teamlessUsers[i].FirstName + " " + teamlessUsers[i].LastName;
                     string p2 = teamlessUsers[i + 1].FirstName + " " + teamlessUsers[i + 1].LastName;
 
@@ -77,7 +78,7 @@ namespace Cribbly.Controllers
 
 
             }
-
+            //Add al new teams and save the DB
             _context.Teams.AddRange(newTeams);
             _context.SaveChanges();
 
@@ -87,8 +88,12 @@ namespace Cribbly.Controllers
             //Populate all completed teams in the Standings table
             foreach (var team in allTeams)
             {
-                Standing standing = new Standing();
-                standing.TeamName = team.Name;
+                //Create a new Standing obj
+                Standing standing = new Standing
+                {
+                    TeamName = team.Name
+                };
+                //Add the Standing to the DB
                 _context.Standings.Add(standing);
             }
 
