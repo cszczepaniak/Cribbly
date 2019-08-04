@@ -16,6 +16,7 @@ namespace Cribbly.Models
         public char G2WinLoss { get; set; }
         public int G3Score { get; set; }
         public char G3WinLoss { get; set; }
+        public int Seed { get; set; }
         public int TotalScore { get; set; }
         public int TotalWinLoss
         {
@@ -29,6 +30,7 @@ namespace Cribbly.Models
         public Standing()
         {
             G1Score = G2Score = G3Score = TotalScore = 0;
+            Seed = -1;
         }
     }
 }
