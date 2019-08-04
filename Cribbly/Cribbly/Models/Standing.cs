@@ -17,6 +17,14 @@ namespace Cribbly.Models
         public int G3Score { get; set; }
         public char G3WinLoss { get; set; }
         public int TotalScore { get; set; }
+        public int TotalWinLoss
+        {
+            get { return (new int[] { G1WinLoss, G2WinLoss, G3WinLoss }).Sum(); }
+        }
+        public int TotalWins
+        {
+            get { return (new int[] { G1Score, G2Score, G3Score }).Where(s => s == 121).Count(); }
+        }
 
         public Standing()
         {
