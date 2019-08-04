@@ -1,5 +1,6 @@
 ﻿using Cribbly.Data;
 using Cribbly.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace Cribbly.Controllers
         {
             _context = context;
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult SeedBracket(List<Standing> standings)
         {
             // Get the pool of teams who made the cut
