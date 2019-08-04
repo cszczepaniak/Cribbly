@@ -29,8 +29,17 @@ namespace Cribbly.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public IActionResult CreateStandingsSetup()
+        {
+            var teamlessUsers = _context.ApplicationUsers.Where(m => m.HasTeam == false).ToList();
+            return View(teamlessUsers);
+        }
+
         //Create standings and schedule 
         [Authorize(Roles = "Admin")]
+        [HttpPost]
         public IActionResult CreateStandings()
         {
             //Find all users where HasTeam = 0
@@ -97,19 +106,21 @@ namespace Cribbly.Controllers
                 _context.Standings.Add(standing);
             }
 
-            return View(teamlessUsers);
+            return RedirectToAction(nameof(GetAllStandings));
         }
 
         //Submit a score to be added to the standings
+        [HttpPost]
         public IActionResult PostScore()
         {
             //Find your team's standing
             //Fill in the appropriate properties depending on which game number is being posted
-            return View();
+            return RedirectToAction(nameof(GetStanding));
         }
 
         //Edit a score. Limited to Admins
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         public IActionResult EditScore(UserDataView data)
         {
             //Return the team that matches the appropriate Id
@@ -121,10 +132,11 @@ namespace Cribbly.Controllers
         public IActionResult SaveScore(UserDataView data)
         {
             //Return the team that matches the appropriate Id
-            return View();
+            return RedirectToAction(nameof(GetStanding));
         }
 
         //Get information on your team
+        [HttpGet]
         public IActionResult GetStanding(UserDataView data)
         {
             //Get ApplicationDbContext

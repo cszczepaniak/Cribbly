@@ -17,10 +17,11 @@ namespace Cribbly.Models
         public int G3Score { get; set; }
         public char G3WinLoss { get; set; }
         public int TotalScore { get; set; }
+        public int TournySeed { get; set; }
 
         public Standing()
         {
-            G1Score = G2Score = G3Score = TotalScore = 0;
+            G1Score = G2Score = G3Score = TotalScore = TournySeed = 0;
         }
     }
 }
