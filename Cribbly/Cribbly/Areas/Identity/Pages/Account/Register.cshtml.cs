@@ -87,6 +87,7 @@ namespace Cribbly.Areas.Identity.Pages.Account
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
                     HasTeam = false,
+                    SecurityStamp = Guid.NewGuid().ToString(),
                     TeamId = 0
                 };
                 //Add user record to DB
