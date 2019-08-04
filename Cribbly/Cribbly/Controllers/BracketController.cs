@@ -19,7 +19,10 @@ namespace Cribbly.Controllers
 
         public IActionResult SeedBracket(List<Standing> standings)
         {
+            // Get the pool of teams who made the cut
             var bracketPool = GetBracketPool(standings);
+            // Add a seed to the sorted bracket pool members
+            bracketPool.Zip(Enumerable.Range(1, 32), (s, i) => s.Seed = i);
             return View();
         }
 
