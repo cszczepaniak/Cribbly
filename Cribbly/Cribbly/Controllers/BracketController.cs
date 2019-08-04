@@ -39,7 +39,7 @@ namespace Cribbly.Controllers
             // Then fill the rest of the pool with top overall remaining teams
             var remaining = standings.OrderBy(s => s.TotalWinLoss);
             bracketTeams.AddRange(remaining.Take(nTeams - bracketTeams.Count()));
-            return bracketTeams;
+            return bracketTeams.OrderBy(s => s.TotalWinLoss).ToList();
         }
 
     }
