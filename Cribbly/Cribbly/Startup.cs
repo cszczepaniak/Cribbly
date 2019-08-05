@@ -42,7 +42,7 @@ namespace Cribbly
             //Require a unique email address
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
-                options.User.RequireUniqueEmail = false;
+                options.User.RequireUniqueEmail = true;
                 options.Password.RequireNonAlphanumeric = false;
             })
                 .AddRoles<IdentityRole>()

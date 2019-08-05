@@ -91,24 +91,27 @@ namespace Cribbly.Areas.Identity.Pages.Account
                 };
                 //Add user record to DB
                 IdentityResult result = await _userManager.CreateAsync(user, Input.Password);
-
-                //Create roles if they do not exist
-                var roleInit = new RoleInit(_roleManager);
-                await roleInit.CreateRoles();
-
-                //Give them the role of "user", unless they pass the AdminTag test
-                if (roleInit.AdminTag(Input.LastName)) {
-
-                   IdentityResult addAdmin = await _userManager.AddToRoleAsync(user, "Admin");
-
-                } else
-                {
-                    IdentityResult addUser = await _userManager.AddToRoleAsync(user, "User");
-                };
                 
                 //Logging info
                 if (result.Succeeded)
                 {
+
+                    //Create roles if they do not exist
+                    var roleInit = new RoleInit(_roleManager);
+                    await roleInit.CreateRoles();
+
+                    //Give them the role of "user", unless they pass the AdminTag test
+                    if (roleInit.AdminTag(Input.LastName))
+                    {
+
+                        IdentityResult addAdmin = await _userManager.AddToRoleAsync(user, "Admin");
+
+                    }
+                    else
+                    {
+                        IdentityResult addUser = await _userManager.AddToRoleAsync(user, "User");
+                    };
+
                     _logger.LogInformation("User created a new account with password.");
                     
                     var callbackUrl = Url.Page(
