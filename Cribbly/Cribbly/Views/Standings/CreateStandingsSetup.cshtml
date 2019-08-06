@@ -1,4 +1,4 @@
-﻿
+﻿@model List<Cribbly.Models.ApplicationUser>
 @{
     ViewData["Title"] = "CreateStandingsSetup";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,3 +6,31 @@
 
 <h2>CreateStandingsSetup</h2>
 
+<p>The following @Model.Count players do not yet have teams and will be paired up:</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Teamless Users
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form asp-action="PairPlayers" method="POST">
+    <button type="submit" class="btn">Pair Players</button>
+</form>

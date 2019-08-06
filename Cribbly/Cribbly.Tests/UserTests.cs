@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Cribbly.Models;
 using Cribbly.Areas.Identity.Pages.Account;
+using Microsoft.EntityFrameworkCore;
 using Cribbly.Data;
 using Xunit;
 using Autofac.Extras.Moq;
@@ -16,23 +17,19 @@ namespace Cribbly.Tests
         [InlineData("Dwight", "Schrute", "x", "shouldfail@dundermifflin.com")]
         public void Should_DataIsValid(string FirstName, string LastName, string Password, string Email)
         {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(databaseName: "Should_DataIsValid")
+                .Options;
 
-
-            using (var mock = AutoMock.GetLoose())
+            RegisterModel.InputModel im = new RegisterModel.InputModel()
             {
-                var controller = mock.Create<RegisterModel>();
+                FirstName = FirstName,
+                LastName = LastName,
+                Email = Email,
+                Password = Password,
+                ConfirmPassword = Password
+            };
 
-                controller.Input = new RegisterModel.InputModel()
-                {
-                    FirstName = FirstName,
-                    LastName = LastName,
-                    Email = Email,
-                    Password = Password,
-                    ConfirmPassword = Password
-                };
-
-                Assert.True(controller.ModelState.IsValid);
-            }
         }
 
 
@@ -42,6 +39,10 @@ namespace Cribbly.Tests
         {
             using (var mock = AutoMock.GetLoose())
             {
+                var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                    .UseInMemoryDatabase(databaseName: "Should_DataIsValid")
+                    .Options;
+
                 var controller = mock.Create<RegisterModel>();
                 
                 controller.Input = new RegisterModel.InputModel()

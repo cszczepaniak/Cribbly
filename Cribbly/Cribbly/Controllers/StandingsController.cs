@@ -33,19 +33,20 @@ namespace Cribbly.Controllers
         [HttpGet]
         public IActionResult CreateStandingsSetup()
         {
-            var teamlessUsers = _context.ApplicationUsers.Where(m => m.HasTeam == false).ToList();
+            var teamlessUsers = _context.ApplicationUsers.Where(m => m.HasTeam == false && m.LastName != "_admin").ToList();
             return View(teamlessUsers);
         }
 
         //Create standings and schedule 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult CreateStandings()
+        public IActionResult PairPlayers()
         {
             //Find all users where HasTeam = 0
-            var teamlessUsers = _context.ApplicationUsers.Where(m => m.HasTeam == false).ToList();
+            var teamlessUsers = _context.ApplicationUsers.Where(m => m.HasTeam == false && m.LastName != "_admin").ToList();
             List<Team> newTeams = new List<Team>();
             Random rnd = new Random();
+            bool PlayerLeftOver = false;
 
             //For all users with no team, pair them up with another user who also does not have a team
             for (var i = 0; i < teamlessUsers.Count; i++)
@@ -82,12 +83,28 @@ namespace Cribbly.Controllers
                 catch
                 {
                     //Alert admin that a user is left over and exit loop
+                    PlayerLeftOver = true;
                     break;
                 }
 
 
             }
-            //Add al new teams and save the DB
+            CreateStandingView model = new CreateStandingView(newTeams, PlayerLeftOver);
+            return RedirectToAction(nameof(ConfirmCreateStandings), model);
+        }
+
+        /*
+         * CODE DOES NOT WORK PAST THIS POINT FOR SOME REASON
+         */
+        public IActionResult ConfirmCreateStandings(CreateStandingView model)
+        {
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult CreateStandings(List<Team> newTeams)
+        {
+            //Add all new teams and save the DB
             _context.Teams.AddRange(newTeams);
             _context.SaveChanges();
 
@@ -105,7 +122,6 @@ namespace Cribbly.Controllers
                 //Add the Standing to the DB
                 _context.Standings.Add(standing);
             }
-
             return RedirectToAction(nameof(GetAllStandings));
         }
 
