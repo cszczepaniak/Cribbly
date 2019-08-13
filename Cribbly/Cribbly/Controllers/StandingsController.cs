@@ -8,6 +8,7 @@ using Cribbly.Data;
 using Cribbly.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Routing;
 
 namespace Cribbly.Controllers
 {
@@ -89,16 +90,17 @@ namespace Cribbly.Controllers
 
 
             }
-            CreateStandingView model = new CreateStandingView(newTeams, PlayerLeftOver);
-            return RedirectToAction(nameof(ConfirmCreateStandings), model);
+            return RedirectToAction(nameof(ConfirmCreateStandings));
         }
 
         /*
          * CODE DOES NOT WORK PAST THIS POINT FOR SOME REASON
+         * Need to find a way to send the new team data we just made to the action below
+         * TempData or RouteValueDictionary has not worked
          */
-        public IActionResult ConfirmCreateStandings(CreateStandingView model)
+        public IActionResult ConfirmCreateStandings()
         {
-            return View(model);
+            return View();
         }
 
         [HttpPost]
