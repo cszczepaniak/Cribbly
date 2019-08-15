@@ -41,10 +41,12 @@ namespace Cribbly.Controllers
         //Create standings and schedule 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult PairPlayers()
+        public IActionResult ConfirmCreateStandings()
         {
             //Find all users where HasTeam = 0
-            var teamlessUsers = _context.ApplicationUsers.Where(m => m.HasTeam == false && m.LastName != "_admin").ToList();
+            var teamlessUsers =  _context.ApplicationUsers.Where(m => m.HasTeam == false && m.LastName != "_admin").ToList();
+            var teamlessUsersCopy = _context.ApplicationUsers.Where(m => m.HasTeam == false && m.LastName != "_admin").ToList();
+
             List<Team> newTeams = new List<Team>();
             Random rnd = new Random();
             bool PlayerLeftOver = false;
@@ -83,6 +85,8 @@ namespace Cribbly.Controllers
                 //List out of bounds - this means there is a user left over
                 catch
                 {
+                    //Save db changes
+                    _context.SaveChanges();
                     //Alert admin that a user is left over and exit loop
                     PlayerLeftOver = true;
                     break;
@@ -90,23 +94,29 @@ namespace Cribbly.Controllers
 
 
             }
-            return RedirectToAction(nameof(ConfirmCreateStandings));
+            CreateStandingView model = new CreateStandingView(newTeams, teamlessUsersCopy, PlayerLeftOver);
+            return View(model);
         }
-
         /*
-         * CODE DOES NOT WORK PAST THIS POINT FOR SOME REASON
-         * Need to find a way to send the new team data we just made to the action below
-         * TempData or RouteValueDictionary has not worked
+         * THIS DOES NOT SAVE DB CHANGES. Gotta figure this thing out
          */
-        public IActionResult ConfirmCreateStandings()
+        public IActionResult CancelCreateStandings(List<ApplicationUser> teamlessUsers)
         {
-            return View();
+            foreach (var player in teamlessUsers)
+            {
+                var playerdb = _context.ApplicationUsers.Where(m => m.Id == player.Id).ToList();
+                playerdb[0].TeamId = 0;
+                playerdb[0].HasTeam = false;
+            }
+
+            _context.SaveChanges();
+            return RedirectToAction(nameof(CreateStandingsSetup));
         }
 
         [HttpPost]
         public IActionResult CreateStandings(List<Team> newTeams)
         {
-            //Add all new teams and save the DB
+            //Add all new teams and save the DB 
             _context.Teams.AddRange(newTeams);
             _context.SaveChanges();
 
