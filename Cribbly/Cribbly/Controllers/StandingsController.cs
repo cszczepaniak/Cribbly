@@ -26,8 +26,9 @@ namespace Cribbly.Controllers
         public IActionResult GetAllStandings()
         {
             //Find all standings 
+            var standings = _context.Standings.ToList();
             //Return all results to the view
-            return View();
+            return View(standings);
         }
 
         [Authorize(Roles = "Admin")]
@@ -89,7 +90,7 @@ namespace Cribbly.Controllers
                     //Remove two users from teamlessPlayers List
                     teamlessUsers.RemoveRange(i, 2);
                     //Reset i to 0 so we grab elements from the beginning of the list
-                    i = 0;
+                    i = -1;
                 }
 
                 //List out of bounds - this means there is a user left over

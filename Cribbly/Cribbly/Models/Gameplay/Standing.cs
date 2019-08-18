@@ -21,6 +21,9 @@ namespace Cribbly.Models
         public Standing()
         {
             G1Score = G2Score = G3Score = TotalScore = 0;
+            G1WinLoss = 'X';
+            G2WinLoss = 'X';
+            G3WinLoss = 'X';
         }
     }
 }

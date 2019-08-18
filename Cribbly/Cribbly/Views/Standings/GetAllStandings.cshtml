@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<Cribbly.Models.Standing>
 @{
     ViewData["Title"] = "GetAllStandings";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,3 +6,71 @@
 
 <h2>GetAllStandings</h2>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Team Name
+            </th>
+            <th>
+                Division
+            </th>
+            <th>
+                Game 1 Score
+            </th>
+            <th>
+
+            </th>
+            <th>
+                Game 2 Score
+            </th>
+            <th>
+
+            </th>
+            <th>
+                Game 3 Score
+            </th>
+            <th>
+
+            </th>
+            <th>
+                Total Score
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TeamName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Division)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.G1Score)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.G1WinLoss)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.G2Score)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.G2WinLoss)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.G3Score)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.G3WinLoss)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalScore)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

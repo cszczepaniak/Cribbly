@@ -8,6 +8,11 @@
 
 <p>The following @Model._newTeams.Count teams will be added to the database:</p>
 
+@if (Model._playerLeftOver)
+{
+    <h3>There is one player left over. Get more players and run this again to pair them.</h3>
+}
+
 <table class="table">
     <thead>
         <tr>
