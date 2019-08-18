@@ -45,8 +45,14 @@ namespace Cribbly.Controllers
         {
             //Find all users where HasTeam = 0
             var teamlessUsers =  _context.ApplicationUsers.Where(m => m.HasTeam == false && m.LastName != "_admin").ToList();
-            var teamlessUsersCopy = _context.ApplicationUsers.Where(m => m.HasTeam == false && m.LastName != "_admin").ToList();
+            //Get model from internal method
+            CreateStandingView model = PairPlayers(teamlessUsers, false);
+            //return data 
+            return View(model);
+        }
 
+        public CreateStandingView PairPlayers(List<ApplicationUser> teamlessUsers, bool isConfirmed)
+        {
             List<Team> newTeams = new List<Team>();
             Random rnd = new Random();
             bool PlayerLeftOver = false;
@@ -71,54 +77,53 @@ namespace Cribbly.Controllers
                         PlayerOne = p1,
                         PlayerTwo = p2
                     };
+                    //User has confirmed, update the database
+                    if (isConfirmed)
+                    {
+                        teamlessUsers[i].HasTeam = teamlessUsers[i + 1].HasTeam = true;
+                        teamlessUsers[i].TeamId = teamlessUsers[i + 1].TeamId = id;
+                    }
 
                     //Add new team to List
                     newTeams.Add(team);
                     //Remove two users from teamlessPlayers List
                     teamlessUsers.RemoveRange(i, 2);
-                    //Set user team attributes to reflect them now being teamed up
-                    teamlessUsers[i].HasTeam = teamlessUsers[i + 1].HasTeam = true;
-                    teamlessUsers[i].TeamId = teamlessUsers[i + 1].TeamId = id;
                     //Reset i to 0 so we grab elements from the beginning of the list
                     i = 0;
                 }
+
                 //List out of bounds - this means there is a user left over
                 catch
                 {
-                    //Save db changes
-                    _context.SaveChanges();
-                    //Alert admin that a user is left over and exit loop
+                    //Alert admin that a user is left over
                     PlayerLeftOver = true;
-                    break;
                 }
 
-
             }
-            CreateStandingView model = new CreateStandingView(newTeams, teamlessUsersCopy, PlayerLeftOver);
-            return View(model);
-        }
-        /*
-         * THIS DOES NOT SAVE DB CHANGES. Gotta figure this thing out
-         */
-        public IActionResult CancelCreateStandings(List<ApplicationUser> teamlessUsers)
-        {
-            foreach (var player in teamlessUsers)
+            //User has confirmed, update the database
+            if (isConfirmed)
             {
-                var playerdb = _context.ApplicationUsers.Where(m => m.Id == player.Id).ToList();
-                playerdb[0].TeamId = 0;
-                playerdb[0].HasTeam = false;
+                //Add all new teams and save the DB 
+                foreach (var team in newTeams)
+                {
+                    _context.Teams.Add(team);
+                }
+                _context.SaveChanges();
             }
+            return new CreateStandingView(newTeams, PlayerLeftOver);
 
-            _context.SaveChanges();
+        }
+        public IActionResult CancelCreateStandings()
+        {
             return RedirectToAction(nameof(CreateStandingsSetup));
         }
 
+        //newTeams is NULL right now. Gotta fix
         [HttpPost]
-        public IActionResult CreateStandings(List<Team> newTeams)
+        public IActionResult CreateStandings()
         {
-            //Add all new teams and save the DB 
-            _context.Teams.AddRange(newTeams);
-            _context.SaveChanges();
+            var teamlessUsers = _context.ApplicationUsers.Where(m => m.HasTeam == false && m.LastName != "_admin").ToList();
+            CreateStandingView model = PairPlayers(teamlessUsers, true);
 
             //Find all teams
             var allTeams = _context.Teams.ToList();
@@ -133,6 +138,7 @@ namespace Cribbly.Controllers
                 };
                 //Add the Standing to the DB
                 _context.Standings.Add(standing);
+                _context.SaveChanges();
             }
             return RedirectToAction(nameof(GetAllStandings));
         }
