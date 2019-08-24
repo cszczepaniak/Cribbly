@@ -8,6 +8,7 @@ using Cribbly.Data;
 using Cribbly.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Routing;
 
 namespace Cribbly.Controllers
 {
@@ -25,18 +26,37 @@ namespace Cribbly.Controllers
         public IActionResult GetAllStandings()
         {
             //Find all standings 
+            var standings = _context.Standings.ToList();
             //Return all results to the view
-            return View();
+            return View(standings);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public IActionResult CreateStandingsSetup()
+        {
+            var teamlessUsers = _context.ApplicationUsers.Where(m => m.HasTeam == false && m.LastName != "_admin").ToList();
+            return View(teamlessUsers);
         }
 
         //Create standings and schedule 
         [Authorize(Roles = "Admin")]
-        public IActionResult CreateStandings()
+        [HttpPost]
+        public IActionResult ConfirmCreateStandings()
         {
             //Find all users where HasTeam = 0
-            var teamlessUsers = _context.ApplicationUsers.Where(m => m.HasTeam == false).ToList();
+            var teamlessUsers =  _context.ApplicationUsers.Where(m => m.HasTeam == false && m.LastName != "_admin").ToList();
+            //Get model from internal method
+            CreateStandingView model = PairPlayers(teamlessUsers, false);
+            //return data 
+            return View(model);
+        }
+
+        public CreateStandingView PairPlayers(List<ApplicationUser> teamlessUsers, bool isConfirmed)
+        {
             List<Team> newTeams = new List<Team>();
             Random rnd = new Random();
+            bool PlayerLeftOver = false;
 
             //For all users with no team, pair them up with another user who also does not have a team
             for (var i = 0; i < teamlessUsers.Count; i++)
@@ -58,29 +78,53 @@ namespace Cribbly.Controllers
                         PlayerOne = p1,
                         PlayerTwo = p2
                     };
+                    //User has confirmed, update the database
+                    if (isConfirmed)
+                    {
+                        teamlessUsers[i].HasTeam = teamlessUsers[i + 1].HasTeam = true;
+                        teamlessUsers[i].TeamId = teamlessUsers[i + 1].TeamId = id;
+                    }
 
                     //Add new team to List
                     newTeams.Add(team);
                     //Remove two users from teamlessPlayers List
                     teamlessUsers.RemoveRange(i, 2);
-                    //Set user team attributes to reflect them now being teamed up
-                    teamlessUsers[i].HasTeam = teamlessUsers[i + 1].HasTeam = true;
-                    teamlessUsers[i].TeamId = teamlessUsers[i + 1].TeamId = id;
                     //Reset i to 0 so we grab elements from the beginning of the list
-                    i = 0;
+                    i = -1;
                 }
+
                 //List out of bounds - this means there is a user left over
                 catch
                 {
-                    //Alert admin that a user is left over and exit loop
-                    break;
+                    //Alert admin that a user is left over
+                    PlayerLeftOver = true;
                 }
 
-
             }
-            //Add al new teams and save the DB
-            _context.Teams.AddRange(newTeams);
-            _context.SaveChanges();
+            //User has confirmed, update the database
+            if (isConfirmed)
+            {
+                //Add all new teams and save the DB 
+                foreach (var team in newTeams)
+                {
+                    _context.Teams.Add(team);
+                }
+                _context.SaveChanges();
+            }
+            return new CreateStandingView(newTeams, PlayerLeftOver);
+
+        }
+        public IActionResult CancelCreateStandings()
+        {
+            return RedirectToAction(nameof(CreateStandingsSetup));
+        }
+
+        //newTeams is NULL right now. Gotta fix
+        [HttpPost]
+        public IActionResult CreateStandings()
+        {
+            var teamlessUsers = _context.ApplicationUsers.Where(m => m.HasTeam == false && m.LastName != "_admin").ToList();
+            CreateStandingView model = PairPlayers(teamlessUsers, true);
 
             //Find all teams
             var allTeams = _context.Teams.ToList();
@@ -95,21 +139,23 @@ namespace Cribbly.Controllers
                 };
                 //Add the Standing to the DB
                 _context.Standings.Add(standing);
+                _context.SaveChanges();
             }
-
-            return View(teamlessUsers);
+            return RedirectToAction(nameof(GetAllStandings));
         }
 
         //Submit a score to be added to the standings
+        [HttpPost]
         public IActionResult PostScore()
         {
             //Find your team's standing
             //Fill in the appropriate properties depending on which game number is being posted
-            return View();
+            return RedirectToAction(nameof(GetStanding));
         }
 
         //Edit a score. Limited to Admins
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         public IActionResult EditScore(UserDataView data)
         {
             //Return the team that matches the appropriate Id
@@ -121,10 +167,11 @@ namespace Cribbly.Controllers
         public IActionResult SaveScore(UserDataView data)
         {
             //Return the team that matches the appropriate Id
-            return View();
+            return RedirectToAction(nameof(GetStanding));
         }
 
         //Get information on your team
+        [HttpGet]
         public IActionResult GetStanding(UserDataView data)
         {
             //Get ApplicationDbContext

@@ -31,6 +31,9 @@ namespace Cribbly.Models
         {
             G1Score = G2Score = G3Score = TotalScore = 0;
             Seed = -1;
+            G1WinLoss = 'X';
+            G2WinLoss = 'X';
+            G3WinLoss = 'X';
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Cribbly.Models
         public int Id { get; set; }
         [UniqueTeamName]
         [Required]
-        [StringLength(20, ErrorMessage = "Team name cannot be more than 20 characters")]
+        [StringLength(50, ErrorMessage = "Team name cannot be more than 50 characters")]
         public string Name { get; set; }
         [Required]
         [Display(Name = "Player One")]
