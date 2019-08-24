@@ -18,7 +18,14 @@ namespace Cribbly.Controllers
         {
             _context = context;
         }
-        [Authorize(Roles = "Admin")]
+
+        public IActionResult Index()
+        {
+            return Content("This is the index");
+        }
+
+        // GET: /Bracket/SeedBracket
+        //[Authorize(Roles = "Admin")]
         public IActionResult SeedBracket(List<Standing> standings)
         {
             // Get the pool of teams who made the cut

@@ -28,6 +28,9 @@
     <Content Update="Areas\Identity\Pages\Account\Manage\_ViewStart.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Bracket\SeedBracket.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
 </Project>
