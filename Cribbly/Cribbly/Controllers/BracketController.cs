@@ -1,5 +1,6 @@
 ﻿using Cribbly.Data;
 using Cribbly.Models;
+using Cribbly.Models.Gameplay;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -22,34 +23,41 @@ namespace Cribbly.Controllers
 
         public IActionResult Index()
         {
-            if(!_seeded)
-            {
-                return Redirect("/Bracket/SeedBracket");
-            }
-            return View();
+            var bracket = _context.Bracket.FirstOrDefault();
+            return View(bracket);
         }
 
         // GET: /Bracket/SeedBracket
         //[Authorize(Roles = "Admin")]
-        public IActionResult SeedBracket(List<Standing> standings)
+        public IActionResult SeedBracket()
         {
+            var standings = _context.Standings.ToList();
             // Get the pool of teams who made the cut
             var bracketPool = GetBracketPool(standings);
             // Add a seed to the sorted bracket pool members
+            // TODO update these members in the database
             bracketPool.Zip(Enumerable.Range(1, _numTeams), (s, i) => s.Seed = i);
-            return View();
+
+            var bracket = new Bracket(_context, bracketPool.Select(s => s.id).ToList());
+            _context.Bracket.Add(bracket);
+            _context.SaveChanges();
+            return Redirect("/Bracket");
         }
 
         private List<Standing> GetBracketPool(List<Standing> standings)
         {
             var bracketTeams = new List<Standing>();
-            var divisions = standings.Select(s => s.Division).Distinct();
+            // TODO standings aren't set - do something in that case
+            var divisions = standings.Select(s => s.Division).Distinct().Where(d => d != null).ToList();
             // First add the first team in each division to the bracket pool
-            foreach (var d in divisions)
+            if (divisions.Count > 0)
             {
-                var divisionStandings = standings.Where(s => s.Division.Equals(d)).OrderBy(s => s.TotalWins);
-                bracketTeams.Add(divisionStandings.First());
-                standings.Remove(divisionStandings.First());
+                foreach (var d in divisions)
+                {
+                    var divisionStandings = standings.Where(s => s.Division.Equals(d)).OrderBy(s => s.TotalWins);
+                    bracketTeams.Add(divisionStandings.First());
+                    standings.Remove(divisionStandings.First());
+                }
             }
             // Then fill the rest of the pool with top overall remaining teams
             var remaining = standings.OrderBy(s => s.TotalWinLoss);

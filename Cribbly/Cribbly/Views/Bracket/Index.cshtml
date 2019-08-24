@@ -1,7 +1,26 @@
-﻿
+﻿@model Cribbly.Models.Gameplay.Bracket
+
 @{
     ViewData["Title"] = "Index";
 }
-
 <h2>Bracket</h2>
-
+@{
+    if (Model == null || !Model.IsSeeded)
+    {
+        <p>The bracket is not yet seeded.</p>
+        if (User.IsInRole("Admin"))
+        {
+            <form asp-action="SeedBracket">
+                <input type="submit" value="Seed Bracket" class="btn btn-default"/>
+            </form>
+        }
+    }
+    else
+    {
+        @*foreach(Standing s in Model.Teams.ToList())
+        {
+            var str = s.TeamName + " - Seed: " + s.Seed.ToString();
+            <p>@str</p>
+        }*@
+    }
+}
