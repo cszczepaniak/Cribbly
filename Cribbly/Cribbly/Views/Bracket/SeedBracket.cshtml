@@ -8,3 +8,9 @@
 <p>
     The bracket has not been seeded yet.
 </p>
+@{
+    if (User.IsInRole("Admin"))
+    {
+        <button>Seed Bracket</button>
+    }
+}

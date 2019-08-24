@@ -13,6 +13,7 @@ namespace Cribbly.Controllers
     {
         private readonly ApplicationDbContext _context;
         private const int _numTeams = 32;
+        private bool _seeded = false;
 
         public BracketController(ApplicationDbContext context)
         {
@@ -21,7 +22,11 @@ namespace Cribbly.Controllers
 
         public IActionResult Index()
         {
-            return Content("This is the index");
+            if(!_seeded)
+            {
+                return Redirect("/Bracket/SeedBracket");
+            }
+            return View();
         }
 
         // GET: /Bracket/SeedBracket
