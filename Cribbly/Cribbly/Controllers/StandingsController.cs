@@ -22,7 +22,11 @@ namespace Cribbly.Controllers
             _context = context;
         }
 
-        //View master list for all tournament standings
+        /*
+         * ==============================
+         * GET ALL STANDINGS AND SCHEDULE (All)
+         * ==============================
+         */
         public IActionResult GetAllStandings()
         {
             //Find all standings 
@@ -39,7 +43,11 @@ namespace Cribbly.Controllers
             return View(teamlessUsers);
         }
 
-        //Create standings and schedule 
+        /*
+         * ==============================
+         * CREATE STANDINGS AND SCHEDULE (Admin)
+         * ==============================
+         */
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult ConfirmCreateStandings()
@@ -51,7 +59,11 @@ namespace Cribbly.Controllers
             //return data 
             return View(model);
         }
-
+        /*
+         * ==============================
+         * PAIR PLAYERS (Admin)
+         * ==============================
+         */
         public CreateStandingView PairPlayers(List<ApplicationUser> teamlessUsers, bool isConfirmed)
         {
             List<Team> newTeams = new List<Team>();
@@ -114,12 +126,21 @@ namespace Cribbly.Controllers
             return new CreateStandingView(newTeams, PlayerLeftOver);
 
         }
+        /*
+         * ==============================
+         * UNDO PAIR PLAYERS (Admin)
+         * ==============================
+         */
         public IActionResult CancelCreateStandings()
         {
             return RedirectToAction(nameof(CreateStandingsSetup));
         }
 
-        //newTeams is NULL right now. Gotta fix
+        /*
+         * ==============================
+         * COMMIT PLAYER CHANGES TO DB (Admin)
+         * ==============================
+         */
         [HttpPost]
         public IActionResult CreateStandings()
         {
@@ -144,7 +165,11 @@ namespace Cribbly.Controllers
             return RedirectToAction(nameof(GetAllStandings));
         }
 
-        //Submit a score to be added to the standings
+        /*
+         * ==============================
+         * SUBMIT GAME SCORE (User)
+         * ==============================
+         */
         [HttpPost]
         public IActionResult PostScore()
         {
@@ -152,8 +177,11 @@ namespace Cribbly.Controllers
             //Fill in the appropriate properties depending on which game number is being posted
             return RedirectToAction(nameof(GetStanding));
         }
-
-        //Edit a score. Limited to Admins
+        /*
+         * ==============================
+         * EDIT GAME SCORE (Admin)
+         * ==============================
+         */
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult EditScore(UserDataView data)
@@ -161,7 +189,11 @@ namespace Cribbly.Controllers
             //Return the team that matches the appropriate Id
             return View();
         }
-
+        /*
+         * ==============================
+         * SAVE EDITED SCORE (Admin)
+         * ==============================
+         */
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult SaveScore(UserDataView data)
@@ -170,7 +202,11 @@ namespace Cribbly.Controllers
             return RedirectToAction(nameof(GetStanding));
         }
 
-        //Get information on your team
+        /*
+         * ==============================
+         * GET YOUR TEAM'S STANDING (User)
+         * ==============================
+         */
         [HttpGet]
         public IActionResult GetStanding(UserDataView data)
         {
