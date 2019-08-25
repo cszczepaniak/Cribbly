@@ -15,7 +15,6 @@ namespace Cribbly.Controllers
     {
         private readonly ApplicationDbContext _context;
         private const int _numTeams = 32;
-        private bool _seeded = false;
 
         public BracketController(ApplicationDbContext context)
         {
@@ -24,8 +23,22 @@ namespace Cribbly.Controllers
 
         public IActionResult Index()
         {
-            var bracket = _context.Bracket.Include(b => b.Standings).Single();
+            var bracket = _context.Bracket.Include(b => b.Standings).SingleOrDefault();
             return View(bracket);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult AdminTools()
+        {
+            return View();
+        }
+
+        public IActionResult UnseedBracket()
+        {
+            var brackets = _context.Bracket.ToList();
+            _context.RemoveRange(brackets);
+            _context.SaveChanges();
+            return Redirect("/Bracket");
         }
 
         // GET: /Bracket/SeedBracket
@@ -36,8 +49,11 @@ namespace Cribbly.Controllers
             // Get the pool of teams who made the cut
             var bracketPool = GetBracketPool(standings);
             // Add a seed to the sorted bracket pool members
-            // TODO update these members in the database
-            bracketPool.Zip(Enumerable.Range(1, _numTeams), (s, i) => s.Seed = i);
+            for (int i = 0; i < _numTeams; i++)
+            {
+                // The seed is one-based to make sense for the users
+                bracketPool[i].Seed = i+1;
+            }
 
             var bracket = new Bracket(bracketPool);
             _context.Bracket.Add(bracket);
