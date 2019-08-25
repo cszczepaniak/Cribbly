@@ -33,6 +33,7 @@ namespace Cribbly.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult UnseedBracket()
         {
             var brackets = _context.Bracket.ToList();
@@ -42,7 +43,7 @@ namespace Cribbly.Controllers
         }
 
         // GET: /Bracket/SeedBracket
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult SeedBracket()
         {
             var standings = _context.Standings.ToList();
