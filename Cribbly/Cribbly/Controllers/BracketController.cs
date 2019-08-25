@@ -3,6 +3,7 @@ using Cribbly.Models;
 using Cribbly.Models.Gameplay;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace Cribbly.Controllers
 
         public IActionResult Index()
         {
-            var bracket = _context.Bracket.FirstOrDefault();
+            var bracket = _context.Bracket.Include(b => b.Standings).Single();
             return View(bracket);
         }
 
@@ -38,7 +39,7 @@ namespace Cribbly.Controllers
             // TODO update these members in the database
             bracketPool.Zip(Enumerable.Range(1, _numTeams), (s, i) => s.Seed = i);
 
-            var bracket = new Bracket(_context, bracketPool.Select(s => s.id).ToList());
+            var bracket = new Bracket(bracketPool);
             _context.Bracket.Add(bracket);
             _context.SaveChanges();
             return Redirect("/Bracket");

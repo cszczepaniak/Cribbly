@@ -17,10 +17,10 @@
     }
     else
     {
-        @*foreach(Standing s in Model.Teams.ToList())
+        foreach(Standing s in Model.Standings.ToList())
         {
             var str = s.TeamName + " - Seed: " + s.Seed.ToString();
             <p>@str</p>
-        }*@
+        }
     }
 }
