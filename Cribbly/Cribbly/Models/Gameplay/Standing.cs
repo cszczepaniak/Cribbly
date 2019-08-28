@@ -17,6 +17,7 @@ namespace Cribbly.Models
         public int G3Score { get; set; }
         public char G3WinLoss { get; set; }
         public int TotalScore { get; set; }
+        public int Seed { get; set; }
 
         public Standing()
         {

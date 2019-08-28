@@ -60,9 +60,12 @@ namespace Cribbly.Controllers
             {
                 return RedirectToAction(nameof(TeamNotFound));
             }
-
+            //Get the user's team's standing
+            List<Standing> userStanding = _context.Standings.Where(m => m.TeamName == team.Name).ToList();
+            //Instantiaste UserDataView object to pass to the view
+            UserDataView data = new UserDataView(_context, team, userStanding[0]);
             //No errors, return View with team obj
-            return View(team);
+            return View(data);
         }
 
         public IActionResult TeamNotFound()
@@ -174,6 +177,7 @@ namespace Cribbly.Controllers
             {
                 try
                 {
+                    //Update DB
                     _context.Update(team);
                     await _context.SaveChangesAsync();
                 }
@@ -189,7 +193,15 @@ namespace Cribbly.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(AdminView));
+                if (User.IsInRole("Admin"))
+                {
+                    return RedirectToAction(nameof(AdminView));
+                }
+                else
+                {
+                    return RedirectToAction(nameof(MyTeam));
+                }
+                
             }
             //Data edited, return View
             return View(team);
