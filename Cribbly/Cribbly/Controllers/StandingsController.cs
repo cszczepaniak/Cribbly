@@ -154,10 +154,8 @@ namespace Cribbly.Controllers
             foreach (var team in allTeams)
             {
                 //Create a new Standing obj
-                Standing standing = new Standing
-                {
-                    TeamName = team.Name
-                };
+                Standing standing = new Standing(team);
+
                 //Add the Standing to the DB
                 _context.Standings.Add(standing);
                 _context.SaveChanges();

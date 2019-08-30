@@ -177,7 +177,10 @@ namespace Cribbly.Controllers
             {
                 try
                 {
+                    //Get the team's Standing 
+                    Standing standingName = _context.Standings.Find(team.Id);
                     //Update DB
+                    standingName.TeamName = team.Name;
                     _context.Update(team);
                     await _context.SaveChangesAsync();
                 }
@@ -193,13 +196,15 @@ namespace Cribbly.Controllers
                         throw;
                     }
                 }
+                //If user is an admin, go back to the AdminView route
                 if (User.IsInRole("Admin"))
                 {
                     return RedirectToAction(nameof(AdminView));
                 }
+                //If they are a regular user, redirect to the MyTeam page
                 else
                 {
-                    return RedirectToAction(nameof(MyTeam));
+                    return RedirectToAction(nameof(MyTeam), new { id = team.Id });
                 }
                 
             }
