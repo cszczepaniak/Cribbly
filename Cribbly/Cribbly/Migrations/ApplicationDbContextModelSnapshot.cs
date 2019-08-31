@@ -17,6 +17,18 @@ namespace Cribbly.Migrations
                 .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("Cribbly.Models.Division", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("DivName");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Divisions");
+                });
+
             modelBuilder.Entity("Cribbly.Models.Standing", b =>
                 {
                     b.Property<int>("id")
@@ -42,6 +54,8 @@ namespace Cribbly.Migrations
                         .IsRequired()
                         .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)));
 
+                    b.Property<int>("Seed");
+
                     b.Property<string>("TeamName");
 
                     b.Property<int>("TotalScore");
@@ -56,6 +70,8 @@ namespace Cribbly.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("DivisionId");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50);
@@ -67,6 +83,8 @@ namespace Cribbly.Migrations
                         .IsRequired();
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DivisionId");
 
                     b.ToTable("Teams");
                 });
@@ -248,6 +266,13 @@ namespace Cribbly.Migrations
                     b.ToTable("ApplicationUser");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("Cribbly.Models.Team", b =>
+                {
+                    b.HasOne("Cribbly.Models.Division")
+                        .WithMany("Members")
+                        .HasForeignKey("DivisionId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
