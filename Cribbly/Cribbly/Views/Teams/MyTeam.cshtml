@@ -33,26 +33,33 @@
     </dl>
 </div>
 
-<h3>Total Score: @Model._standing.TotalScore</h3>
+@if (Model._standing != null)
+{
+    <h3>Total Score: @Model._standing.TotalScore</h3>
 
-<table>
-    <tr>
-        <td>@Html.DisplayNameFor(model => model._standing.G1Score)</td>
-        <td>@Html.DisplayNameFor(model => model._standing.G1WinLoss)</td>
-        <td>@Html.DisplayNameFor(model => model._standing.G2Score)</td>
-        <td>@Html.DisplayNameFor(model => model._standing.G2WinLoss)</td>
-        <td>@Html.DisplayNameFor(model => model._standing.G3Score)</td>
-        <td>@Html.DisplayNameFor(model => model._standing.G3WinLoss)</td>
-    </tr>
-    <tbody>
+    <table>
         <tr>
-            <td>@Html.DisplayFor(model => model._standing.G1Score)</td>
-            <td>@Html.DisplayFor(model => model._standing.G1WinLoss)</td>
-            <td>@Html.DisplayFor(model => model._standing.G2Score)</td>
-            <td>@Html.DisplayFor(model => model._standing.G2WinLoss)</td>
-            <td>@Html.DisplayFor(model => model._standing.G3Score)</td>
-            <td>@Html.DisplayFor(model => model._standing.G3WinLoss)</td>
+            <td>@Html.DisplayNameFor(model => model._standing.G1Score)</td>
+            <td>@Html.DisplayNameFor(model => model._standing.G1WinLoss)</td>
+            <td>@Html.DisplayNameFor(model => model._standing.G2Score)</td>
+            <td>@Html.DisplayNameFor(model => model._standing.G2WinLoss)</td>
+            <td>@Html.DisplayNameFor(model => model._standing.G3Score)</td>
+            <td>@Html.DisplayNameFor(model => model._standing.G3WinLoss)</td>
         </tr>
-    </tbody>
-</table>
+        <tbody>
+            <tr>
+                <td>@Html.DisplayFor(model => model._standing.G1Score)</td>
+                <td>@Html.DisplayFor(model => model._standing.G1WinLoss)</td>
+                <td>@Html.DisplayFor(model => model._standing.G2Score)</td>
+                <td>@Html.DisplayFor(model => model._standing.G2WinLoss)</td>
+                <td>@Html.DisplayFor(model => model._standing.G3Score)</td>
+                <td>@Html.DisplayFor(model => model._standing.G3WinLoss)</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+        <a asp-controller="Games" asp-action="PostScore">Post Score</a>
+}
+
 

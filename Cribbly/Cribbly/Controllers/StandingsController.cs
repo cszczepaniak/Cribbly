@@ -162,55 +162,5 @@ namespace Cribbly.Controllers
             }
             return RedirectToAction(nameof(GetAllStandings));
         }
-
-        /*
-         * ==============================
-         * SUBMIT GAME SCORE (User)
-         * ==============================
-         */
-        [HttpPost]
-        public IActionResult PostScore()
-        {
-            //Find your team's standing
-            //Fill in the appropriate properties depending on which game number is being posted
-            return RedirectToAction(nameof(GetStanding));
-        }
-        /*
-         * ==============================
-         * EDIT GAME SCORE (Admin)
-         * ==============================
-         */
-        [Authorize(Roles = "Admin")]
-        [HttpGet]
-        public IActionResult EditScore(UserDataView data)
-        {
-            //Return the team that matches the appropriate Id
-            return View();
-        }
-        /*
-         * ==============================
-         * SAVE EDITED SCORE (Admin)
-         * ==============================
-         */
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public IActionResult SaveScore(UserDataView data)
-        {
-            //Return the team that matches the appropriate Id
-            return RedirectToAction(nameof(GetStanding));
-        }
-
-        /*
-         * ==============================
-         * GET YOUR TEAM'S STANDING (User)
-         * ==============================
-         */
-        [HttpGet]
-        public IActionResult GetStanding(UserDataView data)
-        {
-            //Get ApplicationDbContext
-            //Get the standing object where the team name equals the given name
-            return View();
-        }
     }
 }

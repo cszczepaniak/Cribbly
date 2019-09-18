@@ -1,0 +1,21 @@
+﻿@model Cribbly.Models.Gameplay.PlayInGame;
+@{
+    ViewData["Title"] = "PostScore";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>PostScore</h2>
+
+<form asp-action="PostScore">
+    <div class="form-group">
+        <label>Enter your total score </label>
+        <input type="number" min="0" max="121" />
+    </div>
+
+    <div class="form-group">
+        <label>Did you win?</label>
+        <input type="checkbox" />
+    </div>
+
+    <button type="submit">Submit Score</button>
+</form>
