@@ -22,6 +22,6 @@ namespace Cribbly.Models.Gameplay
         public DateTime DateMade { get; set; }
         public int SubmittedBy { get; set; }
         public DateTime LastEdited { get; set; }
-        public int EditedBy { get; set; }
+        public string EditedBy { get; set; }
     }
 }

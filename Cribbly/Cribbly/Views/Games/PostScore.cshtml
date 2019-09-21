@@ -1,4 +1,10 @@
-﻿@model Cribbly.Models.Gameplay.PlayInGame;
+﻿@using Microsoft.AspNetCore.Identity
+@using Cribbly.Data;
+
+@inject UserManager<IdentityUser> UserManager
+@inject ApplicationDbContext _context;
+
+@model Cribbly.Models.ViewModels.PostScoreView;
 @{
     ViewData["Title"] = "PostScore";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,14 +13,16 @@
 <h2>PostScore</h2>
 
 <form asp-action="PostScore">
-    <div class="form-group">
-        <label>Enter your total score </label>
-        <input type="number" min="0" max="121" />
-    </div>
+    @{
+        var user = @_context.ApplicationUsers.FirstOrDefault(m => m.Email == UserManager.GetUserName(User));
+        <input asp-for="TeamId" type="hidden" value="@user.TeamId" disabled />
+    }
+
+    <h4>Game @Model.GameNumber</h4>
 
     <div class="form-group">
-        <label>Did you win?</label>
-        <input type="checkbox" />
+        <label>Enter your total score</label>
+        <input asp-for="TotalScore" type="number" min="0" max="121" />
     </div>
 
     <button type="submit">Submit Score</button>
