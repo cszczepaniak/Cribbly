@@ -18,10 +18,9 @@ namespace Cribbly.Models.Gameplay
         public string Team1Name { get; set; }
         public string Team2Name { get; set; }
         public string WinningTeamName { get; set; }
+        public string Division { get; set; }
         //Metadata proerties
-        public DateTime DateMade { get; set; }
-        public int SubmittedBy { get; set; }
-        public DateTime LastEdited { get; set; }
-        public string EditedBy { get; set; }
+        public DateTime LastUpdated { get; set; }
+        public string UpdatedBy { get; set; }
     }
 }

@@ -3,14 +3,16 @@ using System;
 using Cribbly.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cribbly.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190922185643_playingames")]
+    partial class playingames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,11 +36,17 @@ namespace Cribbly.Migrations
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("DateMade");
+
+                    b.Property<string>("EditedBy");
+
                     b.Property<int>("GameNumber");
 
-                    b.Property<DateTime>("LastUpdated");
+                    b.Property<DateTime>("LastEdited");
 
                     b.Property<int>("ScoreDifference");
+
+                    b.Property<int>("SubmittedBy");
 
                     b.Property<int>("Team1Id");
 
@@ -51,8 +59,6 @@ namespace Cribbly.Migrations
                     b.Property<string>("Team2Name");
 
                     b.Property<int>("Team2TotalScore");
-
-                    b.Property<string>("UpdatedBy");
 
                     b.Property<int>("WinningTeamId");
 

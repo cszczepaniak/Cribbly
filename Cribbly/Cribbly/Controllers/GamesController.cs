@@ -23,7 +23,7 @@ namespace Cribbly.Controllers
             _context = context;
             _userManager = userManager;
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             var games = _context.PlayInGames.ToList();
@@ -35,12 +35,12 @@ namespace Cribbly.Controllers
 
             return View(games);
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateGamesSetup()
         {
             return View();
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateGames()
         {
             //Get standings and divisions
@@ -49,9 +49,24 @@ namespace Cribbly.Controllers
 
             //Combinations so everyone in a 4 team division plays each other once
             int[][] gameCodes = new int[][] 
-            { new int[] { 1, 2 }, new int[] { 1, 3 },
-              new int[] { 1, 4 }, new int[] {2, 3},
+            {
+              new int[] { 1, 2 }, new int[] { 1, 3 },
+              new int[] { 1, 4 }, new int[] { 2, 3 },
               new int[] { 2, 4 }, new int[] { 3, 4 }
+            };
+
+            //division of 3
+            int[][] div3gameCodes = new int[][] 
+            {
+              new int[] { 1, 2 }, new int[] { 1, 3 }, new int[] { 2, 3 }
+            };
+
+            //division of 5
+            int[][] div5gameCodes = new int[][]
+            {
+              new int[] { 1, 2 }, new int[] { 1, 3 },
+              new int[] { 1, 4 }, new int[] { 2, 5 },
+              new int[] { 2, 4 }, new int[] { 3, 5 }
             };
 
             foreach (var div in divisions)
@@ -71,6 +86,7 @@ namespace Cribbly.Controllers
                             Team2Id = teams[code[1]].id,
                             Team2Name = teams[code[1]].TeamName,
                             WinningTeamName = null,
+                            Division = div.DivName,
                             WinningTeamId = 0
                         };
                         //Add to DB
@@ -83,16 +99,143 @@ namespace Cribbly.Controllers
                     if (e is IndexOutOfRangeException)
                     {
                         //Handle exception based on how many teams are left over
-                        switch(teams.Count)
+                        var gamesToRemove = _context.PlayInGames.Where(m => m.Division == div.DivName);
+
+                        switch (teams.Count)
                         {
                             case 1:
-                                //Reconfigure one division to have 5 teams
+                                //Remove created games, and reconfigure one division for 5 teams
+                                _context.PlayInGames.RemoveRange(gamesToRemove);
+
+                                foreach (int[] code in div5gameCodes)
+                                {
+                                    //Create new game
+                                    var newGame = new PlayInGame()
+                                    {
+                                        Team1Id = teams[code[0]].id,
+                                        Team1Name = teams[code[0]].TeamName,
+                                        Team2Id = teams[code[1]].id,
+                                        Team2Name = teams[code[1]].TeamName,
+                                        WinningTeamName = null,
+                                        Division = divisions[0].DivName,
+                                        WinningTeamId = 0
+                                    };
+                                    //Add to DB
+                                    _context.PlayInGames.Add(newGame);
+                                }
+
+                                _3WayGame a = new _3WayGame()
+                                {
+                                    Team1Id = teams[2].id,
+                                    Team1Name = teams[2].TeamName,
+                                    Team2Id = teams[3].id,
+                                    Team2Name = teams[3].TeamName,
+                                    Team3Id = teams[4].id,
+                                    Team3Name = teams[4].TeamName,
+                                    WinningTeamName = null,
+                                    Division = div.DivName,
+                                    WinningTeamId = 0
+                                };
                                 break;
                             case 2:
-                                //Reconfigure two divisions to have 5 teams
+                                //Reconfigure two divisions for 5 team divisions
+                                var gamesToRemove2 = _context.PlayInGames.Where(m => m.Division == divisions[0].DivName || m.Division == divisions[1].DivName);
+                                _context.PlayInGames.RemoveRange(gamesToRemove2);
+
+                                foreach (int[] code in div5gameCodes)
+                                {
+                                    //Create new game
+                                    var newGame = new PlayInGame()
+                                    {
+                                        Team1Id = teams[code[0]].id,
+                                        Team1Name = teams[code[0]].TeamName,
+                                        Team2Id = teams[code[1]].id,
+                                        Team2Name = teams[code[1]].TeamName,
+                                        WinningTeamName = null,
+                                        Division = divisions[0].DivName,
+                                        WinningTeamId = 0
+                                    };
+                                    //Add to DB
+                                    _context.PlayInGames.Add(newGame);
+                                }
+
+                                _3WayGame a2 = new _3WayGame()
+                                {
+                                    Team1Id = teams[2].id,
+                                    Team1Name = teams[2].TeamName,
+                                    Team2Id = teams[3].id,
+                                    Team2Name = teams[3].TeamName,
+                                    Team3Id = teams[4].id,
+                                    Team3Name = teams[4].TeamName,
+                                    WinningTeamName = null,
+                                    Division = div.DivName,
+                                    WinningTeamId = 0
+                                };
+                                var teams2 = standings.Where(m => m.Division == divisions[1].DivName).ToList();
+
+                                foreach (int[] code in div5gameCodes)
+                                {
+                                    //Create new game
+                                    var newGame = new PlayInGame()
+                                    {
+                                        Team1Id = teams2[code[0]].id,
+                                        Team1Name = teams2[code[0]].TeamName,
+                                        Team2Id = teams2[code[1]].id,
+                                        Team2Name = teams2[code[1]].TeamName,
+                                        WinningTeamName = null,
+                                        Division = divisions[1].DivName,
+                                        WinningTeamId = 0
+                                    };
+                                    //Add to DB
+                                    _context.PlayInGames.Add(newGame);
+                                }
+
+                                _3WayGame a3 = new _3WayGame()
+                                {
+                                    Team1Id = teams2[2].id,
+                                    Team1Name = teams2[2].TeamName,
+                                    Team2Id = teams2[3].id,
+                                    Team2Name = teams2[3].TeamName,
+                                    Team3Id = teams2[4].id,
+                                    Team3Name = teams2[4].TeamName,
+                                    WinningTeamName = null,
+                                    Division = div.DivName,
+                                    WinningTeamId = 0
+                                };
                                 break;
                             case 3:
-                                //Configure a 3 team division
+                                //Configure games for a 3 team division
+                                _context.PlayInGames.RemoveRange(gamesToRemove);
+
+                                foreach (int[] code in div3gameCodes)
+                                {
+                                    //Create new game
+                                    var newGame = new PlayInGame()
+                                    {
+                                        Team1Id = teams[code[0]].id,
+                                        Team1Name = teams[code[0]].TeamName,
+                                        Team2Id = teams[code[1]].id,
+                                        Team2Name = teams[code[1]].TeamName,
+                                        WinningTeamName = null,
+                                        Division = div.DivName,
+                                        WinningTeamId = 0
+                                    };
+                                    //Add to DB
+                                    _context.PlayInGames.Add(newGame);
+                                }
+
+                                _3WayGame a4 = new _3WayGame()
+                                {
+                                    Team1Id = teams[0].id,
+                                    Team1Name = teams[0].TeamName,
+                                    Team2Id = teams[1].id,
+                                    Team2Name = teams[1].TeamName,
+                                    Team3Id = teams[2].id,
+                                    Team3Name = teams[2].TeamName,
+                                    WinningTeamName = null,
+                                    Division = div.DivName,
+                                    WinningTeamId = 0
+                                };
                                 break;
                             default:
                                 //Something went wrong making the divisions
