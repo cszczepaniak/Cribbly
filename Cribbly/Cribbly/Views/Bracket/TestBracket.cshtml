@@ -1,0 +1,31 @@
+﻿@model Cribbly.Models.Gameplay.Bracket
+@{
+    ViewData["Title"] = "TestBracket";
+}
+<head>
+    <link rel="stylesheet" href="~/css/bracket.css" type="text/css" />
+</head>
+<body>
+    <h1>Cribbage Tournament Bracket</h1>
+    <div class="bracket-container">
+        @{
+            for (int i = 0; i < 5; i++)
+            {
+                <div class="round-container">
+                    <h4>round @(i + 1)</h4>
+                    @{var numGames = (int)Math.Pow(2, 5 - (i + 1));
+                        for (int j = 0; j < numGames; j++)
+                        {
+                            <div class="game-container">
+                                <div class="game">
+                                    <div class="team">team 1</div>
+                                    <div class="team">team 2</div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            }
+        }
+    </div>
+</body>

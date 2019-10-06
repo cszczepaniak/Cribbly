@@ -33,6 +33,12 @@ namespace Cribbly.Controllers
             return View();
         }
 
+        public IActionResult TestBracket()
+        {
+            var bracket = _context.Bracket.Include(b => b.Standings).Single();
+            return View(bracket);
+        }
+
         [Authorize(Roles = "Admin")]
         public IActionResult UnseedBracket()
         {
