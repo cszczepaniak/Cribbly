@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="~/css/bracket.css" type="text/css" />
 </head>
 <body>
+    <script>
+        function clickHandler(id) {
+            console.log(`I've been clicked at id ${id}`);
+        }
+    </script>
     <h1>Cribbage Tournament Bracket</h1>
     <div class="bracket-container">
         @{
@@ -22,7 +27,7 @@
                                         if (i < 1)
                                         {
                                             <div class="team team-admin">szczepaniak / szczepaniak</div>
-                                            <div class="team team-admin">team 2</div>
+                                            <div class="team team-admin" onclick="clickHandler(@j)">team 2</div>
                                         }
                                     }
                                 </div>
