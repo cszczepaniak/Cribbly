@@ -23,27 +23,24 @@
 }
 
 .game {
-    border: 1px solid #eeeeee;
-    border-radius: 2px;
-    box-shadow: 2px 2px 2px #eeeeee;
+    border: 1px solid #ececec;
+    border-radius: 3px;
+    box-shadow: 2px 2px 4px #cccccc;
+    min-height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .team {
     text-transform: uppercase;
-    margin: 2px auto;
-    width: 90%;
+    margin: auto 5px;
+    padding: 5px 0;
 }
 
-    .team:nth-child(1):after {
-        content: " ";
-        display: block;
-        height: 0.1em;
-        background: #2980b9;
-        width: 100%;
-    }
 
-.versus-label {
-    font-size: 8px;
+.team-admin:hover {
+    background-color: #cccccc;
 }
 
 @media screen and (min-width: 900px) {

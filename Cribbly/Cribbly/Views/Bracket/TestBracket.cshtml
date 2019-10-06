@@ -1,4 +1,4 @@
-﻿@model Cribbly.Models.Gameplay.Bracket
+﻿
 @{
     ViewData["Title"] = "TestBracket";
 }
@@ -18,8 +18,13 @@
                         {
                             <div class="game-container">
                                 <div class="game">
-                                    <div class="team">team 1</div>
-                                    <div class="team">team 2</div>
+                                    @{
+                                        if (i < 1)
+                                        {
+                                            <div class="team team-admin">szczepaniak / szczepaniak</div>
+                                            <div class="team team-admin">team 2</div>
+                                        }
+                                    }
                                 </div>
                             </div>
                         }

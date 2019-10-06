@@ -11,6 +11,7 @@ namespace Cribbly.Models.Gameplay
         public int Id { get; set; }
         public bool IsSeeded { get; set; }
         public List<Standing> Standings { get; set; }
+        public List<BracketRound> Rounds { get; set; }
         public Bracket()
         {
         }
