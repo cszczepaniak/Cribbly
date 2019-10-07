@@ -22,15 +22,15 @@
                         for (int j = 0; j < numGames; j++)
                         {
                             <div class="game-container">
-                                <div class="game">
-                                    @{
-                                        if (i < 1)
-                                        {
-                                            <div class="team team-admin">szczepaniak / szczepaniak</div>
-                                            <div class="team team-admin" onclick="clickHandler(@j)">team 2</div>
-                                        }
-                                    }
-                                </div>
+                                                    <div class="game">
+                                                        @{
+                                                            if (i < 1)
+                                                            {
+                                                                <a asp-controller="Bracket" asp-action="TestBracket" asp-route-id="1" asp-route-game="@j" class="team team-admin">szczepaniak / szczepaniak</a>
+                                                                <a asp-controller="Bracket" asp-action="TestBracket" asp-route-id="2" asp-route-game="@j" class="team team-admin">team 2</a>
+                                                            }
+                                                        }
+                                                    </div>
                             </div>
                         }
                     }

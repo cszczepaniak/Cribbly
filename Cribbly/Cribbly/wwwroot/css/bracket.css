@@ -2,6 +2,10 @@
     text-transform: uppercase;
 }
 
+.game a {
+    text-decoration: none;
+}
+
 .bracket-container {
 }
 
@@ -37,7 +41,6 @@
     margin: auto 5px;
     padding: 5px 0;
 }
-
 
 .team-admin:hover {
     background-color: #cccccc;

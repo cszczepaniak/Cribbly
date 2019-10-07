@@ -33,8 +33,9 @@ namespace Cribbly.Controllers
             return View();
         }
 
-        public IActionResult TestBracket()
+        public IActionResult TestBracket(int id, int game)
         {
+            Console.WriteLine($"Team {id} wins game number {game}!");
             return View();
         }
 
