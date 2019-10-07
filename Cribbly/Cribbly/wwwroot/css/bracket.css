@@ -2,8 +2,9 @@
     text-transform: uppercase;
 }
 
-.game a {
+.game a, .game a:hover {
     text-decoration: none;
+    color: black;
 }
 
 .bracket-container {
