@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cribbly.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190922190344_fix")]
-    partial class fix
+    [Migration("20191010003912_b")]
+    partial class b
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,6 +35,11 @@ namespace Cribbly.Migrations
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.Property<string>("Division");
 
                     b.Property<int>("GameNumber");
 
@@ -63,6 +68,8 @@ namespace Cribbly.Migrations
                     b.HasKey("id");
 
                     b.ToTable("PlayInGames");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("PlayInGame");
                 });
 
             modelBuilder.Entity("Cribbly.Models.Standing", b =>
@@ -281,6 +288,21 @@ namespace Cribbly.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Cribbly.Models.Gameplay._3WayGame", b =>
+                {
+                    b.HasBaseType("Cribbly.Models.Gameplay.PlayInGame");
+
+                    b.Property<int>("Team3Id");
+
+                    b.Property<string>("Team3Name");
+
+                    b.Property<int>("Team3TotalScore");
+
+                    b.ToTable("_3WayGame");
+
+                    b.HasDiscriminator().HasValue("_3WayGame");
                 });
 
             modelBuilder.Entity("Cribbly.Models.ApplicationUser", b =>

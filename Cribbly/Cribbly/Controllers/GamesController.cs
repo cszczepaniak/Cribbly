@@ -85,7 +85,6 @@ namespace Cribbly.Controllers
                             Team1Name = teams[code[0]].TeamName,
                             Team2Id = teams[code[1]].id,
                             Team2Name = teams[code[1]].TeamName,
-                            WinningTeamName = null,
                             Division = div.DivName,
                             WinningTeamId = 0
                         };
@@ -116,7 +115,6 @@ namespace Cribbly.Controllers
                                         Team1Name = teams[code[0]].TeamName,
                                         Team2Id = teams[code[1]].id,
                                         Team2Name = teams[code[1]].TeamName,
-                                        WinningTeamName = null,
                                         Division = divisions[0].DivName,
                                         WinningTeamId = 0
                                     };
@@ -132,7 +130,6 @@ namespace Cribbly.Controllers
                                     Team2Name = teams[3].TeamName,
                                     Team3Id = teams[4].id,
                                     Team3Name = teams[4].TeamName,
-                                    WinningTeamName = null,
                                     Division = div.DivName,
                                     WinningTeamId = 0
                                 };
@@ -151,7 +148,6 @@ namespace Cribbly.Controllers
                                         Team1Name = teams[code[0]].TeamName,
                                         Team2Id = teams[code[1]].id,
                                         Team2Name = teams[code[1]].TeamName,
-                                        WinningTeamName = null,
                                         Division = divisions[0].DivName,
                                         WinningTeamId = 0
                                     };
@@ -167,7 +163,6 @@ namespace Cribbly.Controllers
                                     Team2Name = teams[3].TeamName,
                                     Team3Id = teams[4].id,
                                     Team3Name = teams[4].TeamName,
-                                    WinningTeamName = null,
                                     Division = div.DivName,
                                     WinningTeamId = 0
                                 };
@@ -182,7 +177,6 @@ namespace Cribbly.Controllers
                                         Team1Name = teams2[code[0]].TeamName,
                                         Team2Id = teams2[code[1]].id,
                                         Team2Name = teams2[code[1]].TeamName,
-                                        WinningTeamName = null,
                                         Division = divisions[1].DivName,
                                         WinningTeamId = 0
                                     };
@@ -198,7 +192,6 @@ namespace Cribbly.Controllers
                                     Team2Name = teams2[3].TeamName,
                                     Team3Id = teams2[4].id,
                                     Team3Name = teams2[4].TeamName,
-                                    WinningTeamName = null,
                                     Division = div.DivName,
                                     WinningTeamId = 0
                                 };
@@ -216,7 +209,6 @@ namespace Cribbly.Controllers
                                         Team1Name = teams[code[0]].TeamName,
                                         Team2Id = teams[code[1]].id,
                                         Team2Name = teams[code[1]].TeamName,
-                                        WinningTeamName = null,
                                         Division = div.DivName,
                                         WinningTeamId = 0
                                     };
@@ -232,7 +224,6 @@ namespace Cribbly.Controllers
                                     Team2Name = teams[1].TeamName,
                                     Team3Id = teams[2].id,
                                     Team3Name = teams[2].TeamName,
-                                    WinningTeamName = null,
                                     Division = div.DivName,
                                     WinningTeamId = 0
                                 };

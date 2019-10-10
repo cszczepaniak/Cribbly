@@ -1,24 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Cribbly.Migrations
 {
-    public partial class update : Migration
+    public partial class a : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Teams_Divisions_DivisionId",
-                table: "Teams");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Teams_DivisionId",
-                table: "Teams");
-
-            migrationBuilder.DropColumn(
-                name: "DivisionId",
-                table: "Teams");
-
             migrationBuilder.CreateTable(
                 name: "PlayInGames",
                 columns: table => new
@@ -34,7 +23,14 @@ namespace Cribbly.Migrations
                     GameNumber = table.Column<int>(nullable: false),
                     Team1Name = table.Column<string>(nullable: true),
                     Team2Name = table.Column<string>(nullable: true),
-                    WinningTeamName = table.Column<string>(nullable: true)
+                    WinningTeamName = table.Column<string>(nullable: true),
+                    Division = table.Column<string>(nullable: true),
+                    LastUpdated = table.Column<DateTime>(nullable: false),
+                    UpdatedBy = table.Column<string>(nullable: true),
+                    Discriminator = table.Column<string>(nullable: false),
+                    Team3Id = table.Column<int>(nullable: true),
+                    Team3Name = table.Column<string>(nullable: true),
+                    Team3TotalScore = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -47,23 +43,6 @@ namespace Cribbly.Migrations
             migrationBuilder.DropTable(
                 name: "PlayInGames");
 
-            migrationBuilder.AddColumn<int>(
-                name: "DivisionId",
-                table: "Teams",
-                nullable: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Teams_DivisionId",
-                table: "Teams",
-                column: "DivisionId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Teams_Divisions_DivisionId",
-                table: "Teams",
-                column: "DivisionId",
-                principalTable: "Divisions",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
         }
     }
 }
