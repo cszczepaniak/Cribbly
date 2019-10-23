@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Cribbly.Data;
 using Cribbly.Models;
+using Cribbly.Models.Gameplay;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Cribbly.Controllers
@@ -62,8 +63,9 @@ namespace Cribbly.Controllers
             }
             //Get the user's team's standing
             List<Standing> userStanding = _context.Standings.Where(m => m.TeamName == team.Name).ToList();
+            List<PlayInGame> userGames = _context.PlayInGames.Where(m => m.Team1Id == id || m.Team2Id == id).ToList();
             //Instantiaste UserDataView object to pass to the view
-            UserDataView data = new UserDataView(_context, team, userStanding[0]);
+            UserDataView data = new UserDataView(_context, team, userStanding[0], userGames);
             //No errors, return View with team obj
             return View(data);
         }

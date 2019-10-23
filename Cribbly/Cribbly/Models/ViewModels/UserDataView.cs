@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Cribbly.Data;
+using Cribbly.Models.Gameplay;
 
 namespace Cribbly.Models
 {
@@ -13,11 +14,14 @@ namespace Cribbly.Models
 #nullable enable
         public Standing? _standing { get; set; }
 
-        public UserDataView(ApplicationDbContext context, Team team, Standing? standing)
+        public List<PlayInGame>? _games { get; set; }
+
+        public UserDataView(ApplicationDbContext context, Team team, Standing? standing, List<PlayInGame> games)
         {
             _context = context;
             _team = team;
             _standing = standing;
+            _games = games;
         }
     }
 #nullable disable

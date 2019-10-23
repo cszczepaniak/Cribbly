@@ -15,10 +15,9 @@
 <form asp-action="PostScore">
     @{
         var user = @_context.ApplicationUsers.FirstOrDefault(m => m.Email == UserManager.GetUserName(User));
-        <input asp-for="TeamId" type="hidden" value="@user.TeamId" disabled />
+        <input asp-for="TeamId" type="hidden" value="@user.TeamId" />
+        <input asp-for="GameNumber" type="hidden" value="@Model.GameNumber" />
     }
-
-    <h4>Game @Model.GameNumber</h4>
 
     <div class="form-group">
         <label>Enter your total score</label>
