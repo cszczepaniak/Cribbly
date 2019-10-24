@@ -68,11 +68,12 @@ namespace Cribbly.Controllers
             {
                 try
                 {
+                    /*
                     if (tracker > numDivs)
                     {
                         i = 2;
                         break;
-                    };
+                    };*/
 
                     allTeams[0].Division = tracker.ToString();
                     allTeams[1].Division = tracker.ToString();
@@ -84,15 +85,33 @@ namespace Cribbly.Controllers
                 }
                 catch
                 {
-                    //It is not coming out evenly, enter loop to make odd numbered division
-                    foreach (var team in allTeams)
+                    if (allTeams.Count == 2)
                     {
-                        team.Division = tracker.ToString();
+                        allTeams[0].Division = 1.ToString();
+                        allTeams[1].Division = 2.ToString();
                     }
+                    else if (allTeams.Count == 2)
+                    {
+                        allTeams[0].Division = 1.ToString();
+                    }
+                    else
+                    {
+                        //It is not coming out evenly, enter loop to make odd numbered division
+                        foreach (var team in allTeams)
+                        {
+                            team.Division = tracker.ToString();
+                        }
 
+                        Division div = new Division()
+                        {
+                            DivName = tracker.ToString()
+                        };
+                        _context.Divisions.Add(div);
+                    }
 
                     break;
                 }
+
                 i = 0;
             }
 
