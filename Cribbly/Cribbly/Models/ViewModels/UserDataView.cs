@@ -15,13 +15,15 @@ namespace Cribbly.Models
         public Standing? _standing { get; set; }
 
         public List<PlayInGame>? _games { get; set; }
+        public List<_3WayGame>? _3waygames { get; set; }
 
-        public UserDataView(ApplicationDbContext context, Team team, Standing? standing, List<PlayInGame> games)
+        public UserDataView(ApplicationDbContext context, Team team, Standing? standing, List<PlayInGame>? games, List<_3WayGame>? threewaygames)
         {
             _context = context;
             _team = team;
             _standing = standing;
             _games = games;
+            _3waygames = threewaygames;
         }
     }
 #nullable disable

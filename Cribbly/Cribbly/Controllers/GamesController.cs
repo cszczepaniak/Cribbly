@@ -27,13 +27,15 @@ namespace Cribbly.Controllers
         public IActionResult Index()
         {
             var games = _context.PlayInGames.ToList();
+            var _3waygames = _context.PlayInGames.OfType<_3WayGame>().ToList();
 
             if (games.Count == 0)
             {
                 return RedirectToAction(nameof(CreateGamesSetup));
             }
 
-            return View(games);
+            GamesView model = new GamesView(games, _3waygames);
+            return View(model);
         }
         [Authorize(Roles = "Admin")]
         public IActionResult CreateGamesSetup()
