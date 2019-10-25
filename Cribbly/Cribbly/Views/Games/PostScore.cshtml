@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Cribbly.Data;
+
+@inject UserManager<IdentityUser> UserManager
+@inject ApplicationDbContext _context;
+
+@model Cribbly.Models.ViewModels.PostScoreView;
+@{
+    ViewData["Title"] = "PostScore";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>PostScore</h2>
+
+<h4>Game @Model.GameNumber : "@Model.Game.Team1Name" vs. "@Model.Game.Team2Name"</h4>
+
+<form asp-action="PostScore">
+    @{
+        var user = @_context.ApplicationUsers.FirstOrDefault(m => m.Email == UserManager.GetUserName(User));
+        <input asp-for="TeamId" type="hidden" value="@user.TeamId" />
+        <input asp-for="GameNumber" type="hidden" value="@Model.GameNumber" />
+    }
+
+    <div class="form-group">
+        <label>Enter your total score</label>
+        <input asp-for="TotalScore" type="number" min="0" max="121" />
+    </div>
+
+    <button type="submit">Submit Score</button>
+</form>
