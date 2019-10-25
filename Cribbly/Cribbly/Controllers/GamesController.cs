@@ -231,12 +231,17 @@ namespace Cribbly.Controllers
                 return BadRequest();
             }
 
+            var game = _context.PlayInGames.FirstOrDefault(m => m.GameNumber == model.GameNumber && m.Team1Id == userId || m.Team2Id == userId);
+            model.Game = game;
+
             return View(model);
         }
 
         [HttpPost]
         public IActionResult PostScore(PostScoreView model)
         {
+            string username = _context.ApplicationUsers.FirstOrDefault(m => m.Email == _userManager.GetUserName(User)).UserName;
+
             //Client side validation logic ensures data is clean
             //Find your team's standing
             var standing = _context.Standings.FirstOrDefault(m => m.id == model.TeamId);
@@ -256,6 +261,10 @@ namespace Cribbly.Controllers
                 gameData.Team2TotalScore = model.TotalScore;
                 FindWinner(gameData, model, standing, 2);
             }
+
+            gameData.LastUpdated = DateTime.Now;
+            gameData.UpdatedBy = username;
+            _context.SaveChanges();
 
             return RedirectToAction("MyTeam", "Teams", model.TeamId);
         }

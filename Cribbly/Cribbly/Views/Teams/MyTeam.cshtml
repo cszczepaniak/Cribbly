@@ -5,10 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>My Team</h2>
 
 <div>
-    <h4>Team</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -60,6 +59,7 @@
 
 
     <a asp-controller="Games" asp-action="PostScore">Post Score</a>
+    <p><i>Note: Game results will appear as an 'X' until both teams have submitted scores.</i></p>
 }
 else
 {
@@ -74,6 +74,12 @@ else
                 <td></td>
                 <td>@Html.DisplayNameFor(model => model._games[0].Team1Name)</td>
                 <td>@Html.DisplayNameFor(model => model._games[0].Team2Name)</td>
+
+                @if (Model._3waygames.Count != 0)
+                {
+                    <td>@Html.DisplayNameFor(model => model._3waygames[0].Team3Name)</td>
+                }
+
                 <td>@Html.DisplayNameFor(model => model._games[0].WinningTeamName)</td>
                 <td>@Html.DisplayNameFor(model => model._games[0].ScoreDifference)</td>
             </tr>
@@ -83,6 +89,7 @@ else
                 <td><strong>Game 1 Info</strong></td>
                 <td>@Html.DisplayFor(model => model._games[0].Team1Name)</td>
                 <td>@Html.DisplayFor(model => model._games[0].Team2Name)</td>
+                <td></td>
                 <td>@Html.DisplayFor(model => model._games[0].WinningTeamName)</td>
                 <td>@Html.DisplayFor(model => model._games[0].ScoreDifference)</td>
             </tr>
@@ -90,6 +97,7 @@ else
                 <td><strong>Game 2 Info</strong></td>
                 <td>@Html.DisplayFor(model => model._games[1].Team1Name)</td>
                 <td>@Html.DisplayFor(model => model._games[1].Team2Name)</td>
+                <td></td>
                 <td>@Html.DisplayFor(model => model._games[1].WinningTeamName)</td>
                 <td>@Html.DisplayFor(model => model._games[1].ScoreDifference)</td>
             </tr>
@@ -97,6 +105,14 @@ else
                 <td><strong>Game 3 Info</strong></td>
                 <td>@Html.DisplayFor(model => model._games[2].Team1Name)</td>
                 <td>@Html.DisplayFor(model => model._games[2].Team2Name)</td>
+                @if (Model._3waygames.Count != 0)
+                {
+                    <td>@Html.DisplayFor(model => model._3waygames[0].Team3Name)</td>
+                }
+                else
+                {
+                    <td></td>
+                }
                 <td>@Html.DisplayFor(model => model._games[2].WinningTeamName)</td>
                 <td>@Html.DisplayFor(model => model._games[2].ScoreDifference)</td>
             </tr>

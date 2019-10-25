@@ -12,6 +12,8 @@
 
 <h2>PostScore</h2>
 
+<h4>Game @Model.GameNumber : "@Model.Game.Team1Name" vs. "@Model.Game.Team2Name"</h4>
+
 <form asp-action="PostScore">
     @{
         var user = @_context.ApplicationUsers.FirstOrDefault(m => m.Email == UserManager.GetUserName(User));
