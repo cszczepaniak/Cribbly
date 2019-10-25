@@ -266,7 +266,7 @@ namespace Cribbly.Controllers
             gameData.UpdatedBy = username;
             _context.SaveChanges();
 
-            return RedirectToAction("MyTeam", "Teams", model.TeamId);
+            return RedirectToAction("MyTeam", "Teams", new { id = model.TeamId });
         }
 
         public void FindWinner(PlayInGame gameData, PostScoreView model, Standing standing, int key)
