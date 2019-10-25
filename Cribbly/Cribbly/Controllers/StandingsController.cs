@@ -30,7 +30,7 @@ namespace Cribbly.Controllers
         public IActionResult GetAllStandings()
         {
             //Find all standings 
-            var standings = _context.Standings.ToList();
+            var standings = _context.Standings.OrderByDescending(m => m.TotalScore).ToList();
             //Return all results to the view
             return View(standings);
         }

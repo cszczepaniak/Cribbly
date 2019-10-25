@@ -30,9 +30,7 @@ namespace Cribbly.Controllers
          */
 
         // GET: Teams
-        //User must be Admin to access
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AdminView()
+        public async Task<IActionResult> AllTeams()
         {
             return View(await _context.Teams.ToListAsync());
         }
@@ -202,7 +200,7 @@ namespace Cribbly.Controllers
                 //If user is an admin, go back to the AdminView route
                 if (User.IsInRole("Admin"))
                 {
-                    return RedirectToAction(nameof(AdminView));
+                    return RedirectToAction(nameof(AllTeams));
                 }
                 //If they are a regular user, redirect to the MyTeam page
                 else
