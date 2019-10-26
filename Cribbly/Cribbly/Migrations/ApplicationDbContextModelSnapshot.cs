@@ -33,7 +33,7 @@ namespace Cribbly.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Divisions");
-                });
+                }));
 
             modelBuilder.Entity("Cribbly.Models.Gameplay.PlayInGame", b =>
                 {
