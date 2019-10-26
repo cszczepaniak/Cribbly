@@ -1,0 +1,96 @@
+﻿@model Cribbly.Models.ViewModels.GamesView;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>PlayInGames</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model._playingames[0].Team1TotalScore)</th>
+            <th>@Html.DisplayNameFor(model => model._playingames[0].Team2TotalScore)</th>
+            <th>@Html.DisplayNameFor(model => model._playingames[0].WinningTeamId)</th>
+            <th>@Html.DisplayNameFor(model => model._playingames[0].ScoreDifference)</th>
+            <th>@Html.DisplayNameFor(model => model._playingames[0].GameNumber)</th>
+            <th>@Html.DisplayNameFor(model => model._playingames[0].Team1Name)</th>
+            <th>@Html.DisplayNameFor(model => model._playingames[0].Team2Name)</th>
+            <th>@Html.DisplayNameFor(model => model._playingames[0].WinningTeamName)</th>
+            <th>@Html.DisplayNameFor(model => model._playingames[0].Division)</th>
+            <th>@Html.DisplayNameFor(model => model._playingames[0].LastUpdated)</th>
+            <th>@Html.DisplayNameFor(model => model._playingames[0].UpdatedBy)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model._playingames)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Team1TotalScore)</td>
+                <td>@Html.DisplayFor(modelItem => item.Team2TotalScore)</td>
+                <td>@Html.DisplayFor(modelItem => item.WinningTeamId)</td>
+                <td>@Html.DisplayFor(modelItem => item.ScoreDifference)</td>
+                <td>@Html.DisplayFor(modelItem => item.GameNumber)</td>
+                <td>@Html.DisplayFor(modelItem => item.Team1Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Team2Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.WinningTeamName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Division)</td>
+                <td>@Html.DisplayFor(modelItem => item.LastUpdated)</td>
+                <td>@Html.DisplayFor(modelItem => item.UpdatedBy)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.id]">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model._3waygames.Count != 0)
+{
+    <h2>3 Way Games</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model._3waygames[0].Team1TotalScore)</th>
+                <th>@Html.DisplayNameFor(model => model._3waygames[0].Team2TotalScore)</th>
+                <th>@Html.DisplayNameFor(model => model._3waygames[0].WinningTeamId)</th>
+                <th>@Html.DisplayNameFor(model => model._3waygames[0].ScoreDifference)</th>
+                <th>@Html.DisplayNameFor(model => model._3waygames[0].GameNumber)</th>
+                <th>@Html.DisplayNameFor(model => model._3waygames[0].Team1Name)</th>
+                <th>@Html.DisplayNameFor(model => model._3waygames[0].Team2Name)</th>
+                <th>@Html.DisplayNameFor(model => model._3waygames[0].Team3Name)</th>
+                <th>@Html.DisplayNameFor(model => model._3waygames[0].WinningTeamName)</th>
+                <th>@Html.DisplayNameFor(model => model._3waygames[0].Division)</th>
+                <th>@Html.DisplayNameFor(model => model._3waygames[0].LastUpdated)</th>
+                <th>@Html.DisplayNameFor(model => model._3waygames[0].UpdatedBy)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model._3waygames)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Team1TotalScore)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Team2TotalScore)</td>
+                    <td>@Html.DisplayFor(modelItem => item.WinningTeamId)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ScoreDifference)</td>
+                    <td>@Html.DisplayFor(modelItem => item.GameNumber)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Team1Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Team2Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Team3Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.WinningTeamName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Division)</td>
+                    <td>@Html.DisplayFor(modelItem => item.LastUpdated)</td>
+                    <td>@Html.DisplayFor(modelItem => item.UpdatedBy)</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.id]">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

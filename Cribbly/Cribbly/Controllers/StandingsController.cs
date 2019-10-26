@@ -22,7 +22,11 @@ namespace Cribbly.Controllers
             _context = context;
         }
 
-        //View master list for all tournament standings
+        /*
+         * ==============================
+         * GET ALL STANDINGS AND SCHEDULE (All)
+         * ==============================
+         */
         public IActionResult GetAllStandings()
         {
             //Find all standings 
@@ -39,7 +43,11 @@ namespace Cribbly.Controllers
             return View(teamlessUsers);
         }
 
-        //Create standings and schedule 
+        /*
+         * ==============================
+         * CREATE STANDINGS AND SCHEDULE (Admin)
+         * ==============================
+         */
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult ConfirmCreateStandings()
@@ -51,7 +59,11 @@ namespace Cribbly.Controllers
             //return data 
             return View(model);
         }
-
+        /*
+         * ==============================
+         * PAIR PLAYERS (Admin)
+         * ==============================
+         */
         public CreateStandingView PairPlayers(List<ApplicationUser> teamlessUsers, bool isConfirmed)
         {
             List<Team> newTeams = new List<Team>();
@@ -114,12 +126,21 @@ namespace Cribbly.Controllers
             return new CreateStandingView(newTeams, PlayerLeftOver);
 
         }
+        /*
+         * ==============================
+         * UNDO PAIR PLAYERS (Admin)
+         * ==============================
+         */
         public IActionResult CancelCreateStandings()
         {
             return RedirectToAction(nameof(CreateStandingsSetup));
         }
 
-        //newTeams is NULL right now. Gotta fix
+        /*
+         * ==============================
+         * COMMIT PLAYER CHANGES TO DB (Admin)
+         * ==============================
+         */
         [HttpPost]
         public IActionResult CreateStandings()
         {
@@ -133,50 +154,13 @@ namespace Cribbly.Controllers
             foreach (var team in allTeams)
             {
                 //Create a new Standing obj
-                Standing standing = new Standing
-                {
-                    TeamName = team.Name
-                };
+                Standing standing = new Standing(team);
+
                 //Add the Standing to the DB
                 _context.Standings.Add(standing);
                 _context.SaveChanges();
             }
             return RedirectToAction(nameof(GetAllStandings));
-        }
-
-        //Submit a score to be added to the standings
-        [HttpPost]
-        public IActionResult PostScore()
-        {
-            //Find your team's standing
-            //Fill in the appropriate properties depending on which game number is being posted
-            return RedirectToAction(nameof(GetStanding));
-        }
-
-        //Edit a score. Limited to Admins
-        [Authorize(Roles = "Admin")]
-        [HttpGet]
-        public IActionResult EditScore(UserDataView data)
-        {
-            //Return the team that matches the appropriate Id
-            return View();
-        }
-
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public IActionResult SaveScore(UserDataView data)
-        {
-            //Return the team that matches the appropriate Id
-            return RedirectToAction(nameof(GetStanding));
-        }
-
-        //Get information on your team
-        [HttpGet]
-        public IActionResult GetStanding(UserDataView data)
-        {
-            //Get ApplicationDbContext
-            //Get the standing object where the team name equals the given name
-            return View();
         }
     }
 }

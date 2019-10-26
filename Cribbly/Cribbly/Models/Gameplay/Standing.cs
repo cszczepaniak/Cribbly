@@ -16,7 +16,6 @@ namespace Cribbly.Models
         public char G2WinLoss { get; set; }
         public int G3Score { get; set; }
         public char G3WinLoss { get; set; }
-        public int Seed { get; set; }
         public int TotalScore { get; set; }
         public int TotalWinLoss
         {
@@ -26,14 +25,22 @@ namespace Cribbly.Models
         {
             get { return (new int[] { G1Score, G2Score, G3Score }).Where(s => s == 121).Count(); }
         }
+        public int Seed { get; set; }
 
-        public Standing()
+        public Standing(Team team)
         {
             G1Score = G2Score = G3Score = TotalScore = 0;
             Seed = -1;
             G1WinLoss = 'X';
             G2WinLoss = 'X';
             G3WinLoss = 'X';
+            id = team.Id;
+            TeamName = team.Name;
+        }
+
+        public Standing()
+        {
+
         }
     }
 }

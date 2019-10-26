@@ -7,7 +7,7 @@ namespace Cribbly.Models
 {
     public class Division
     {
-        public Team[] Members { get; set; }
+        public int Id { get; set; }
         public string DivName { get; set; }
     }
 }

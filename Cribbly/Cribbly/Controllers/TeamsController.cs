@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Cribbly.Data;
 using Cribbly.Models;
+using Cribbly.Models.Gameplay;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Cribbly.Controllers
@@ -60,9 +61,14 @@ namespace Cribbly.Controllers
             {
                 return RedirectToAction(nameof(TeamNotFound));
             }
-
+            //Get the user's team's standing
+            List<Standing> userStanding = _context.Standings.Where(m => m.TeamName == team.Name).ToList();
+            List<PlayInGame> userGames = _context.PlayInGames.Where(m => m.Team1Id == id || m.Team2Id == id).ToList();
+            List<_3WayGame> user3wayGames = _context.PlayInGames.OfType<_3WayGame>().Where(m => m.Team1Id == id || m.Team2Id == id).ToList();
+            //Instantiaste UserDataView object to pass to the view
+            UserDataView data = new UserDataView(_context, team, userStanding[0], userGames, user3wayGames);
             //No errors, return View with team obj
-            return View(team);
+            return View(data);
         }
 
         public IActionResult TeamNotFound()
@@ -174,6 +180,10 @@ namespace Cribbly.Controllers
             {
                 try
                 {
+                    //Get the team's Standing 
+                    Standing standingName = _context.Standings.Find(team.Id);
+                    //Update DB
+                    standingName.TeamName = team.Name;
                     _context.Update(team);
                     await _context.SaveChangesAsync();
                 }
@@ -189,7 +199,17 @@ namespace Cribbly.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(AdminView));
+                //If user is an admin, go back to the AdminView route
+                if (User.IsInRole("Admin"))
+                {
+                    return RedirectToAction(nameof(AdminView));
+                }
+                //If they are a regular user, redirect to the MyTeam page
+                else
+                {
+                    return RedirectToAction(nameof(MyTeam), new { id = team.Id });
+                }
+                
             }
             //Data edited, return View
             return View(team);
