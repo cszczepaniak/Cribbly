@@ -1,6 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@using Cribbly.Data;
+@inject SignInManager<IdentityUser> SignInManager;
+@inject UserManager<IdentityUser> UserManager;
+@inject ApplicationDbContext _context;
+
 
 
 @{
@@ -8,14 +11,16 @@
 }
 
 <h1>Welcome to Cribbly!</h1>
+@if (SignInManager.IsSignedIn(User))
+{
+    var user = _context.ApplicationUsers.FirstOrDefault(m => m.Email == UserManager.GetUserName(User));
 
-<p>Navigate to the page of your choosing in the top bar</p>
 
-@{ if (User.IsInRole("Admin"))
-   {
+    @if (User.IsInRole("Admin"))
+    {
         <table class="table">
             <tr>
-                <td><a asp-controller="Teams" asp-action="AdminView">Teams</a></td>
+                <td><a asp-controller="Teams" asp-action="AllTeams">Teams</a></td>
                 <td><a asp-controller="Division" asp-action="Index">Divisions</a></td>
             </tr>
             <tr>
@@ -27,5 +32,18 @@
                 <td><a asp-controller="Games" asp-action="Index">View Scheduled Games</a></td>
             </tr>
         </table>
-   }
- }
+    }
+    else
+    {
+        <table class="table">
+            <tr>
+                <td><a asp-controller="Teams" asp-action="AllTeams">Teams</a></td>
+                <td><a asp-controller="Teams" asp-action="MyTeam/@user.TeamId">My Team</a></td>
+            </tr>
+            <tr>
+                <td><a>Bracket</a></td>
+                <td><a asp-controller="Standings" asp-action="GetAllStandings"> View Tournament Standings</a></td>
+            </tr>
+        </table>
+    }
+}

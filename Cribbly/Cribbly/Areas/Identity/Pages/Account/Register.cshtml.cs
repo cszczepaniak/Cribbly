@@ -99,17 +99,8 @@ namespace Cribbly.Areas.Identity.Pages.Account
                     var roleInit = new RoleInit(_roleManager);
                     await roleInit.CreateRoles();
 
-                    //Give them the role of "user", unless they pass the AdminTag test
-                    if (roleInit.AdminTag(Input.LastName))
-                    {
-
-                        IdentityResult addAdmin = await _userManager.AddToRoleAsync(user, "Admin");
-
-                    }
-                    else
-                    {
-                        IdentityResult addUser = await _userManager.AddToRoleAsync(user, "User");
-                    };
+                    //Give them the role of "user"
+                    IdentityResult addUser = await _userManager.AddToRoleAsync(user, "User");
 
                     _logger.LogInformation("User created a new account with password.");
                     

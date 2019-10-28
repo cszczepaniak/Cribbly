@@ -39,7 +39,7 @@ namespace Cribbly.Controllers
         [HttpGet]
         public IActionResult CreateStandingsSetup()
         {
-            var teamlessUsers = _context.ApplicationUsers.Where(m => m.HasTeam == false && m.LastName != "_admin").ToList();
+            var teamlessUsers = _context.ApplicationUsers.Where(m => m.HasTeam == false).ToList();
             return View(teamlessUsers);
         }
 
