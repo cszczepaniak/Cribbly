@@ -36,7 +36,7 @@ namespace Cribbly.Controllers
             _context.Standings.RemoveRange(standings);
 
             var teams = _context.Teams.ToList();
-            _context.Teams.RemoveRange();
+            _context.Teams.RemoveRange(teams);
 
             var players = _context.ApplicationUsers.ToList();
             foreach (var player in players)
@@ -45,7 +45,9 @@ namespace Cribbly.Controllers
                 player.TeamId = 0;
             }
 
-            return View();
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
