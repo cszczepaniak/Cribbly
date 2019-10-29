@@ -23,6 +23,33 @@ namespace Cribbly.Controllers
             return View();
         }
 
+        public IActionResult ResetGames()
+        {
+            var playInGames = _context.PlayInGames.ToList();
+            _context.PlayInGames.RemoveRange(playInGames);
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult ResetDivisions()
+        {
+            var divisions = _context.Divisions.ToList();
+            _context.Divisions.RemoveRange(divisions);
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult ResetStandings()
+        {
+            var standings = _context.Standings.ToList();
+            _context.Standings.RemoveRange(standings);
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
         //Clears all games, divisions, and teams. Users are NOT deleted
         public IActionResult ResetTournament()
         {

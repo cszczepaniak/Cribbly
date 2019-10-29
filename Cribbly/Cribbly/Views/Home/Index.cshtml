@@ -20,14 +20,20 @@
     {
         <table class="table">
             <tr>
-                <td><a asp-controller="Teams" asp-action="AllTeams">Teams</a></td>
                 <td><a asp-controller="Standings" asp-action="CreateStandingsSetup">Setup Standings</a></td>
                 <td><a asp-controller="Division" asp-action="Index">Create Divisions</a></td>
                 <td><a asp-controller="Games" asp-action="CreateGamesSetup">Configure Play-In Games</a></td>
+                <td><a>Setup Bracket</a></td>
             </tr>
             <tr>
-                <td><a>Bracket</a></td>
+                <td><a asp-controller="Teams" asp-action="AllTeams">View Teams</a></td>
+                <td><a asp-controller="Division" asp-action="Index">View Divisions</a></td>
                 <td><a asp-controller="Games" asp-action="Index">View Scheduled Games</a></td>
+                <td><a>View Bracket</a></td>
+            </tr>
+            <tr>
+                <td><a asp-controller="Home" asp-action="ResetStandings">Reset Standings</a></td>
+                <td><a asp-controller="Home" asp-action="ResetDivisions">Reset Divisions</a></td>
                 <td><a asp-controller="Home" asp-action="ResetTournament">Reset Tournament</a></td>
             </tr>
         </table>
