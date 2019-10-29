@@ -121,21 +121,39 @@ namespace Cribbly.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
         //Edit the name or members of a Division
-        public IActionResult Edit()
+        public IActionResult EditDivision(int id)
         {
-            return View();
+            var model = _context.Divisions.FirstOrDefault(m => m.Id == id);
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult EditDivision(Division model)
+        {
+            var divName = _context.Divisions.FirstOrDefault(m => m.Id == model.Id).DivName;
+            var divGames = _context.PlayInGames.Where(m => m.Division == divName);
+            var members = _context.Standings.Where(m => m.Division == divName);
+
+            foreach (var member in members)
+            {
+                member.Division = model.DivName;
+            }
+
+            foreach (var divGame in divGames)
+            {
+                divGame.Division = model.DivName;
+            }
+
+            _context.Divisions.FirstOrDefault(m => m.Id == model.Id).DivName = model.DivName;
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
         }
 
         //Deletes a division
         public IActionResult Delete()
-        {
-            return View();
-        }
-
-        /*If a team gets deleted, and the 'redistribute' box is checked,
-        this method reorganizes teams to fit the amount of divisions*/
-        public IActionResult TeamRedistribution()
         {
             return View();
         }
