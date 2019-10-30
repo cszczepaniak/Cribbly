@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Cribbly.Models;
 using Cribbly.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cribbly.Controllers
 {
@@ -23,6 +24,7 @@ namespace Cribbly.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult ResetGames()
         {
             var playInGames = _context.PlayInGames.ToList();
@@ -32,6 +34,7 @@ namespace Cribbly.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult ResetDivisions()
         {
             var divisions = _context.Divisions.ToList();
@@ -41,6 +44,7 @@ namespace Cribbly.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult ResetStandings()
         {
             var standings = _context.Standings.ToList();
@@ -50,6 +54,7 @@ namespace Cribbly.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         //Clears all games, divisions, and teams. Users are NOT deleted
         public IActionResult ResetTournament()
         {

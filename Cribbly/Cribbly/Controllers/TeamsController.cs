@@ -60,11 +60,11 @@ namespace Cribbly.Controllers
                 return RedirectToAction(nameof(TeamNotFound));
             }
             //Get the user's team's standing
-            List<Standing> userStanding = _context.Standings.Where(m => m.TeamName == team.Name).ToList();
+            Standing userStanding = _context.Standings.FirstOrDefault(m => m.id == team.Id);
             List<PlayInGame> userGames = _context.PlayInGames.Where(m => m.Team1Id == id || m.Team2Id == id).ToList();
             List<_3WayGame> user3wayGames = _context.PlayInGames.OfType<_3WayGame>().Where(m => m.Team1Id == id || m.Team2Id == id).ToList();
             //Instantiaste UserDataView object to pass to the view
-            UserDataView data = new UserDataView(_context, team, userStanding[0], userGames, user3wayGames);
+            UserDataView data = new UserDataView(_context, team, userStanding, userGames, user3wayGames);
             //No errors, return View with team obj
             return View(data);
         }
@@ -176,14 +176,19 @@ namespace Cribbly.Controllers
             //Data validated, update DB with changes
             if (ModelState.IsValid)
             {
+                _context.Update(team);
+
                 try
                 {
                     //Get the team's Standing 
                     Standing standingName = _context.Standings.Find(team.Id);
                     //Update DB
                     standingName.TeamName = team.Name;
-                    _context.Update(team);
+                }
+                catch (NullReferenceException)
+                {
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(MyTeam), new { id = team.Id });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -197,6 +202,7 @@ namespace Cribbly.Controllers
                         throw;
                     }
                 }
+                await _context.SaveChangesAsync();
                 //If user is an admin, go back to the AdminView route
                 if (User.IsInRole("Admin"))
                 {

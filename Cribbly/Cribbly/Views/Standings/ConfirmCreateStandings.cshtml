@@ -1,4 +1,6 @@
-﻿@model CreateStandingView;
+﻿@using Cribbly.Data;
+@model CreateStandingView;
+@inject ApplicationDbContext _context;
 @{
     ViewData["Title"] = "ConfirmCreateStandings";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,7 +12,7 @@
 
 @if (Model._playerLeftOver)
 {
-    <h3>There is one player left over. Get more players and run this again to pair them.</h3>
+<h3>There is one player left over (@_context.ApplicationUsers.FirstOrDefault(m => m.HasTeam == false).UserName). Get more players and run this again to pair them.</h3>
 }
 
 <table class="table">

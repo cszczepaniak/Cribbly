@@ -56,9 +56,6 @@
             </tr>
         </tbody>
     </table>
-
-
-    <a asp-controller="Games" asp-action="PostScore">Post Score</a>
     <p><i>Note: Game results will appear as an 'X' until both teams have submitted scores.</i></p>
 }
 else
@@ -66,8 +63,9 @@ else
     <p>Standings will appear here when they have been configured by the system administrator</p>
 }
 
-@if (Model._games != null)
+@if (Model._games.Count == 3)
 {
+    <a asp-controller="Games" asp-action="PostScore">Post Score</a>
     <table>
         <thead>
             <tr>

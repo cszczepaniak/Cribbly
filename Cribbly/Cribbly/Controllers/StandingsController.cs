@@ -64,6 +64,7 @@ namespace Cribbly.Controllers
          * PAIR PLAYERS (Admin)
          * ==============================
          */
+        [Authorize(Roles = "Admin")]
         public CreateStandingView PairPlayers(List<ApplicationUser> teamlessUsers, bool isConfirmed)
         {
             List<Team> newTeams = new List<Team>();
@@ -131,6 +132,7 @@ namespace Cribbly.Controllers
          * UNDO PAIR PLAYERS (Admin)
          * ==============================
          */
+        [Authorize(Roles = "Admin")]
         public IActionResult CancelCreateStandings()
         {
             return RedirectToAction(nameof(CreateStandingsSetup));
@@ -142,6 +144,7 @@ namespace Cribbly.Controllers
          * ==============================
          */
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateStandings()
         {
             var teamlessUsers = _context.ApplicationUsers.Where(m => m.HasTeam == false && m.LastName != "_admin").ToList();
