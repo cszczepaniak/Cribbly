@@ -115,8 +115,13 @@ namespace Cribbly.Areas.Identity.Pages.Account
                     var client = new SendGridClient(api);
                     var from = new EmailAddress("szcz0047@umn.edu", "Cribbly Admin");
                     var to = new EmailAddress(Input.Email);
-                    var subject = "Confirm your email address";
-                    var body = "Please confirm your account by <a href=" + HtmlEncoder.Default.Encode(callbackUrl) + ">clicking here</a>.";
+                    var subject = "Welcome to Cribbly!";
+                    var body = "Hello!" +
+                        "" +
+                        "Thanks for participating in this year's Cribbage tournament. " +
+                        "" +
+
+                        "Please confirm your account by <a href=" + HtmlEncoder.Default.Encode(callbackUrl) + ">clicking here</a>.";
                     var msg = MailHelper.CreateSingleEmail(
                         from,
                         to, 

@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>ConfirmCreateStandings</h2>
+<h2>Create Standings: Confirm</h2>
 
 <p>The following @Model._newTeams.Count teams will be added to the database:</p>
 
@@ -18,15 +18,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                Team Name
-            </th>
-            <th>
-                Player One
-            </th>
-            <th>
-                Player Two
-            </th>
+            <th>Team Name</th>
+            <th>Player One</th>
+            <th>Player Two</th>
             <th></th>
         </tr>
     </thead>
@@ -34,15 +28,9 @@
         @foreach (var item in Model._newTeams)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PlayerOne)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PlayerTwo)
-                </td>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.PlayerOne)</td>
+                <td>@Html.DisplayFor(modelItem => item.PlayerTwo)</td>
             </tr>
         }
     </tbody>
