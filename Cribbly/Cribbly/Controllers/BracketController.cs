@@ -49,12 +49,12 @@ namespace Cribbly.Controllers
         public IActionResult SeedBracket()
         {
             var standings = _context.Standings.ToList();
-            _context.BracketTeams.AddRange(GetBracketPool(standings));
+            _context.BracketTeams.AddRange(getBracketPool(standings));
             _context.SaveChanges();
             return Redirect("/Bracket");
         }
 
-        private List<BracketTeam> GetBracketPool(List<Standing> standings)
+        private List<BracketTeam> getBracketPool(List<Standing> standings)
         {
             var currSeed = 1;
             var bracketTeams = new List<BracketTeam>();
