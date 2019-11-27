@@ -81,6 +81,21 @@ namespace Cribbly.Controllers
             return Redirect("/Bracket");
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Bracket/Unadvance/{seed}")]
+        public IActionResult Unadvance(int seed)
+        {
+            var team = _context.BracketTeams.Where(t => t.Seed == seed).First();
+            if (team.Round > 1)
+            {
+                team.Round--;
+                _context.Update(team);
+                _context.SaveChanges();
+            }
+            return Redirect("/Bracket");
+        }
+
         private List<BracketTeam> getBracketPool(List<Standing> standings)
         {
             var currSeed = 1;
