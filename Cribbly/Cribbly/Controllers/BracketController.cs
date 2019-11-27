@@ -70,6 +70,7 @@ namespace Cribbly.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [Route("/Bracket/Advance/{seed}")]
         public IActionResult Advance(int seed)
         {
