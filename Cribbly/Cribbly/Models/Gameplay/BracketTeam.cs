@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Cribbly.Models
+namespace Cribbly.Models.Gameplay
 {
-    class BracketTeam
+    public class BracketTeam
     {
         // Primary key in db
         [Required]
