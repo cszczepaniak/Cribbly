@@ -9,6 +9,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+/*
+TODO make this work
+
+Given a list of Standing objects resulting from the prelim games, we need
+to:
+  1. Pick 32 Standings based on their prelim performance
+  2. Assign a seed to these standings
+  3. Store the tournament teams in the db somehow
+  4. Be able to keep track of their tournament performance (are they moving on?)
+
+Model concept:
+- Seed (primary key in bracket table)
+- Team (has team name and team member info)
+- Round (which round is this team in currently?)
+
+*/
+
 namespace Cribbly.Controllers
 {
     public class BracketController : Controller
@@ -23,54 +40,24 @@ namespace Cribbly.Controllers
 
         public IActionResult Index()
         {
-            var bracket = _context.Bracket.Include(b => b.Standings).SingleOrDefault();
-            return View(bracket);
+            return View(_context.BracketTeams.ToList());
         }
 
-        [Authorize(Roles = "Admin")]
-        public IActionResult AdminTools()
-        {
-            return View();
-        }
-
-        public IActionResult TestBracket(int id, int game)
-        {
-            Console.WriteLine($"Team {id} wins game number {game}!");
-            return View();
-        }
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult UnseedBracket()
-        {
-            var brackets = _context.Bracket.ToList();
-            _context.RemoveRange(brackets);
-            _context.SaveChanges();
-            return Redirect("/Bracket");
-        }
-
-        // GET: /Bracket/SeedBracket
+        // POST: /Bracket/SeedBracket
+        [HttpPost]
         [Authorize(Roles = "Admin")]
         public IActionResult SeedBracket()
         {
             var standings = _context.Standings.ToList();
-            // Get the pool of teams who made the cut
-            var bracketPool = GetBracketPool(standings);
-            // Add a seed to the sorted bracket pool members
-            for (int i = 0; i < _numTeams; i++)
-            {
-                // The seed is one-based to make sense for the users
-                bracketPool[i].Seed = i+1;
-            }
-
-            var bracket = new Bracket(bracketPool);
-            _context.Bracket.Add(bracket);
+            _context.BracketTeams.AddRange(GetBracketPool(standings));
             _context.SaveChanges();
             return Redirect("/Bracket");
         }
 
-        private List<Standing> GetBracketPool(List<Standing> standings)
+        private List<BracketTeam> GetBracketPool(List<Standing> standings)
         {
-            var bracketTeams = new List<Standing>();
+            var currSeed = 1;
+            var bracketTeams = new List<BracketTeam>();
             // TODO standings aren't set - do something in that case
             var divisions = standings.Select(s => s.Division).Distinct().Where(d => d != null).ToList();
             // First add the first team in each division to the bracket pool
@@ -78,15 +65,25 @@ namespace Cribbly.Controllers
             {
                 foreach (var d in divisions)
                 {
-                    var divisionStandings = standings.Where(s => s.Division.Equals(d)).OrderBy(s => s.TotalWins);
-                    bracketTeams.Add(divisionStandings.First());
+                    var divisionStandings = standings
+                        .Where(s => s.Division.Equals(d))
+                        .OrderByDescending(s => s.TotalWins)
+                        .ThenByDescending(s => s.TotalWinLoss);
+                    var t = divisionStandings.First();
+                    bracketTeams.Add(new BracketTeam(currSeed, t.TeamName));
+                    currSeed++;
                     standings.Remove(divisionStandings.First());
                 }
             }
             // Then fill the rest of the pool with top overall remaining teams
-            var remaining = standings.OrderBy(s => s.TotalWinLoss);
-            bracketTeams.AddRange(remaining.Take(_numTeams - bracketTeams.Count()));
-            return bracketTeams.OrderBy(s => s.TotalWinLoss).ToList();
+            var remaining = standings.OrderByDescending(s => s.TotalWinLoss);
+            var wildcards = remaining.Take(_numTeams - bracketTeams.Count()).ToArray();
+            foreach (var wc in wildcards)
+            {
+                bracketTeams.Add(new BracketTeam(currSeed, wc.TeamName));
+                currSeed++;
+            }
+            return bracketTeams;
         }
 
     }
