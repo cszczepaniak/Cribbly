@@ -32,6 +32,7 @@ namespace Cribbly.Controllers
     {
         private readonly ApplicationDbContext _context;
         private const int _numTeams = 32;
+        private const int _numRounds = 6;
 
         public BracketController(ApplicationDbContext context)
         {
@@ -73,7 +74,7 @@ namespace Cribbly.Controllers
         public IActionResult Advance(int seed)
         {
             var team = _context.BracketTeams.Where(t => t.Seed == seed).First();
-            team.Round++;
+            team.Round = team.Round < _numRounds ? team.Round + 1 : team.Round;
             _context.Update(team);
             _context.SaveChanges();
             return Redirect("/Bracket");
