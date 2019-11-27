@@ -68,6 +68,17 @@ namespace Cribbly.Controllers
             return Redirect("/Bracket");
         }
 
+        [HttpPost]
+        [Route("/Bracket/Advance/{seed}")]
+        public IActionResult Advance(int seed)
+        {
+            var team = _context.BracketTeams.Where(t => t.Seed == seed).First();
+            team.Round++;
+            _context.Update(team);
+            _context.SaveChanges();
+            return Redirect("/Bracket");
+        }
+
         private List<BracketTeam> getBracketPool(List<Standing> standings)
         {
             var currSeed = 1;
