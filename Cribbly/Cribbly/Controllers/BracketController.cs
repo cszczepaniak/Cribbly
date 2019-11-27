@@ -75,9 +75,12 @@ namespace Cribbly.Controllers
         public IActionResult Advance(int seed)
         {
             var team = _context.BracketTeams.Where(t => t.Seed == seed).First();
-            team.Round = team.Round < _numRounds ? team.Round + 1 : team.Round;
-            _context.Update(team);
-            _context.SaveChanges();
+            if (team.Round < _numRounds)
+            {
+                team.Round++;
+                _context.Update(team);
+                _context.SaveChanges();
+            }
             return Redirect("/Bracket");
         }
 
