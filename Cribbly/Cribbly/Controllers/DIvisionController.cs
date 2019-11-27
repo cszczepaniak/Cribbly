@@ -10,7 +10,6 @@ using Cribbly.Models.ViewModels;
 
 namespace Cribbly.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class DivisionController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -35,6 +34,7 @@ namespace Cribbly.Controllers
         }
 
         //Takes user to confirmation page listing the amount of players and divisions
+        [Authorize(Roles = "Admin")]
         public IActionResult Setup()
         {
             var standings = _context.Standings.ToList();
@@ -42,6 +42,7 @@ namespace Cribbly.Controllers
         }
 
         //Creates the standings and commits them to the DB
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             //Get number of divisions required for each one to have 4 teams
@@ -68,29 +69,23 @@ namespace Cribbly.Controllers
             {
                 try
                 {
-                    /*
-                    if (tracker > numDivs)
-                    {
-                        i = 2;
-                        break;
-                    };*/
-
                     allTeams[0].Division = tracker.ToString();
                     allTeams[1].Division = tracker.ToString();
                     allTeams[2].Division = tracker.ToString();
                     allTeams[3].Division = tracker.ToString();
-
+                    //4 players have been assigned a division. Remove them from the List
                     allTeams.RemoveRange(0, 4);
                     tracker++;
                 }
                 catch
                 {
+                    //Assign an extra team to division 1 and/or 2 if one or two teams are left
                     if (allTeams.Count == 2)
                     {
                         allTeams[0].Division = 1.ToString();
                         allTeams[1].Division = 2.ToString();
                     }
-                    else if (allTeams.Count == 2)
+                    else if (allTeams.Count == 1)
                     {
                         allTeams[0].Division = 1.ToString();
                     }
@@ -108,10 +103,9 @@ namespace Cribbly.Controllers
                         };
                         _context.Divisions.Add(div);
                     }
-
                     break;
                 }
-
+                //Reset enumerator to 0. Next 4 teams will then be assigned 
                 i = 0;
             }
 
@@ -121,23 +115,37 @@ namespace Cribbly.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
         //Edit the name or members of a Division
-        public IActionResult Edit()
+        [Authorize(Roles = "Admin")]
+        public IActionResult EditDivision(int id)
         {
-            return View();
+            var model = _context.Divisions.FirstOrDefault(m => m.Id == id);
+            return View(model);
         }
 
-        //Deletes a division
-        public IActionResult Delete()
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult EditDivision(Division model)
         {
-            return View();
-        }
+            var divName = _context.Divisions.FirstOrDefault(m => m.Id == model.Id).DivName;
+            var divGames = _context.PlayInGames.Where(m => m.Division == divName);
+            var members = _context.Standings.Where(m => m.Division == divName);
 
-        /*If a team gets deleted, and the 'redistribute' box is checked,
-        this method reorganizes teams to fit the amount of divisions*/
-        public IActionResult TeamRedistribution()
-        {
-            return View();
+            foreach (var member in members)
+            {
+                member.Division = model.DivName;
+            }
+
+            foreach (var divGame in divGames)
+            {
+                divGame.Division = model.DivName;
+            }
+
+            _context.Divisions.FirstOrDefault(m => m.Id == model.Id).DivName = model.DivName;
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

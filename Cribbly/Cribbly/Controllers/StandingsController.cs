@@ -30,7 +30,7 @@ namespace Cribbly.Controllers
         public IActionResult GetAllStandings()
         {
             //Find all standings 
-            var standings = _context.Standings.ToList();
+            var standings = _context.Standings.OrderByDescending(m => m.TotalScore).ToList();
             //Return all results to the view
             return View(standings);
         }
@@ -39,7 +39,7 @@ namespace Cribbly.Controllers
         [HttpGet]
         public IActionResult CreateStandingsSetup()
         {
-            var teamlessUsers = _context.ApplicationUsers.Where(m => m.HasTeam == false && m.LastName != "_admin").ToList();
+            var teamlessUsers = _context.ApplicationUsers.Where(m => m.HasTeam == false).ToList();
             return View(teamlessUsers);
         }
 
@@ -64,6 +64,7 @@ namespace Cribbly.Controllers
          * PAIR PLAYERS (Admin)
          * ==============================
          */
+        [Authorize(Roles = "Admin")]
         public CreateStandingView PairPlayers(List<ApplicationUser> teamlessUsers, bool isConfirmed)
         {
             List<Team> newTeams = new List<Team>();
@@ -131,6 +132,7 @@ namespace Cribbly.Controllers
          * UNDO PAIR PLAYERS (Admin)
          * ==============================
          */
+        [Authorize(Roles = "Admin")]
         public IActionResult CancelCreateStandings()
         {
             return RedirectToAction(nameof(CreateStandingsSetup));
@@ -142,6 +144,7 @@ namespace Cribbly.Controllers
          * ==============================
          */
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateStandings()
         {
             var teamlessUsers = _context.ApplicationUsers.Where(m => m.HasTeam == false && m.LastName != "_admin").ToList();

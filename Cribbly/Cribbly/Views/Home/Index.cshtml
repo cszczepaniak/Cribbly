@@ -1,6 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@using Cribbly.Data;
+@inject SignInManager<IdentityUser> SignInManager;
+@inject UserManager<IdentityUser> UserManager;
+@inject ApplicationDbContext _context;
+
 
 
 @{
@@ -9,23 +12,47 @@
 
 <h1>Welcome to Cribbly!</h1>
 
-<p>Navigate to the page of your choosing in the top bar</p>
 
-@{ if (User.IsInRole("Admin"))
-   {
+@if (SignInManager.IsSignedIn(User))
+{
+
+    var user = _context.ApplicationUsers.FirstOrDefault(m => m.Email == UserManager.GetUserName(User));
+
+    @if (User.IsInRole("Admin"))
+    {
         <table class="table">
-            <tr>
-                <td><a asp-controller="Teams" asp-action="AdminView">Teams</a></td>
-                <td><a asp-controller="Division" asp-action="Index">Divisions</a></td>
-            </tr>
+            <tr><td><a asp-controller="Teams" asp-action="AllTeams">View Teams</a></td></tr>
             <tr>
                 <td><a asp-controller="Standings" asp-action="CreateStandingsSetup">Setup Standings</a></td>
+                <td><a asp-controller="Division" asp-action="Index">Create Divisions</a></td>
                 <td><a asp-controller="Games" asp-action="CreateGamesSetup">Configure Play-In Games</a></td>
+                <td><a>Setup Bracket</a></td>
             </tr>
             <tr>
-                <td><a>Bracket</a></td>
+                <td><a asp-controller="Standings" asp-action="GetAllStandings"> View Tournament Standings</a></td>
+                <td><a asp-controller="Division" asp-action="Index">View Divisions</a></td>
                 <td><a asp-controller="Games" asp-action="Index">View Scheduled Games</a></td>
+                <td><a>View Bracket</a></td>
+            </tr>
+            <tr>
+                <td><a asp-controller="Home" asp-action="ResetStandings">Reset Standings</a></td>
+                <td><a asp-controller="Home" asp-action="ResetDivisions">Reset Divisions</a></td>
+                <td><a asp-controller="Home" asp-action="ResetTournament">Reset Tournament</a></td>
             </tr>
         </table>
-   }
- }
+    }
+    else
+    {
+        <table class="table">
+            <tr>
+                <td><a asp-controller="Teams" asp-action="AllTeams">Teams</a></td>
+                <td><a asp-controller="Teams" asp-action="MyTeam/@user.TeamId">My Team</a></td>
+            </tr>
+            <tr>
+                <td><a asp-controller="Division" asp-action="Index">View Divisions</a></td>
+                <td><a asp-controller="Standings" asp-action="GetAllStandings"> View Tournament Standings</a></td>
+                <td><a>Bracket</a></td>
+            </tr>
+        </table>
+    }
+}
