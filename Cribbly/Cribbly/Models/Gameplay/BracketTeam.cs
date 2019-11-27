@@ -7,7 +7,6 @@ namespace Cribbly.Models.Gameplay
         // Primary key in db
         [Key]
         public int Seed { get; set; }
-        // a list of rounds this team has been in
         public int Round { get; set; }
         public string TeamName { get; set; }
 
