@@ -44,19 +44,22 @@ namespace Cribbly.Controllers
             return View(_context.BracketTeams.ToList());
         }
 
-        // POST: /Bracket/Seed
-        [HttpPost]
+        // This would ideally be a post method, but unsure how to actually
+        // get the client to send a post at the moment.
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult Seed()
         {
             var standings = _context.Standings.ToList();
             _context.BracketTeams.AddRange(getBracketPool(standings));
             _context.SaveChanges();
+            System.Console.WriteLine("!!!!!!!SEEDING BRACKET!!!!!");
             return Redirect("/Bracket");
         }
 
-        // POST: /Bracket/Unseed
-        [HttpPost]
+        // This would ideally be a post method, but unsure how to actually
+        // get the client to send a post at the moment.
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult Unseed()
         {
@@ -69,7 +72,9 @@ namespace Cribbly.Controllers
             return Redirect("/Bracket");
         }
 
-        [HttpPost]
+        // This would ideally be a post method, but unsure how to actually
+        // get the client to send a post at the moment.
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Bracket/Advance/{seed}")]
         public IActionResult Advance(int seed)
@@ -84,7 +89,9 @@ namespace Cribbly.Controllers
             return Redirect("/Bracket");
         }
 
-        [HttpPost]
+        // This would ideally be a post method, but unsure how to actually
+        // get the client to send a post at the moment.
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Bracket/Unadvance/{seed}")]
         public IActionResult Unadvance(int seed)
