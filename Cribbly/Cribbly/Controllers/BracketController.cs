@@ -53,7 +53,6 @@ namespace Cribbly.Controllers
             var standings = _context.Standings.ToList();
             _context.BracketTeams.AddRange(getBracketPool(standings));
             _context.SaveChanges();
-            System.Console.WriteLine("!!!!!!!SEEDING BRACKET!!!!!");
             return Redirect("/Bracket");
         }
 
