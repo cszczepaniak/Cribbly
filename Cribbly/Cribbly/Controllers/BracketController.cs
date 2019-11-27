@@ -43,13 +43,27 @@ namespace Cribbly.Controllers
             return View(_context.BracketTeams.ToList());
         }
 
-        // POST: /Bracket/SeedBracket
+        // POST: /Bracket/Seed
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public IActionResult SeedBracket()
+        public IActionResult Seed()
         {
             var standings = _context.Standings.ToList();
             _context.BracketTeams.AddRange(getBracketPool(standings));
+            _context.SaveChanges();
+            return Redirect("/Bracket");
+        }
+
+        // POST: /Bracket/Unseed
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Unseed()
+        {
+            var bracketTeams = _context.BracketTeams.ToList();
+            if (bracketTeams.Count > 0)
+            {
+                _context.BracketTeams.RemoveRange(bracketTeams);
+            }
             _context.SaveChanges();
             return Redirect("/Bracket");
         }
