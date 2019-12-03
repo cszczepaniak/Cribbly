@@ -36,15 +36,17 @@
 {
     <h3>Total Score: @Model._standing.TotalScore</h3>
 
-    <table id="standing" class="table-bordered">
-        <tr>
-            <td>@Html.DisplayNameFor(model => model._standing.G1Score)</td>
-            <td>@Html.DisplayNameFor(model => model._standing.G1WinLoss)</td>
-            <td>@Html.DisplayNameFor(model => model._standing.G2Score)</td>
-            <td>@Html.DisplayNameFor(model => model._standing.G2WinLoss)</td>
-            <td>@Html.DisplayNameFor(model => model._standing.G3Score)</td>
-            <td>@Html.DisplayNameFor(model => model._standing.G3WinLoss)</td>
-        </tr>
+    <table id="standing" class="table">
+        <thead>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model._standing.G1Score)</td>
+                <td>@Html.DisplayNameFor(model => model._standing.G1WinLoss)</td>
+                <td>@Html.DisplayNameFor(model => model._standing.G2Score)</td>
+                <td>@Html.DisplayNameFor(model => model._standing.G2WinLoss)</td>
+                <td>@Html.DisplayNameFor(model => model._standing.G3Score)</td>
+                <td>@Html.DisplayNameFor(model => model._standing.G3WinLoss)</td>
+            </tr>
+        </thead>
         <tbody>
             <tr>
                 <td>@Html.DisplayFor(model => model._standing.G1Score)</td>
@@ -65,8 +67,8 @@ else
 
 @if (Model._games.Count == 3)
 {
-    <a asp-controller="Games" asp-action="PostScore">Post Score</a>
-    <table id="games" class="table-hover">
+    <a class="btn" asp-controller="Games" asp-action="PostScore">Post a Game Score</a>
+    <table id="games" class="table">
         <thead>
             <tr>
                 <td></td>
@@ -87,7 +89,6 @@ else
                 <td><strong>Game 1 Info</strong></td>
                 <td>@Html.DisplayFor(model => model._games[0].Team1Name)</td>
                 <td>@Html.DisplayFor(model => model._games[0].Team2Name)</td>
-                <td></td>
                 <td>@Html.DisplayFor(model => model._games[0].WinningTeamName)</td>
                 <td>@Html.DisplayFor(model => model._games[0].ScoreDifference)</td>
             </tr>
@@ -95,7 +96,6 @@ else
                 <td><strong>Game 2 Info</strong></td>
                 <td>@Html.DisplayFor(model => model._games[1].Team1Name)</td>
                 <td>@Html.DisplayFor(model => model._games[1].Team2Name)</td>
-                <td></td>
                 <td>@Html.DisplayFor(model => model._games[1].WinningTeamName)</td>
                 <td>@Html.DisplayFor(model => model._games[1].ScoreDifference)</td>
             </tr>
@@ -109,7 +109,7 @@ else
                 }
                 else
                 {
-                    <td></td>
+
                 }
                 <td>@Html.DisplayFor(model => model._games[2].WinningTeamName)</td>
                 <td>@Html.DisplayFor(model => model._games[2].ScoreDifference)</td>
