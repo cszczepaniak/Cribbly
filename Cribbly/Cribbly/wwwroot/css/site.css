@@ -1,17 +1,27 @@
-﻿body {
+﻿/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+body {
     padding-top: 50px;
     padding-bottom: 20px;
     color: black;
 }
 
 a {
-    font-size: 15px;
-    font-weight: bold;
     color: maroon;
 }
 
 table {
     background-color: rgba(163, 101, 41, 0.5)
+}
+
+.form-control {
+    background-color: brown;
+    color: white;
 }
 
 body:not(nav) {
@@ -22,16 +32,10 @@ body:not(nav) {
     background-color: rgba(163, 101, 41, 0.9);
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-
+.btn:not(.navbar-btn) {
+    background-color: brown;
+    color: white;
+    border: 2px solid maroon;
 }
 
 
