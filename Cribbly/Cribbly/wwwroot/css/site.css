@@ -5,33 +5,22 @@
 }
 
 a {
+    font-size: 15px;
+    font-weight: bold;
     color: maroon;
 }
 
 table {
-    font-size: 11px;
-    background-color: #9a6329;
-    border: 1px solid #653520;
-    color: white;
-}
-
-td {
-    border: 1px solid black;
-}
-
-i {
-    font-size: 10px;
+    background-color: rgba(163, 101, 41, 0.5)
 }
 
 body:not(nav) {
     background-image: url("../images/wood_bg.jpg");
 }
 
-.navbar, .navbar-inverse .navbar-nav > li > a, .navbar-inverse .navbar-brand, .navbar-inverse .navbar-link {
-    background-color: rgb(163, 101, 41);
-    color: maroon;
+.navbar {
+    background-color: rgba(163, 101, 41, 0.9);
 }
-
 
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
@@ -40,14 +29,9 @@ body:not(nav) {
     padding-right: 15px;
 }
 
-.btn:not(.navbar-btn), .form-control {
-    background-color: #9a6329;
-    border: 2px solid #653520;
-    color: white;
-}
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
 
-.btn:not(.navbar-btn) {
-    margin: 2px;
 }
 
 
