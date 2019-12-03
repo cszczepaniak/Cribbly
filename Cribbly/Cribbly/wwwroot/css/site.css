@@ -29,7 +29,11 @@ body:not(nav) {
 }
 
 .navbar {
-    background-color: rgba(163, 101, 41, 0.9);
+    background-color: rgba(93, 47, 1, 0.99);
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #f1f1f1;
 }
 
 .btn:not(.navbar-btn) {
