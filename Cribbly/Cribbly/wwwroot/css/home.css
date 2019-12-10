@@ -7,13 +7,18 @@ img {
     max-width: 100%; 
 }
 
+#navLogo {
+    display: inline-block;
+    vertical-align: central;
+}
+
 p {
     font-size: 10px;
     font-style: italic;
 }
 
 ul, li {
-    max-width: 90%;
+    max-width: 100%;
     margin: auto;
     list-style-type: none !important;
     padding: 0;

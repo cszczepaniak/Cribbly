@@ -1,0 +1,15 @@
+﻿td {
+    font-size: 10px;
+}
+
+thead th, tr.headRow {
+    font-size: 8px;
+    background-color: #333333 !important;
+    color: white;
+}
+
+tbody tr th {
+    font-size: 11px;
+    color: white;
+    font-weight: 600;
+}

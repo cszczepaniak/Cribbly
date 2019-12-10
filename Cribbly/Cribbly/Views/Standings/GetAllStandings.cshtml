@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<Cribbly.Models.Standing>
+
+<link rel="stylesheet" href="~/css/largeTables.css" type="text/css" />
+
 @{
     ViewData["Title"] = "GetAllStandings";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -15,19 +18,18 @@
             <th>Game 2 Score</th>
             <th>Game 3 Score</th>
             <th>Total Score</th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>@Html.DisplayFor(modelItem => item.TeamName)</td>
+                <th>@Html.DisplayFor(modelItem => item.TeamName)</th>
                 <td>@Html.DisplayFor(modelItem => item.Division)</td>
                 <td>@Html.DisplayFor(modelItem => item.G1Score) (@Html.DisplayFor(modelItem => item.G1WinLoss))</td>
                 <td>@Html.DisplayFor(modelItem => item.G2Score) (@Html.DisplayFor(modelItem => item.G2WinLoss))</td>
                 <td>@Html.DisplayFor(modelItem => item.G3Score) (@Html.DisplayFor(modelItem => item.G3WinLoss))</td>
-                <td class="text-primary">@Html.DisplayFor(modelItem => item.TotalScore)</td>
+                <th>@Html.DisplayFor(modelItem => item.TotalScore)</th>
             </tr>
         }
     </tbody>

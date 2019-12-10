@@ -1,5 +1,8 @@
 ﻿@model Cribbly.Models.UserDataView
 
+<link rel="stylesheet" href="~/css/largeTables.css" type="text/css" />
+<link rel="stylesheet" href="~/css/myTeam.css" type="text/css" />
+
 @{
     ViewData["Title"] = "MyTeam";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,84 +10,81 @@
 
 <h2>My Team</h2>
 
-<div>
+<div class="row">
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model._team.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model._team.Name)
-            <a asp-action="Edit" asp-route-id="@Model._team.Id">Edit</a>
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model._team.PlayerOne)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model._team.PlayerOne)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model._team.PlayerTwo)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model._team.PlayerTwo)
-        </dd>
-    </dl>
+    <div class="col-xs-6">
+        <a class="btn" asp-controller="Games" asp-action="PostScore">Post Score</a>
+        <dl>
+            <dt>Team Name</dt>
+            <dd>
+                @Html.DisplayFor(model => model._team.Name)
+                <a asp-action="Edit" asp-route-id="@Model._team.Id">Edit</a>
+            </dd>
+            <dt>@Html.DisplayNameFor(model => model._team.PlayerOne)</dt>
+            <dd>@Html.DisplayFor(model => model._team.PlayerOne)</dd>
+            <dt>@Html.DisplayNameFor(model => model._team.PlayerTwo)</dt>
+            <dd>@Html.DisplayFor(model => model._team.PlayerTwo)</dd>
+        </dl>
+    </div>
+
+    @if (Model._standing != null)
+    {
+        <div class="col-xs-6">
+            <h4>Total Score: @Model._standing.TotalScore</h4>
+
+            <table id="standing" class="table table-responsive">
+                <tbody>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model._standing.G1Score)</th>
+                        <td>@Html.DisplayFor(model => model._standing.G1Score)</td>
+                        <td>@Html.DisplayFor(model => model._standing.G1WinLoss)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model._standing.G2Score)</th>
+                        <td>@Html.DisplayFor(model => model._standing.G2Score)</td>
+                        <td>@Html.DisplayFor(model => model._standing.G2WinLoss)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model._standing.G3Score)</th>
+                        <td>@Html.DisplayFor(model => model._standing.G3Score)</td>
+                        <td>@Html.DisplayFor(model => model._standing.G3WinLoss)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="col-sm-3">
+            <p>Standings will appear here when they have been configured by the system administrator</p>
+        </div>
+    }
 </div>
 
-@if (Model._standing != null)
-{
-    <h3>Total Score: @Model._standing.TotalScore</h3>
-
-    <table id="standing" class="table-bordered">
-        <tr>
-            <td>@Html.DisplayNameFor(model => model._standing.G1Score)</td>
-            <td>@Html.DisplayNameFor(model => model._standing.G1WinLoss)</td>
-            <td>@Html.DisplayNameFor(model => model._standing.G2Score)</td>
-            <td>@Html.DisplayNameFor(model => model._standing.G2WinLoss)</td>
-            <td>@Html.DisplayNameFor(model => model._standing.G3Score)</td>
-            <td>@Html.DisplayNameFor(model => model._standing.G3WinLoss)</td>
-        </tr>
-        <tbody>
-            <tr>
-                <td>@Html.DisplayFor(model => model._standing.G1Score)</td>
-                <td>@Html.DisplayFor(model => model._standing.G1WinLoss)</td>
-                <td>@Html.DisplayFor(model => model._standing.G2Score)</td>
-                <td>@Html.DisplayFor(model => model._standing.G2WinLoss)</td>
-                <td>@Html.DisplayFor(model => model._standing.G3Score)</td>
-                <td>@Html.DisplayFor(model => model._standing.G3WinLoss)</td>
-            </tr>
-        </tbody>
-    </table>
-    <p><i>Note: Game results will appear as an 'X' until both teams have submitted scores.</i></p>
-}
-else
-{
-    <p>Standings will appear here when they have been configured by the system administrator</p>
-}
+<p><i>Note: Win/Loss results will appear as an 'X' until both teams have submitted scores.</i></p>
 
 @if (Model._games.Count == 3)
 {
-    <a asp-controller="Games" asp-action="PostScore">Post Score</a>
-    <table id="games" class="table-hover">
-        <thead>
-            <tr>
+    <table id="games" class="table table-responsive">
+        <tr class="headRow">
+            <td></td>
+            <th>@Html.DisplayNameFor(model => model._games[0].Team1Name)</th>
+            <th>@Html.DisplayNameFor(model => model._games[0].Team2Name)</th>
+
+            @if (Model._3waygames.Count != 0)
+            {
+                <th>@Html.DisplayNameFor(model => model._3waygames[0].Team3Name)</th>
+            }
+            else
+            {
                 <td></td>
-                <td>@Html.DisplayNameFor(model => model._games[0].Team1Name)</td>
-                <td>@Html.DisplayNameFor(model => model._games[0].Team2Name)</td>
-
-                @if (Model._3waygames.Count != 0)
-                {
-                    <td>@Html.DisplayNameFor(model => model._3waygames[0].Team3Name)</td>
-                }
-
-                <td>@Html.DisplayNameFor(model => model._games[0].WinningTeamName)</td>
-                <td>@Html.DisplayNameFor(model => model._games[0].ScoreDifference)</td>
-            </tr>
-        </thead>
+            }
+            <th>@Html.DisplayNameFor(model => model._games[0].WinningTeamName)</th>
+            <th>@Html.DisplayNameFor(model => model._games[0].ScoreDifference)</th>
+        </tr>
         <tbody>
             <tr>
-                <td><strong>Game 1 Info</strong></td>
+                <th><strong>Game 1 Info</strong></th>
                 <td>@Html.DisplayFor(model => model._games[0].Team1Name)</td>
                 <td>@Html.DisplayFor(model => model._games[0].Team2Name)</td>
                 <td></td>
@@ -92,7 +92,7 @@ else
                 <td>@Html.DisplayFor(model => model._games[0].ScoreDifference)</td>
             </tr>
             <tr>
-                <td><strong>Game 2 Info</strong></td>
+                <th><strong>Game 2 Info</strong></th>
                 <td>@Html.DisplayFor(model => model._games[1].Team1Name)</td>
                 <td>@Html.DisplayFor(model => model._games[1].Team2Name)</td>
                 <td></td>
@@ -100,7 +100,7 @@ else
                 <td>@Html.DisplayFor(model => model._games[1].ScoreDifference)</td>
             </tr>
             <tr>
-                <td><strong>Game 3 Info</strong></td>
+                <th><strong>Game 3 Info</strong></th>
                 <td>@Html.DisplayFor(model => model._games[2].Team1Name)</td>
                 <td>@Html.DisplayFor(model => model._games[2].Team2Name)</td>
                 @if (Model._3waygames.Count != 0)

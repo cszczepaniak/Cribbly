@@ -1,14 +1,7 @@
-﻿/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿.body-content {
     color: black;
+    padding: 50px 15px 20px 15px;
+    width: 100%;
 }
 
 a {
@@ -16,7 +9,7 @@ a {
 }
 
 table {
-    background-color: rgba(163, 101, 41, 0.5)
+    background-color: rgba(173, 132, 92, 0.77)
 }
 
 .form-control {
