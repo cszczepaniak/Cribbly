@@ -15,6 +15,7 @@ img {
 p {
     font-size: 10px;
     font-style: italic;
+    margin-bottom: 10px !important;
 }
 
 ul, li {

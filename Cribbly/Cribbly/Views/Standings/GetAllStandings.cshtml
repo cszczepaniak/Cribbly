@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<Cribbly.Models.Standing>
 
-<link rel="stylesheet" href="~/css/largeTables.css" type="text/css" />
+@section cssLink {
+    <link rel="stylesheet" href="~/css/largeTables.css" type="text/css" />
+}
 
 @{
     ViewData["Title"] = "GetAllStandings";
@@ -9,7 +11,9 @@
 
 <h2>Tournament Standings</h2>
 
-<table class="table-bordered">
+<hr />
+
+<table class="table table-responsive">
     <thead>
         <tr>
             <th>Team Name</th>

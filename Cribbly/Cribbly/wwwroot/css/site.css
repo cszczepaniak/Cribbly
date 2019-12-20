@@ -4,13 +4,16 @@
     width: 100%;
 }
 
+h2, h3, h4, h5, h6 {
+    font-family: 'Times New Roman', Times, serif;
+}
+
 a {
     color: maroon;
 }
 
 p {
     font-size: 11px !important;
-    margin-bottom: 0px;
 }
 
 table {

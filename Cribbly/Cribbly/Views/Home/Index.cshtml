@@ -4,7 +4,9 @@
 @inject UserManager<IdentityUser> UserManager;
 @inject ApplicationDbContext _context;
 
-<link rel="stylesheet" href="~/css/home.css" type="text/css" />
+@section cssLink {
+    <link rel="stylesheet" href="~/css/home.css" type="text/css" />
+}
 
 @{
     ViewData["Title"] = "Home Page";
@@ -21,24 +23,24 @@
 
     @if (User.IsInRole("Admin"))
     {
-            <ul class="list-group">
-                <li class="list-group-item"><a asp-controller="Teams" asp-action="AllTeams">View Teams</a></li>
-                <li class="list-group-item"><a asp-controller="Standings" asp-action="GetAllStandings"> View Tournament Standings</a></li>
-                <li class="list-group-item"><a asp-controller="Division" asp-action="Index">View Divisions</a></li>
-                <li class="list-group-item"><a asp-controller="Games" asp-action="Index">View Scheduled Games</a></li>
-                <li class="list-group-item"><a>View Bracket</a></li>
-            </ul>
-            <ul class="list-group">
-                <li class="list-group-item"><a asp-controller="Standings" asp-action="CreateStandingsSetup">Setup Standings</a></li>
-                <li class="list-group-item"><a asp-controller="Division" asp-action="Index">Setup Divisions</a></li>
-                <li class="list-group-item"><a asp-controller="Games" asp-action="CreateGamesSetup">Setup Play-In Games</a></li>
-                <li class="list-group-item"><a>Setup Bracket</a>
-            </ul>
-            <ul class="list-group">
-                <li class="list-group-item"><a asp-controller="Home" asp-action="ResetStandings">Reset Standings</a></li>
-                <li class="list-group-item"><a asp-controller="Home" asp-action="ResetDivisions">Reset Divisions</a></li>
-                <li class="list-group-item"><a asp-controller="Home" asp-action="ResetTournament">Reset Tournament</a></li>
-            </ul>
+        <ul class="list-group">
+            <li class="list-group-item"><a asp-controller="Teams" asp-action="AllTeams">View Teams</a></li>
+            <li class="list-group-item"><a asp-controller="Standings" asp-action="GetAllStandings"> View Tournament Standings</a></li>
+            <li class="list-group-item"><a asp-controller="Division" asp-action="Index">View Divisions</a></li>
+            <li class="list-group-item"><a asp-controller="Games" asp-action="Index">View Scheduled Games</a></li>
+            <li class="list-group-item"><a>View Bracket</a></li>
+        </ul>
+        <ul class="list-group">
+            <li class="list-group-item"><a asp-controller="Standings" asp-action="CreateStandingsSetup">Setup Standings</a></li>
+            <li class="list-group-item"><a asp-controller="Division" asp-action="Index">Setup Divisions</a></li>
+            <li class="list-group-item"><a asp-controller="Games" asp-action="CreateGamesSetup">Setup Play-In Games</a></li>
+            <li class="list-group-item"><a>Setup Bracket</a>
+        </ul>
+        <ul class="list-group">
+            <li class="list-group-item"><a asp-controller="Home" asp-action="ResetStandings">Reset Standings</a></li>
+            <li class="list-group-item"><a asp-controller="Home" asp-action="ResetDivisions">Reset Divisions</a></li>
+            <li class="list-group-item"><a asp-controller="Home" asp-action="ResetTournament">Reset Tournament</a></li>
+        </ul>
 
     }
     else
