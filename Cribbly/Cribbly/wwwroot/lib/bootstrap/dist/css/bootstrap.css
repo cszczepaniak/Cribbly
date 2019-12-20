@@ -1439,7 +1439,7 @@ ol ol {
 }
 dl {
   margin-top: 0;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 dt,
 dd {
@@ -1610,6 +1610,9 @@ pre code {
 .row {
   margin-right: -15px;
   margin-left: -15px;
+}
+.row-divider {
+    margin-bottom: 15px;
 }
 .row-no-gutters {
   margin-right: 0;

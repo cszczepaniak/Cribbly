@@ -13,3 +13,7 @@ tbody tr th {
     color: white;
     font-weight: 600;
 }
+
+tr.divTeams {
+    background-color: #e6a04891 !important;
+}

@@ -1,7 +1,6 @@
 ﻿@model Cribbly.Models.UserDataView
 
 <link rel="stylesheet" href="~/css/largeTables.css" type="text/css" />
-<link rel="stylesheet" href="~/css/myTeam.css" type="text/css" />
 
 @{
     ViewData["Title"] = "MyTeam";
@@ -9,11 +8,11 @@
 }
 
 <h2>My Team</h2>
+<hr />
 
-<div class="row">
-    <hr />
+<div class="row-divider row">
     <div class="col-xs-6">
-        <a class="btn" asp-controller="Games" asp-action="PostScore">Post Score</a>
+
         <dl>
             <dt>Team Name</dt>
             <dd>
@@ -25,15 +24,20 @@
             <dt>@Html.DisplayNameFor(model => model._team.PlayerTwo)</dt>
             <dd>@Html.DisplayFor(model => model._team.PlayerTwo)</dd>
         </dl>
+        <a class="btn" asp-controller="Games" asp-action="PostScore">Post Score</a>
     </div>
 
     @if (Model._standing != null)
     {
         <div class="col-xs-6">
-            <h4>Total Score: @Model._standing.TotalScore</h4>
 
             <table id="standing" class="table table-responsive">
                 <tbody>
+                    <tr class="headRow">
+                        <th>Total Score: @Model._standing.TotalScore</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
                     <tr>
                         <th>@Html.DisplayNameFor(model => model._standing.G1Score)</th>
                         <td>@Html.DisplayFor(model => model._standing.G1Score)</td>
@@ -51,6 +55,7 @@
                     </tr>
                 </tbody>
             </table>
+            <p>Note: Win/Loss results will appear as an 'X' until both teams have submitted scores.</p>
         </div>
     }
     else
@@ -61,7 +66,7 @@
     }
 </div>
 
-<p><i>Note: Win/Loss results will appear as an 'X' until both teams have submitted scores.</i></p>
+
 
 @if (Model._games.Count == 3)
 {

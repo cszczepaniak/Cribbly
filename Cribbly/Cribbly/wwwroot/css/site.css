@@ -8,12 +8,17 @@ a {
     color: maroon;
 }
 
+p {
+    font-size: 11px !important;
+    margin-bottom: 0px;
+}
+
 table {
-    background-color: rgba(173, 132, 92, 0.77)
+    background-color: #c5b493c4;
 }
 
 .form-control {
-    background-color: brown;
+    background-color: #825a20;
     color: white;
 }
 
@@ -30,9 +35,9 @@ body:not(nav) {
 }
 
 .btn:not(.navbar-btn) {
-    background-color: brown;
+    background-color: #825a20;
     color: white;
-    border: 2px solid maroon;
+    border: 2px solid #4c290c;
 }
 
 
