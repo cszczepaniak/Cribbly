@@ -41,8 +41,9 @@ namespace Cribbly.Controllers
 
         public IActionResult Index()
         {
-            // TODO use the bracket teams to create a list of bracket games, then render those
-            return View(_context.BracketTeams.ToList());
+            var teams = _context.BracketTeams.ToList();
+            var b = getBracket(teams);
+            return View(b);
         }
 
         // This would ideally be a post method, but unsure how to actually

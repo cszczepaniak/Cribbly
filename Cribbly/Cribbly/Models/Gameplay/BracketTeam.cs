@@ -19,5 +19,11 @@ namespace Cribbly.Models.Gameplay
         }
     }
 
-    public class BracketPlaceholder : BracketTeam { }
+    public class BracketPlaceholder : BracketTeam
+    {
+        public BracketPlaceholder()
+        {
+            TeamName = "PLACEHOLDER";
+        }
+    }
 }

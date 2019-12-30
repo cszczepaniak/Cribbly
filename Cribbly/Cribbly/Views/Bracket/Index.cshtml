@@ -1,19 +1,14 @@
-﻿@model List<Cribbly.Models.Gameplay.BracketTeam>
+﻿@model Dictionary<int, Cribbly.Models.Gameplay.BracketTeam[]>
 
 @{
     ViewData["Title"] = "Index";
 }
 <h2>Bracket</h2>
 @{
-    if (Model == null || Model.Count == 0)
-    {
-        <p>The bracket is not yet seeded.</p>
-    }
-    else
-    {
-        // TODO construct the bracket
-        foreach(var t in Model) {
-            var str = $"Team: {t.TeamName}, Seed: {t.Seed}";
+    // TODO construct the bracket
+    foreach(var kv in Model) {
+        foreach(var t in kv.Value) {
+            var str = $"Round {kv.Key}, Team {t.TeamName}";
             <p>@str</p>
         }
     }
