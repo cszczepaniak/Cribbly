@@ -41,6 +41,7 @@ namespace Cribbly.Controllers
 
         public IActionResult Index()
         {
+            // TODO use the bracket teams to create a list of bracket games, then render those
             return View(_context.BracketTeams.ToList());
         }
 
@@ -137,5 +138,49 @@ namespace Cribbly.Controllers
             return bracketTeams;
         }
 
+        private Dictionary<int, BracketTeam[]> getBracket(List<BracketTeam> teams)
+        {
+            // Sort seeds the way they would line up in the bracket
+            // i.e. 1 plays 32, 2 plays 31, etc.
+            var bTeams = new List<BracketTeam>();
+            for (int i = 0; i < teams.Count / 2; i++)
+            {
+                bTeams.Add(teams[i]);
+                bTeams.Add(teams[teams.Count - i - 1]);
+            }
+
+            // Add the first round to the dictionary
+            var b = new Dictionary<int, BracketTeam[]>();
+            b[1] = bTeams.ToArray();
+            var nTeamsThisRound = bTeams.Count >> 1;
+            var round = 2;
+            // Loop through to build bracket
+            while (nTeamsThisRound > 0)
+            {
+                var thisRnd = new BracketTeam[nTeamsThisRound];
+                var prevRnd = b[round - 1];
+                for (int i = 0; i < prevRnd.Length; i += 2)
+                {
+                    var t1 = prevRnd[i];
+                    var t2 = prevRnd[i + 1];
+                    if (t1 is BracketPlaceholder && t2 is BracketPlaceholder)
+                    {
+                        thisRnd[i / 2] = new BracketPlaceholder();
+                    }
+                    else if (t1.Round == round)
+                    {
+                        thisRnd[i / 2] = t1;
+                    }
+                    else
+                    {
+                        thisRnd[i / 2] = t2;
+                    }
+                }
+                b[round] = thisRnd;
+                nTeamsThisRound >>= 1;
+                round++;
+            }
+            return null;
+        }
     }
 }
