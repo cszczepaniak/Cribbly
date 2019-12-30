@@ -9,6 +9,7 @@ namespace Cribbly.Models.Gameplay
         public int Seed { get; set; }
         public int Round { get; set; }
         public string TeamName { get; set; }
+        public BracketTeam() { }
 
         public BracketTeam(int seed, string teamName)
         {
@@ -17,4 +18,6 @@ namespace Cribbly.Models.Gameplay
             Round = 1;
         }
     }
+
+    public class BracketPlaceholder : BracketTeam { }
 }
