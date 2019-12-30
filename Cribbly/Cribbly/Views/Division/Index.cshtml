@@ -1,41 +1,44 @@
 ﻿@model Cribbly.Models.ViewModels.DivisionView
 
+@section cssLink {
+    <link rel="stylesheet" href="~/css/largeTables.css" type="text/css" />
+}
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>All Divisions</h2>
+<hr />
 
 <table class="table">
-    <thead>
-        <tr>
-            <th>Division Name</th>
-            <th></th>
-        </tr>
-    </thead>
     <tbody>
-       @foreach (var item in Model._divisions)
-       {
-        <tr>
-            <td><h4>@Html.DisplayFor(modelItem => item.DivName)</h4></td>
-            <td>
-                <h4>Members</h4>
-            </td>
-            @if (User.IsInRole("Admin"))
-            {
-                <td>
-                    <a asp-action="EditDivision/@item.Id">Edit</a>
-                </td>
-            }
-        </tr>
+        @foreach (var item in Model._divisions)
+        {
+            int a = 1;
+
+
+            <tr>
+                <td><h5>@a</h5></td>
+                <td><h5>@Html.DisplayFor(modelItem => item.DivName)</h5></td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        <a asp-action="EditDivision/@item.Id">Edit</a>
+                    </td>
+                }
+            </tr>
             @for (int i = 0; i < Model._standings.Where(m => m.Division == item.DivName).ToList().Count; i++)
             {
-                <tr>
+                <tr class="divTeams">
                     <td></td>
                     <td>@Model._standings.Where(m => m.Division == item.DivName).ToList()[i].TeamName</td>
+                    <td></td>
                 </tr>
             }
-       }
+
+            a++;
+        }
     </tbody>
 </table>

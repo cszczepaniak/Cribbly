@@ -1439,7 +1439,7 @@ ol ol {
 }
 dl {
   margin-top: 0;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 dt,
 dd {
@@ -1610,6 +1610,9 @@ pre code {
 .row {
   margin-right: -15px;
   margin-left: -15px;
+}
+.row-divider {
+    margin-bottom: 15px;
 }
 .row-no-gutters {
   margin-right: 0;
@@ -5322,12 +5325,12 @@ a.thumbnail.active {
   margin-bottom: 20px;
 }
 .list-group-item {
-  position: relative;
-  display: block;
-  padding: 10px 15px;
-  margin-bottom: -1px;
-  background-color: #fff;
-  border: 1px solid #ddd;
+    position: relative;
+    display: block;
+    margin-bottom: -1px;
+    padding: 5px !important;
+    background-color: #bd7144;
+    border: 1px solid #ddd;
 }
 .list-group-item:first-child {
   border-top-left-radius: 4px;

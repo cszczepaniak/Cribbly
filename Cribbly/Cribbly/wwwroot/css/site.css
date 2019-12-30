@@ -1,17 +1,28 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿.body-content {
     color: black;
+    padding: 50px 15px 20px 15px;
+    width: 100%;
+}
+
+h2, h3, h4, h5, h6 {
+    font-family: 'Times New Roman', Times, serif;
 }
 
 a {
-    font-size: 15px;
-    font-weight: bold;
     color: maroon;
 }
 
+p {
+    font-size: 11px !important;
+}
+
 table {
-    background-color: rgba(163, 101, 41, 0.5)
+    background-color: #c5b493c4;
+}
+
+.form-control {
+    background-color: #825a20;
+    color: white;
 }
 
 body:not(nav) {
@@ -19,19 +30,17 @@ body:not(nav) {
 }
 
 .navbar {
-    background-color: rgba(163, 101, 41, 0.9);
+    background-color: rgba(93, 47, 1, 0.99);
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+.navbar-inverse .navbar-nav > li > a {
+    color: #f1f1f1;
 }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-
+.btn:not(.navbar-btn) {
+    background-color: #825a20;
+    color: white;
+    border: 2px solid #4c290c;
 }
 
 
