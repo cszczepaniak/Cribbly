@@ -224,7 +224,7 @@ namespace Cribbly.Controllers
         * DELETE YOUR TEAM
         * ==============================
         */
-
+        [Authorize(Roles = "Admin")]
         // GET: Teams/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

@@ -36,6 +36,16 @@ namespace Cribbly.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        public IActionResult StandingsDisplay()
+        {
+            //Find all standings 
+            var standings = _context.Standings.OrderByDescending(m => m.TotalScore).ToList();
+            Response.Headers.Add("Refresh", "25");
+            //Return all results to the view
+            return View(standings);
+        }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult CreateStandingsSetup()
         {

@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Routing;
 
 namespace Cribbly.Controllers
 {
+    //Require user to be logged in to access any endpoint below
+    [Authorize]
     public class GamesController : Controller
     {
         private readonly ApplicationDbContext _context;

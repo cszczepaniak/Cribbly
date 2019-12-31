@@ -5,14 +5,29 @@
 @inject ApplicationDbContext _context;
 
 @model Cribbly.Models.ViewModels.PostScoreView;
+
+
+<link rel="stylesheet" href="~/css/largeTables.css" type="text/css" />
+
 @{
     ViewData["Title"] = "PostScore";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>PostScore</h2>
+<h2>Post Score</h2>
 
-<h4>Game @Model.GameNumber : "@Model.Game.Team1Name" vs. "@Model.Game.Team2Name"</h4>
+<table class="table table-responsive">
+    <thead>
+        <tr>
+            <th><h4>Game @Model.GameNumber</h4></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>"@Model.Game.Team1Name" vs. "@Model.Game.Team2Name"</td>
+        </tr>
+    </tbody>
+</table>
 
 <form asp-action="PostScore">
     @{
@@ -26,5 +41,5 @@
         <input asp-for="TotalScore" type="number" min="0" max="121" />
     </div>
 
-    <button type="submit">Submit Score</button>
+    <button class="btn" type="submit">Submit Score</button>
 </form>
