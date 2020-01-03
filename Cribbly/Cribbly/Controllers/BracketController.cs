@@ -46,6 +46,9 @@ namespace Cribbly.Controllers
 
         // This would ideally be a post method, but unsure how to actually
         // get the client to send a post at the moment.
+        
+        //to do the above, you need to a) have your iActionResult take a parameter and b) declare what your data model will 
+        //be in the view using @model. see my PostScore view for an example
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult Seed()
@@ -58,6 +61,9 @@ namespace Cribbly.Controllers
 
         // This would ideally be a post method, but unsure how to actually
         // get the client to send a post at the moment.
+        
+        //to do the above, you need to a) have your iActionResult take a parameter and b) declare what your data model will 
+        //be in the view using @model. see my PostScore view for an example
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult Unseed()
@@ -73,6 +79,9 @@ namespace Cribbly.Controllers
 
         // This would ideally be a post method, but unsure how to actually
         // get the client to send a post at the moment.
+        
+        //to do the above, you need to a) have your iActionResult take a parameter and b) declare what your data model will 
+        //be in the view using @model. see my PostScore view for an example
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Bracket/Advance/{seed}")]
@@ -90,6 +99,9 @@ namespace Cribbly.Controllers
 
         // This would ideally be a post method, but unsure how to actually
         // get the client to send a post at the moment.
+        
+        //to do the above, you need to a) have your iActionResult take a parameter and b) declare what your data model will 
+        //be in the view using @model. see my PostScore view for an example
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Bracket/Unadvance/{seed}")]
