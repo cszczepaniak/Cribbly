@@ -1,5 +1,6 @@
 ﻿@model Cribbly.Models.UserDataView
 
+<link rel="stylesheet" href="~/css/myTeam.css" type="text/css" />
 <link rel="stylesheet" href="~/css/largeTables.css" type="text/css" />
 
 @{
@@ -14,17 +15,19 @@
     <div class="col-xs-6">
 
         <dl>
-            <dt>Team Name</dt>
-            <dd>
-                @Html.DisplayFor(model => model._team.Name)
-                <a asp-action="Edit" asp-route-id="@Model._team.Id">Edit</a>
-            </dd>
-            <dt>@Html.DisplayNameFor(model => model._team.PlayerOne)</dt>
-            <dd>@Html.DisplayFor(model => model._team.PlayerOne)</dd>
-            <dt>@Html.DisplayNameFor(model => model._team.PlayerTwo)</dt>
-            <dd>@Html.DisplayFor(model => model._team.PlayerTwo)</dd>
+            <dt class="red-bg">Team Name</dt>
+            <dd class="red-bg">@Html.DisplayFor(model => model._team.Name)</dd>
+            <dt class="green-bg">@Html.DisplayNameFor(model => model._team.PlayerOne)</dt>
+            <dd class="green-bg">@Html.DisplayFor(model => model._team.PlayerOne)</dd>
+            <dt class="blue-bg">@Html.DisplayNameFor(model => model._team.PlayerTwo)</dt>
+            <dd class="blue-bg">@Html.DisplayFor(model => model._team.PlayerTwo)</dd>
         </dl>
-        <a class="btn" asp-controller="Games" asp-action="PostScore">Post Score</a>
+
+        <div class="myTeamButtons">
+            <a class="btn" asp-controller="Games" asp-action="PostScore">Post Score</a>
+            <a class="btn" asp-action="Edit" asp-route-id="@Model._team.Id">Edit Team Name</a>
+        </div>
+
     </div>
 
     @if (Model._standing != null)

@@ -2702,8 +2702,8 @@ output {
 .form-control[disabled],
 .form-control[readonly],
 fieldset[disabled] .form-control {
-  background-color: #eeeeee;
-  opacity: 1;
+    background-color: #a0a0a0;
+    opacity: 1;
 }
 .form-control[disabled],
 fieldset[disabled] .form-control {
@@ -4175,8 +4175,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
-  color: #fff;
-  background-color: #337ab7;
+    color: #fff;
+    background-color: #52310b;
 }
 .nav-stacked > li {
   float: none;
@@ -5329,7 +5329,7 @@ a.thumbnail.active {
     display: block;
     margin-bottom: -1px;
     padding: 5px !important;
-    background-color: #bd7144;
+    background-color: #95777485;
     border: 1px solid #ddd;
 }
 .list-group-item:first-child {

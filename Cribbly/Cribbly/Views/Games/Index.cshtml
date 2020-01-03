@@ -1,4 +1,7 @@
 ﻿@model Cribbly.Models.ViewModels.GamesView;
+
+<link rel="stylesheet" href="~/css/largeTables.css" type="text/css" />
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,7 +9,7 @@
 
 <h2>All Play-In Games</h2>
 
-<table class="table-responsive">
+<table class="table table-responsive">
     <thead>
         <tr>
             <th>@Html.DisplayNameFor(model => model._playingames[0].Team1TotalScore)</th>
@@ -51,7 +54,7 @@
 {
     <h2>3 Way Games</h2>
 
-    <table class="table">
+    <table class="table table-responsive">
         <thead>
             <tr>
                 <th>@Html.DisplayNameFor(model => model._3waygames[0].Team1TotalScore)</th>

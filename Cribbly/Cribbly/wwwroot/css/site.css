@@ -16,8 +16,12 @@ p {
     font-size: 11px !important;
 }
 
-table {
+table, dl {
     background-color: #c5b493c4;
+}
+
+dl {
+    text-align: center;
 }
 
 .form-control {

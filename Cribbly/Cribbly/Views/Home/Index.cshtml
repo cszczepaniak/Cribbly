@@ -21,40 +21,44 @@
 
     var user = _context.ApplicationUsers.FirstOrDefault(m => m.Email == UserManager.GetUserName(User));
 
-    @if (User.IsInRole("Admin"))
-    {
-        <ul class="list-group">
-            <li class="list-group-item"><a asp-controller="Teams" asp-action="AllTeams">View Teams</a></li>
-            <li class="list-group-item"><a asp-controller="Standings" asp-action="GetAllStandings"> View Tournament Standings</a></li>
-            <li class="list-group-item"><a asp-controller="Division" asp-action="Index">View Divisions</a></li>
-            <li class="list-group-item"><a asp-controller="Games" asp-action="Index">View Scheduled Games</a></li>
-            <li class="list-group-item"><a>View Bracket</a></li>
-        </ul>
-        <ul class="list-group">
-            <li class="list-group-item"><a asp-controller="Standings" asp-action="CreateStandingsSetup">Setup Standings</a></li>
-            <li class="list-group-item"><a asp-controller="Division" asp-action="Index">Setup Divisions</a></li>
-            <li class="list-group-item"><a asp-controller="Games" asp-action="CreateGamesSetup">Setup Play-In Games</a></li>
-            <li class="list-group-item"><a>Setup Bracket</a>
-        </ul>
-        <ul class="list-group">
-            <li class="list-group-item"><a asp-controller="Home" asp-action="ResetStandings">Reset Standings</a></li>
-            <li class="list-group-item"><a asp-controller="Home" asp-action="ResetDivisions">Reset Divisions</a></li>
-            <li class="list-group-item"><a asp-controller="Home" asp-action="ResetTournament">Reset Tournament</a></li>
-        </ul>
+    <div>
 
+        @if (User.IsInRole("Admin"))
+        {
+
+            <ul class="list-group">
+                <li class="list-group-item"><a asp-controller="Teams" asp-action="AllTeams">View Teams</a></li>
+                <li class="list-group-item"><a asp-controller="Standings" asp-action="GetAllStandings"> View Tournament Standings</a></li>
+                <li class="list-group-item"><a asp-controller="Division" asp-action="Index">View Divisions</a></li>
+                <li class="list-group-item"><a asp-controller="Games" asp-action="Index">View Scheduled Games</a></li>
+                <li class="list-group-item"><a>View Bracket</a></li>
+            </ul>
+            <ul class="list-group">
+                <li class="list-group-item"><a asp-controller="Standings" asp-action="CreateStandingsSetup">Setup Standings</a></li>
+                <li class="list-group-item"><a asp-controller="Division" asp-action="Index">Setup Divisions</a></li>
+                <li class="list-group-item"><a asp-controller="Games" asp-action="CreateGamesSetup">Setup Play-In Games</a></li>
+                <li class="list-group-item"><a>Setup Bracket</a>
+            </ul>
+            <ul class="list-group">
+                <li class="list-group-item"><a asp-controller="Home" asp-action="ResetStandings">Reset Standings</a></li>
+                <li class="list-group-item"><a asp-controller="Home" asp-action="ResetDivisions">Reset Divisions</a></li>
+                <li class="list-group-item"><a asp-controller="Home" asp-action="ResetTournament">Reset Tournament</a></li>
+            </ul>
+
+        }
+        else
+        {
+            <a class="btn" asp-controller="Teams" asp-action="AllTeams">Teams</a>
+            <a class="btn" asp-controller="Teams" asp-action="MyTeam/@user.TeamId">My Team</a>
+            <a class="btn" asp-controller="Division" asp-action="Index">View Divisions</a>
+            <a class="btn" asp-controller="Standings" asp-action="GetAllStandings"> View Tournament Standings</a>
+            <a class="btn">Bracket</a>
+        }
+    </div>
     }
     else
     {
-        <a class="btn" asp-controller="Teams" asp-action="AllTeams">Teams</a>
-        <a class="btn" asp-controller="Teams" asp-action="MyTeam/@user.TeamId">My Team</a>
-        <a class="btn" asp-controller="Division" asp-action="Index">View Divisions</a>
-        <a class="btn" asp-controller="Standings" asp-action="GetAllStandings"> View Tournament Standings</a>
-        <a class="btn">Bracket</a>
+        <p>Welcome to Cribbly! Please login or register to begin</p>
+        <a class="btn" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        <a class="btn" asp-area="Identity" asp-page="/Account/Register">Register</a>
     }
-}
-else
-{
-    <p>Welcome to Cribbly! Please login or register to begin</p>
-    <a class="btn" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    <a class="btn" asp-area="Identity" asp-page="/Account/Register">Register</a>
-}
