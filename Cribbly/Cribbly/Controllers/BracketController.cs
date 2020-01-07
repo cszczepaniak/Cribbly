@@ -32,7 +32,6 @@ namespace Cribbly.Controllers
     {
         private readonly ApplicationDbContext _context;
         private const int _numTeams = 16;
-        private const int _numRounds = 5;
 
         public BracketController(ApplicationDbContext context)
         {
@@ -90,7 +89,7 @@ namespace Cribbly.Controllers
         public IActionResult Advance(int seed)
         {
             var team = _context.BracketTeams.Where(t => t.Seed == seed).First();
-            if (team.Round < _numRounds)
+            if (team.Round < getNumRounds(_numTeams))
             {
                 team.Round++;
                 _context.Update(team);
@@ -154,7 +153,7 @@ namespace Cribbly.Controllers
         private Dictionary<int, BracketTeam[]> getBracket(List<BracketTeam> teams)
         {
             // Sort seeds the way they would line up in the bracket
-            // i.e. 1 plays 32, 2 plays 31, etc.
+            // i.e. with 32 teams: 1 plays 32, 2 plays 31, etc.
             var bTeams = new List<BracketTeam>();
             for (int i = 0; i < teams.Count / 2; i++)
             {
@@ -176,17 +175,17 @@ namespace Cribbly.Controllers
                 {
                     var t1 = prevRnd[i];
                     var t2 = prevRnd[i + 1];
-                    if (t1 is BracketPlaceholder && t2 is BracketPlaceholder)
-                    {
-                        thisRnd[i / 2] = new BracketPlaceholder();
-                    }
-                    else if (t1.Round == round)
+                    if (t1.Round == round)
                     {
                         thisRnd[i / 2] = t1;
                     }
-                    else
+                    else if (t2.Round == round)
                     {
                         thisRnd[i / 2] = t2;
+                    }
+                    else
+                    {
+                        thisRnd[i / 2] = new BracketPlaceholder();
                     }
                 }
                 b[round] = thisRnd;
@@ -194,6 +193,17 @@ namespace Cribbly.Controllers
                 round++;
             }
             return b;
+        }
+        private int getNumRounds(int numTeams)
+        {
+            var n = 0;
+            while (numTeams > 1)
+            {
+                numTeams >>= 1;
+                n++;
+            }
+            System.Console.WriteLine("###### NUM ROUNDS: " + n);
+            return n;
         }
     }
 }
