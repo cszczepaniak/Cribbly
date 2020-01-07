@@ -12,10 +12,6 @@
 <h2>Tournament Standings</h2>
 
 <hr />
-@if(User.IsInRole("Admin"))
-{
-    <a class="btn" asp-action="StandingsDisplay">Display Friendly</a>
-}
 
 <table class="table table-responsive">
     <thead>
@@ -31,7 +27,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr class="inTourny">
                 <th>@Html.DisplayFor(modelItem => item.TeamName)</th>
                 <td>@Html.DisplayFor(modelItem => item.Division)</td>
                 <td>@Html.DisplayFor(modelItem => item.G1Score) (@Html.DisplayFor(modelItem => item.G1WinLoss))</td>

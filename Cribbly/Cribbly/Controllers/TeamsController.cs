@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Cribbly.Data;
@@ -17,10 +18,12 @@ namespace Cribbly.Controllers
     public class TeamsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _user;
 
-        public TeamsController(ApplicationDbContext context)
+        public TeamsController(ApplicationDbContext context, UserManager<IdentityUser> user)
         {
             _context = context;
+            _user = user;
         }
 
         /*
@@ -44,6 +47,8 @@ namespace Cribbly.Controllers
         // GET: Teams/MyTeam
         public async Task<IActionResult> MyTeam(int id)
         {
+            var loggedInUser = _context.ApplicationUsers.FirstOrDefault(m => m.Email == _user.GetUserName(User));
+
             //User does not have a TeamID yet
             if (id == 0)
             {
@@ -58,6 +63,11 @@ namespace Cribbly.Controllers
             if (team == null)
             {
                 return RedirectToAction(nameof(TeamNotFound));
+            }
+            //Return 401 if the id in URL does not match the team ID of the logged in user
+            if (team.Id != loggedInUser.TeamId)
+            {
+                return StatusCode(401);
             }
             //Get the user's team's standing
             Standing userStanding = _context.Standings.FirstOrDefault(m => m.id == team.Id);
@@ -150,8 +160,15 @@ namespace Cribbly.Controllers
             {
                 return NotFound();
             }
-            //Find team
 
+            var loggedInUser = _context.ApplicationUsers.FirstOrDefault(m => m.Email == _user.GetUserName(User));
+            //Return 401 if the id in URL does not match the team ID of the logged in user
+            if (id != loggedInUser.TeamId)
+            {
+                return StatusCode(401);
+            }
+
+            //Find team
             var team = await _context.Teams.FindAsync(id);
 
             //Something went wrong fetching the data, return 404
@@ -224,7 +241,7 @@ namespace Cribbly.Controllers
         * DELETE YOUR TEAM
         * ==============================
         */
-
+        [Authorize(Roles = "Admin")]
         // GET: Teams/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

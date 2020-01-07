@@ -25,7 +25,7 @@ namespace Cribbly.Models.Gameplay
         public string Team1Name { get; set; }
         [Display(Name = "Team 2 Name")]
         public string Team2Name { get; set; }
-        [Display(Name = "Winning Team Name")]
+        [Display(Name = "Winning Team")]
         public string WinningTeamName { get; set; }
         [Display(Name = "Division")]
         public string Division { get; set; }
