@@ -3,18 +3,36 @@
 @{
     ViewData["Title"] = "Index";
 }
-<h2>Bracket</h2>
+
+<link rel="stylesheet" href="~/css/bracket.css" type="text/css" />
+<h1>Bracket</h1>
 @{
     if (Model != null) 
     {
-        foreach(var kv in Model) 
-        {
-            foreach(var t in kv.Value) 
-            {
-                var str = $"Round {kv.Key}, Team {t.TeamName}";
-                <p>@str</p>
+        <div class="bracket-container">
+            @{
+                foreach(var kv in Model) 
+                {
+                    <div class="round-container">
+                        <h4>Round @kv.Key</h4>
+                        @{
+                            for(int i = 0; i < kv.Value.Length-1; i+=2) {
+                                <div class="game-container">
+                                    <div class="game">
+                                        <div class="team">
+                                            @kv.Value[i].TeamName
+                                        </div>
+                                        <div class="team">
+                                            @kv.Value[i+1].TeamName
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                }
             }
-        }
+        </div>
     } else {
         <p>NOT SEEDED YET</p>
     }
