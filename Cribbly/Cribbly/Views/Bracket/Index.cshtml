@@ -8,7 +8,8 @@
     // TODO construct the bracket
     foreach(var kv in Model) {
         foreach(var t in kv.Value) {
-            <p>@{$"Round {kv.Key}, Team {t.TeamName}"}</p>
+            var str = $"Round {kv.Key}, Team {t.TeamName}";
+            <p>@str</p>
         }
     }
 }
