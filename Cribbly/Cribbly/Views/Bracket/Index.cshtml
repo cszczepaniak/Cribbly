@@ -5,11 +5,17 @@
 }
 <h2>Bracket</h2>
 @{
-    // TODO construct the bracket
-    foreach(var kv in Model) {
-        foreach(var t in kv.Value) {
-            var str = $"Round {kv.Key}, Team {t.TeamName}";
-            <p>@str</p>
+    if (Model != null) 
+    {
+        foreach(var kv in Model) 
+        {
+            foreach(var t in kv.Value) 
+            {
+                var str = $"Round {kv.Key}, Team {t.TeamName}";
+                <p>@str</p>
+            }
         }
+    } else {
+        <p>NOT SEEDED YET</p>
     }
 }
