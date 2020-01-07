@@ -23,7 +23,7 @@ namespace Cribbly.Models.Gameplay
     {
         public BracketPlaceholder()
         {
-            TeamName = "PLACEHOLDER";
+            TeamName = "";
         }
     }
 }
