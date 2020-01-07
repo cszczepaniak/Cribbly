@@ -31,8 +31,8 @@ namespace Cribbly.Controllers
     public class BracketController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private const int _numTeams = 32;
-        private const int _numRounds = 6;
+        private const int _numTeams = 16;
+        private const int _numRounds = 5;
 
         public BracketController(ApplicationDbContext context)
         {
@@ -48,7 +48,7 @@ namespace Cribbly.Controllers
 
         // This would ideally be a post method, but unsure how to actually
         // get the client to send a post at the moment.
-        
+
         //to do the above, you need to a) have your iActionResult take a parameter and b) declare what your data model will 
         //be in the view using @model. see my PostScore view for an example
         [HttpGet]
@@ -63,7 +63,7 @@ namespace Cribbly.Controllers
 
         // This would ideally be a post method, but unsure how to actually
         // get the client to send a post at the moment.
-        
+
         //to do the above, you need to a) have your iActionResult take a parameter and b) declare what your data model will 
         //be in the view using @model. see my PostScore view for an example
         [HttpGet]
@@ -81,7 +81,7 @@ namespace Cribbly.Controllers
 
         // This would ideally be a post method, but unsure how to actually
         // get the client to send a post at the moment.
-        
+
         //to do the above, you need to a) have your iActionResult take a parameter and b) declare what your data model will 
         //be in the view using @model. see my PostScore view for an example
         [HttpGet]
@@ -101,7 +101,7 @@ namespace Cribbly.Controllers
 
         // This would ideally be a post method, but unsure how to actually
         // get the client to send a post at the moment.
-        
+
         //to do the above, you need to a) have your iActionResult take a parameter and b) declare what your data model will 
         //be in the view using @model. see my PostScore view for an example
         [HttpGet]
@@ -172,7 +172,7 @@ namespace Cribbly.Controllers
             {
                 var thisRnd = new BracketTeam[nTeamsThisRound];
                 var prevRnd = b[round - 1];
-                for (int i = 0; i < prevRnd.Length; i += 2)
+                for (int i = 0; i < prevRnd.Length - 1; i += 2)
                 {
                     var t1 = prevRnd[i];
                     var t2 = prevRnd[i + 1];
@@ -193,7 +193,7 @@ namespace Cribbly.Controllers
                 nTeamsThisRound >>= 1;
                 round++;
             }
-            return null;
+            return b;
         }
     }
 }
