@@ -175,11 +175,11 @@ namespace Cribbly.Controllers
                 {
                     var t1 = prevRnd[i];
                     var t2 = prevRnd[i + 1];
-                    if (t1.Round == round)
+                    if (t1.Round >= round)
                     {
                         thisRnd[i / 2] = t1;
                     }
-                    else if (t2.Round == round)
+                    else if (t2.Round >= round)
                     {
                         thisRnd[i / 2] = t2;
                     }

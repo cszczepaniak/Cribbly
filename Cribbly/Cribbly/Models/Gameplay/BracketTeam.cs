@@ -24,6 +24,7 @@ namespace Cribbly.Models.Gameplay
         public BracketPlaceholder()
         {
             TeamName = "";
+            Round = 0;
         }
     }
 }
