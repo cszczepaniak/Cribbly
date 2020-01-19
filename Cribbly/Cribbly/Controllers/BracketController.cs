@@ -176,7 +176,7 @@ namespace Cribbly.Controllers
             var nTeamsThisRound = bTeams.Count >> 1;
             var round = 2;
             // Loop through to build bracket
-            while (nTeamsThisRound > 0)
+            while (nTeamsThisRound > 1)
             {
                 var thisRnd = new BracketTeam[nTeamsThisRound];
                 var prevRnd = b[round - 1];
