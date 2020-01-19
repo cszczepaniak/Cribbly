@@ -2,10 +2,6 @@
   text-transform: uppercase;
 }
 
-.game a {
-  text-decoration: none;
-}
-
 .bracket-container {
 }
 
@@ -40,6 +36,23 @@
   text-transform: uppercase;
   margin: auto 5px;
   padding: 5px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.team a {
+  padding: 1px;
+}
+
+.team-name {
+  flex: 5;
+  margin: auto 0;
+}
+.team-buttons {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .eliminated {

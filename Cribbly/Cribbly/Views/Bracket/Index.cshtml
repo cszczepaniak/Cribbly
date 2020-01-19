@@ -21,12 +21,30 @@
                                 var t2 = kv.Value[i+1];
                                 <div class="game-container">
                                     <div class="game">
-                                        <a class="team team-admin" href="@Url.Action("Advance", "Bracket", new{ round = kv.Key, seed = t1.Seed })">
-                                            <div class="@(@t1.IsEliminated() ? "eliminated" : "")">@t1.TeamName</div>
-                                        </a>
-                                        <a class="team team-admin" href="@Url.Action("Advance", "Bracket", new{ round = kv.Key, seed = t2.Seed })">
-                                            <div class="@(@t2.IsEliminated() ? "eliminated" : "")">@t2.TeamName</div>
-                                        </a>
+                                        <div class="team">
+                                            <div class="team-name">@t1.TeamName</div>
+                                            @{
+                                                if (t1.TeamName != "") 
+                                                {
+                                                    <div class="team-buttons">
+                                                        <a class="btn btn-sm" href="@Url.Action("Advance", "Bracket", new{ round = kv.Key, seed = t1.Seed })">adv.</a>
+                                                        <a class="btn btn-sm">unadv.</a>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                        <div class="team">
+                                            <div class="team-name">@t2.TeamName</div>
+                                            @{
+                                                if (t2.TeamName != "") 
+                                                {
+                                                    <div class="team-buttons">
+                                                        <a class="btn btn-sm" href="@Url.Action("Advance", "Bracket", new{ round = kv.Key, seed = t2.Seed })">adv.</a>
+                                                        <a class="btn btn-sm">unadv.</a>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             }
