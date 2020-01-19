@@ -9,12 +9,13 @@
 @{
     if (Model.Count > 0)
     {
+        <a class="btn" href="@Url.Action("Unseed", "Bracket")">UNSEED BRACKET</a>
         <div class="bracket-container">
             @{
                 foreach(var kv in Model) 
                 {
                     <div class="round-container">
-                        <h4>Round @kv.Key</h4>
+                        <h2>Round @kv.Key</h2>
                         @{
                             for(int i = 0; i < kv.Value.Length-1; i+=2) {
                                 var t1 = kv.Value[i];
@@ -54,6 +55,6 @@
             }
         </div>
     } else {
-        <p>NOT SEEDED YET</p>
+        <a class="btn" href="@Url.Action("Seed", "Bracket")">SEED BRACKET</a>
     }
 }
