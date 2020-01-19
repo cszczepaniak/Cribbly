@@ -31,6 +31,11 @@ namespace Cribbly.Controllers
         public IActionResult Seed()
         {
             var standings = _context.Standings.ToList();
+            if (standings.Count < _numTeams)
+            {
+                // ope, not enough standings, return early
+                return Redirect("/Bracket");
+            }
             _context.BracketTeams.AddRange(getBracketPool(standings));
             _context.SaveChanges();
             return Redirect("/Bracket");
@@ -96,7 +101,6 @@ namespace Cribbly.Controllers
         {
             var currSeed = 1;
             var bracketTeams = new List<BracketTeam>();
-            // TODO standings aren't set - do something in that case
             var divisions = standings.Select(s => s.Division).Distinct().Where(d => d != null).ToList();
             // First add the first team in each division to the bracket pool
             if (divisions.Count > 0)
