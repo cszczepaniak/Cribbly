@@ -88,14 +88,8 @@ namespace Cribbly.Controllers
         [Route("/Bracket/Advance/")]
         public IActionResult Advance(int round, int seed)
         {
-            //var team = _context.BracketTeams.Where(t => t.Seed == seed).First();
             var bracket = getBracket(_context.BracketTeams.ToList());
-            var teamsInRound = bracket[round];
-            var team = teamsInRound.Where(t => t.Seed == seed).First();
-            if (team == null)
-            {
-                throw new Exception("Team not found!");
-            }
+            var team = getTeamInRound(round, seed, bracket);
             if (team.Round < getNumRounds(_numTeams) && !team.IsEliminated())
             {
                 team.Round++;
@@ -112,11 +106,12 @@ namespace Cribbly.Controllers
         //be in the view using @model. see my PostScore view for an example
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("/Bracket/Unadvance/{seed}")]
-        public IActionResult Unadvance(int seed)
+        [Route("/Bracket/Unadvance/")]
+        public IActionResult Unadvance(int round, int seed)
         {
-            var team = _context.BracketTeams.Where(t => t.Seed == seed).First();
-            if (team.Round > 1)
+            var bracket = getBracket(_context.BracketTeams.ToList());
+            var team = getTeamInRound(round, seed, bracket);
+            if (team.Round > 1 && !team.IsEliminated())
             {
                 team.Round--;
                 _context.Update(team);
@@ -217,6 +212,17 @@ namespace Cribbly.Controllers
             }
             System.Console.WriteLine("###### NUM ROUNDS: " + n);
             return n;
+        }
+
+        private BracketTeam getTeamInRound(int round, int seed, Dictionary<int, BracketTeam[]> bracket)
+        {
+            var teamsInRound = bracket[round];
+            var team = teamsInRound.Where(t => t.Seed == seed).First();
+            if (team == null)
+            {
+                throw new Exception("Team not found!");
+            }
+            return team;
         }
     }
 }
