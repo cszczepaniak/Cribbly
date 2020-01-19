@@ -28,7 +28,7 @@
                                                 {
                                                     <div class="team-buttons">
                                                         <a class="btn btn-sm" href="@Url.Action("Advance", "Bracket", new{ round = kv.Key, seed = t1.Seed })">adv.</a>
-                                                        <a class="btn btn-sm">unadv.</a>
+                                                        <a class="btn btn-sm" href="@Url.Action("Unadvance", "Bracket", new{ round = kv.Key, seed = t1.Seed })">unadv.</a>
                                                     </div>
                                                 }
                                             }
@@ -40,7 +40,7 @@
                                                 {
                                                     <div class="team-buttons">
                                                         <a class="btn btn-sm" href="@Url.Action("Advance", "Bracket", new{ round = kv.Key, seed = t2.Seed })">adv.</a>
-                                                        <a class="btn btn-sm">unadv.</a>
+                                                        <a class="btn btn-sm" href="@Url.Action("Unadvance", "Bracket", new{ round = kv.Key, seed = t2.Seed })">unadv.</a>
                                                     </div>
                                                 }
                                             }
