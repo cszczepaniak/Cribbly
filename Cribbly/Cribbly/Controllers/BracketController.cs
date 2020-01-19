@@ -165,10 +165,13 @@ namespace Cribbly.Controllers
 
         private Dictionary<int, BracketTeam[]> getBracket(List<BracketTeam> teams)
         {
-            var bTeams = getFirstRound(teams);
-
-            // Add the first round to the dictionary
             var b = new Dictionary<int, BracketTeam[]>();
+            if (teams.Count == 0)
+            {
+                return b;
+            }
+            var bTeams = getFirstRound(teams);
+            // Add the first round to the dictionary
             b[1] = bTeams.ToArray();
             var nTeamsThisRound = bTeams.Count >> 1;
             var round = 2;
