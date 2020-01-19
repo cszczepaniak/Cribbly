@@ -27,8 +27,8 @@
                                                 if (t1.TeamName != "") 
                                                 {
                                                     <div class="team-buttons">
-                                                        <a class="btn btn-sm" href="@Url.Action("Advance", "Bracket", new{ round = kv.Key, seed = t1.Seed })">adv.</a>
-                                                        <a class="btn btn-sm" href="@Url.Action("Unadvance", "Bracket", new{ round = kv.Key, seed = t1.Seed })">unadv.</a>
+                                                        <a class="btn btn-sm" href="@(@kv.Key == t1.Round ? @Url.Action("Advance", "Bracket", new{ round = kv.Key, seed = t1.Seed }) : "")">adv.</a>
+                                                        <a class="btn btn-sm" href="@(@kv.Key == t1.Round ? @Url.Action("Unadvance", "Bracket", new{ round = kv.Key, seed = t1.Seed }) : "")">unadv.</a>
                                                     </div>
                                                 }
                                             }
@@ -39,8 +39,8 @@
                                                 if (t2.TeamName != "") 
                                                 {
                                                     <div class="team-buttons">
-                                                        <a class="btn btn-sm" href="@Url.Action("Advance", "Bracket", new{ round = kv.Key, seed = t2.Seed })">adv.</a>
-                                                        <a class="btn btn-sm" href="@Url.Action("Unadvance", "Bracket", new{ round = kv.Key, seed = t2.Seed })">unadv.</a>
+                                                        <a class="btn btn-sm" href="@(@kv.Key == t2.Round ? @Url.Action("Advance", "Bracket", new{ round = kv.Key, seed = t2.Seed }) : "")">adv.</a>
+                                                        <a class="btn btn-sm" href="@(@kv.Key == t2.Round ? @Url.Action("Unadvance", "Bracket", new{ round = kv.Key, seed = t2.Seed }) : "")">unadv.</a>
                                                     </div>
                                                 }
                                             }
