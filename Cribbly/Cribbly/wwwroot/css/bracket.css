@@ -2,9 +2,6 @@
   text-transform: uppercase;
 }
 
-.bracket-container {
-}
-
 .round-container {
   flex: 1;
   display: flex;
