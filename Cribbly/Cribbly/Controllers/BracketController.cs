@@ -178,7 +178,6 @@ namespace Cribbly.Controllers
                 numTeams >>= 1;
                 n++;
             }
-            System.Console.WriteLine("###### NUM ROUNDS: " + n);
             return n;
         }
 
