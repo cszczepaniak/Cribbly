@@ -7,23 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-/*
-TODO make this work
-
-Given a list of Standing objects resulting from the prelim games, we need
-to:
-  1. Pick 32 Standings based on their prelim performance
-  2. Assign a seed to these standings
-  3. Store the tournament teams in the db somehow
-  4. Be able to keep track of their tournament performance (are they moving on?)
-
-Model concept:
-- Seed (primary key in bracket table)
-- Team (has team name and team member info)
-- Round (which round is this team in currently?)
-
-*/
-
 namespace Cribbly.Controllers
 {
     public class BracketController : Controller
