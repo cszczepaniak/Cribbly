@@ -21,11 +21,17 @@
                                 var t2 = kv.Value[i+1];
                                 <div class="game-container">
                                     <div class="game">
-                                        <a class="team team-admin" href="@Url.Action("Advance", "Bracket", new{ seed = t1.Seed })">
-                                            @t1.TeamName
+                                        <a class="team team-admin" href="@Url.Action("Advance", "Bracket", new{ round = kv.Key, seed = t1.Seed })">
+                                            @{
+                                                var t1Str = t1.IsEliminated() ? "ELIMINATED" : t1.TeamName;
+                                            }
+                                            <div>@t1Str</div>
                                         </a>
-                                        <a class="team team-admin" href="@Url.Action("Advance", "Bracket", new{ seed = t2.Seed })">
-                                            @t2.TeamName
+                                        <a class="team team-admin" href="@Url.Action("Advance", "Bracket", new{ round = kv.Key, seed = t2.Seed })">
+                                            @{
+                                                var t2Str = t2.IsEliminated() ? "ELIMINATED" : t2.TeamName;
+                                            }
+                                            <div>@t2Str</div>
                                         </a>
                                     </div>
                                 </div>

@@ -9,6 +9,7 @@ namespace Cribbly.Models.Gameplay
         public int Seed { get; set; }
         public int Round { get; set; }
         public string TeamName { get; set; }
+        private bool eliminated { get; set; }
         public BracketTeam() { }
 
         public BracketTeam(int seed, string teamName)
@@ -16,6 +17,16 @@ namespace Cribbly.Models.Gameplay
             Seed = seed;
             TeamName = teamName;
             Round = 1;
+        }
+
+        public bool IsEliminated()
+        {
+            return eliminated;
+        }
+        public void Eliminate()
+        {
+            eliminated = true;
+            return;
         }
     }
 

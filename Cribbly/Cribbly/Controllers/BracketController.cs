@@ -85,11 +85,18 @@ namespace Cribbly.Controllers
         //be in the view using @model. see my PostScore view for an example
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("/Bracket/Advance/{seed}")]
-        public IActionResult Advance(int seed)
+        [Route("/Bracket/Advance/")]
+        public IActionResult Advance(int round, int seed)
         {
-            var team = _context.BracketTeams.Where(t => t.Seed == seed).First();
-            if (team.Round < getNumRounds(_numTeams))
+            //var team = _context.BracketTeams.Where(t => t.Seed == seed).First();
+            var bracket = getBracket(_context.BracketTeams.ToList());
+            var teamsInRound = bracket[round];
+            var team = teamsInRound.Where(t => t.Seed == seed).First();
+            if (team == null)
+            {
+                throw new Exception("Team not found!");
+            }
+            if (team.Round < getNumRounds(_numTeams) && !team.IsEliminated())
             {
                 team.Round++;
                 _context.Update(team);
@@ -116,6 +123,17 @@ namespace Cribbly.Controllers
                 _context.SaveChanges();
             }
             return Redirect("/Bracket");
+        }
+
+        private List<BracketTeam> getFirstRound(List<BracketTeam> teams)
+        {
+            var bTeams = new List<BracketTeam>();
+            for (int i = 0; i < teams.Count / 2; i++)
+            {
+                bTeams.Add(teams[i]);
+                bTeams.Add(teams[teams.Count - i - 1]);
+            }
+            return bTeams;
         }
 
         private List<BracketTeam> getBracketPool(List<Standing> standings)
@@ -152,14 +170,7 @@ namespace Cribbly.Controllers
 
         private Dictionary<int, BracketTeam[]> getBracket(List<BracketTeam> teams)
         {
-            // Sort seeds the way they would line up in the bracket
-            // i.e. with 32 teams: 1 plays 32, 2 plays 31, etc.
-            var bTeams = new List<BracketTeam>();
-            for (int i = 0; i < teams.Count / 2; i++)
-            {
-                bTeams.Add(teams[i]);
-                bTeams.Add(teams[teams.Count - i - 1]);
-            }
+            var bTeams = getFirstRound(teams);
 
             // Add the first round to the dictionary
             var b = new Dictionary<int, BracketTeam[]>();
@@ -178,10 +189,12 @@ namespace Cribbly.Controllers
                     if (t1.Round >= round)
                     {
                         thisRnd[i / 2] = t1;
+                        t2.Eliminate();
                     }
                     else if (t2.Round >= round)
                     {
                         thisRnd[i / 2] = t2;
+                        t1.Eliminate();
                     }
                     else
                     {
