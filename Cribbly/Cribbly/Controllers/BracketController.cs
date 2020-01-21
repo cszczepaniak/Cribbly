@@ -61,6 +61,10 @@ namespace Cribbly.Controllers
         {
             var bracket = getBracket(_context.BracketTeams.ToList());
             var team = getTeamInRound(round, seed, bracket);
+            if (team == null)
+            {
+                return Redirect("Teams/TeamNotFound");
+            }
             if (team.Round < getNumRounds(_numTeams) && !team.IsEliminated())
             {
                 team.Round++;
@@ -77,6 +81,10 @@ namespace Cribbly.Controllers
         {
             var bracket = getBracket(_context.BracketTeams.ToList());
             var team = getTeamInRound(round, seed, bracket);
+            if (team == null)
+            {
+                return Redirect("Teams/TeamNotFound");
+            }
             if (team.Round > 1 && !team.IsEliminated())
             {
                 team.Round--;
@@ -185,10 +193,6 @@ namespace Cribbly.Controllers
         {
             var teamsInRound = bracket[round];
             var team = teamsInRound.Where(t => t.Seed == seed).First();
-            if (team == null)
-            {
-                throw new Exception("Team not found!");
-            }
             return team;
         }
     }
