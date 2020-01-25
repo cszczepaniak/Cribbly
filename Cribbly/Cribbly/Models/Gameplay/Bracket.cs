@@ -6,10 +6,8 @@ namespace Cribbly.Models.Gameplay
 {
     public class Bracket
     {
-        // TODO 16 for testing purposes, change to 32
-        const int numTeams = 16;
-        // Calculated - log_2(numTeams)
-        const int numRounds = 4;
+        private int numTeams;
+        private int numRounds;
         public int NumTeams
         {
             get
@@ -19,13 +17,23 @@ namespace Cribbly.Models.Gameplay
         }
         public List<BracketTeam> Teams { get; set; }
         public Dictionary<int, BracketTeam[]> Rounds { get; private set; }
-        public Bracket(List<Standing> standings)
+        public Bracket(List<Standing> standings, List<PlayInGame> playInGames, int numTeams)
         {
-            Teams = seed(standings);
+            if ((int)Math.Ceiling(Math.Log((double)numTeams, 2.0)) ==
+                (int)Math.Floor(Math.Log((double)numTeams, 2.0)))
+            {
+                this.numTeams = numTeams;
+                numRounds = (int)Math.Log((double)numTeams, 2.0);
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+            Teams = seed(standings, playInGames);
             Rounds = buildBracket(Teams);
         }
 
-        private List<BracketTeam> seed(List<Standing> standings)
+        private List<BracketTeam> seed(List<Standing> standings, List<PlayInGame> playInGames)
         {
             var currSeed = 1;
             var bracketTeams = new List<BracketTeam>();
@@ -47,13 +55,19 @@ namespace Cribbly.Models.Gameplay
             }
             // Then fill the rest of the pool with top overall remaining teams
             var remaining = standings.OrderByDescending(s => s.TotalWinLoss);
-            var wildcards = remaining.Take(numTeams - bracketTeams.Count()).ToArray();
+            var wildcards = getWildcardTeams(standings, playInGames);
             foreach (var wc in wildcards)
             {
                 bracketTeams.Add(new BracketTeam(currSeed, wc.TeamName));
                 currSeed++;
             }
             return bracketTeams;
+        }
+
+        private List<Standing> getWildcardTeams(List<Standing> notInTourney, List<PlayInGame> playInGames)
+        {
+            // TODO do this lol
+            return null;
         }
 
         public BracketTeam Advance(BracketTeam team)
