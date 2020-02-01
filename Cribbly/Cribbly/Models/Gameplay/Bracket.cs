@@ -33,7 +33,7 @@ namespace Cribbly.Models.Gameplay
             Rounds = buildBracket(Teams);
         }
 
-        public BracketTeam Advance(BracketTeam team)
+        public bool Advance(BracketTeam team)
         {
             if (team.Round < numRounds)
             {
@@ -43,11 +43,12 @@ namespace Cribbly.Models.Gameplay
                 var opp = idx % 2 == 0 ? round[idx + 1] : round[idx - 1];
                 opp.Eliminate();
                 Rounds[team.Round][idx / 2] = team;
+                return true;
             }
-            return team;
+            return false;
         }
 
-        public BracketTeam Unadvance(BracketTeam team)
+        public bool Unadvance(BracketTeam team)
         {
             if (team.Round > 1)
             {
@@ -58,8 +59,9 @@ namespace Cribbly.Models.Gameplay
                 int prevRoundIdx = indexInRound(team, round);
                 var opp = prevRoundIdx % 2 == 0 ? round[prevRoundIdx + 1] : round[prevRoundIdx - 1];
                 opp.Uneliminate();
+                return true;
             }
-            return team;
+            return false;
         }
 
         private int indexInRound(BracketTeam team, BracketTeam[] round)

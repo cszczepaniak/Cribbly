@@ -13,6 +13,7 @@ namespace Cribbly.Controllers
     {
         private readonly ApplicationDbContext _context;
         private const int _numTeams = 16;
+        private Bracket bracket;
 
         public BracketController(ApplicationDbContext context)
         {
@@ -21,9 +22,11 @@ namespace Cribbly.Controllers
 
         public IActionResult Index()
         {
-            var teams = _context.BracketTeams.ToList();
-            var b = getBracket(teams);
-            return View(b);
+            if (bracket == null)
+            {
+                return View(new Dictionary<int, BracketTeam[]>());
+            }
+            return View(bracket.Rounds);
         }
 
         [HttpGet]
@@ -36,7 +39,8 @@ namespace Cribbly.Controllers
                 // ope, not enough standings, return early
                 return Redirect("/Bracket");
             }
-            _context.BracketTeams.AddRange(getBracketPool(standings));
+            bracket = new Bracket(standings, _numTeams);
+            _context.BracketTeams.AddRange(bracket.Teams);
             _context.SaveChanges();
             return Redirect("/Bracket");
         }
@@ -59,16 +63,15 @@ namespace Cribbly.Controllers
         [Route("/Bracket/Advance/")]
         public IActionResult Advance(int round, int seed)
         {
-            var bracket = getBracket(_context.BracketTeams.ToList());
-            var team = getTeamInRound(round, seed, bracket);
-            if (team == null)
+            if (bracket == null)
             {
-                return Redirect("Teams/TeamNotFound");
+                return Redirect("/Bracket");
             }
-            if (team.Round < getNumRounds(_numTeams) && !team.IsEliminated())
+            var bt = bracket.Rounds[round].Where(t => t.Seed == seed).First();
+            var ok = bracket.Advance(bt);
+            if (ok)
             {
-                team.Round++;
-                _context.Update(team);
+                _context.Update(bt);
                 _context.SaveChanges();
             }
             return Redirect("/Bracket");
@@ -78,40 +81,19 @@ namespace Cribbly.Controllers
         [Authorize(Roles = "Admin")]
         [Route("/Bracket/Unadvance/")]
         public IActionResult Unadvance(int round, int seed)
-        {
-            var bracket = getBracket(_context.BracketTeams.ToList());
-            var team = getTeamInRound(round, seed, bracket);
-            if (team == null)
+        { 
+            if (bracket == null)
             {
-                return Redirect("Teams/TeamNotFound");
+                return Redirect("/Bracket");
             }
-            if (team.Round > 1 && !team.IsEliminated())
+            var bt = bracket.Rounds[round].Where(t => t.Seed == seed).First();
+            var ok = bracket.Unadvance(bt);
+            if (ok)
             {
-                team.Round--;
-                _context.Update(team);
+                _context.Update(bt);
                 _context.SaveChanges();
             }
             return Redirect("/Bracket");
-        }
-
-
-
-        private int getNumRounds(int numTeams)
-        {
-            var n = 0;
-            while (numTeams > 1)
-            {
-                numTeams >>= 1;
-                n++;
-            }
-            return n;
-        }
-
-        private BracketTeam getTeamInRound(int round, int seed, Dictionary<int, BracketTeam[]> bracket)
-        {
-            var teamsInRound = bracket[round];
-            var team = teamsInRound.Where(t => t.Seed == seed).First();
-            return team;
         }
     }
 }
