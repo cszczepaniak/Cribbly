@@ -33,6 +33,34 @@ namespace Cribbly.Models.Gameplay
             Rounds = buildBracket(Teams);
         }
 
+        public BracketTeam Advance(BracketTeam team)
+        {
+            if (team.Round < numRounds)
+            {
+                var round = Rounds[team.Round];
+                team.Round++;
+                // find out which index this team is in the round
+                int idx = -1;
+                for (int i = 0; i < round.Length; i++)
+                {
+                    if (team.Seed == round[i].Seed)
+                    {
+                        idx = i;
+                        break;
+                    }
+                    if (idx == -1)
+                    {
+                        // didn't find the team - weird!
+                        throw new IndexOutOfRangeException();
+                    }
+                }
+                var opp = idx % 2 == 0 ? round[idx + 1] : round[idx - 1];
+                opp.Eliminate();
+                Rounds[team.Round][idx / 2] = team;
+            }
+            return team;
+        }
+
         private List<BracketTeam> seed(List<Standing> standings, List<PlayInGame> playInGames)
         {
             var currSeed = 1;
@@ -66,34 +94,6 @@ namespace Cribbly.Models.Gameplay
                 currSeed++;
             }
             return bracketTeams;
-        }
-
-        public BracketTeam Advance(BracketTeam team)
-        {
-            if (team.Round < numRounds)
-            {
-                var round = Rounds[team.Round];
-                team.Round++;
-                // find out which index this team is in the round
-                int idx = -1;
-                for (int i = 0; i < round.Length; i++)
-                {
-                    if (team.Seed == round[i].Seed)
-                    {
-                        idx = i;
-                        break;
-                    }
-                    if (idx == -1)
-                    {
-                        // didn't find the team - weird!
-                        throw new IndexOutOfRangeException();
-                    }
-                }
-                var opp = idx % 2 == 0 ? round[idx + 1] : round[idx - 1];
-                opp.Eliminate();
-                Rounds[team.Round][idx / 2] = team;
-            }
-            return team;
         }
 
         private Dictionary<int, BracketTeam[]> buildBracket(List<BracketTeam> teams)
