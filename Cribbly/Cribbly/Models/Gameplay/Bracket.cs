@@ -68,13 +68,6 @@ namespace Cribbly.Models.Gameplay
             return bracketTeams;
         }
 
-        private List<Standing> getWildcardTeams(List<Standing> notInTourney, List<PlayInGame> playInGames)
-        {
-            notInTourney.OrderByDescending(s => s.G1Score + s.G2Score + s.G3Score);
-            // TODO do this lol
-            return null;
-        }
-
         public BracketTeam Advance(BracketTeam team)
         {
             if (team.Round < numRounds)
