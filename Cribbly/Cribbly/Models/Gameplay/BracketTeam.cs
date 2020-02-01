@@ -26,7 +26,10 @@ namespace Cribbly.Models.Gameplay
         public void Eliminate()
         {
             eliminated = true;
-            return;
+        }
+        public void Uneliminate()
+        {
+            eliminated = false;
         }
     }
 
