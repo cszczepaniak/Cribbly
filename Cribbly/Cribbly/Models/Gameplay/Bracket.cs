@@ -39,26 +39,39 @@ namespace Cribbly.Models.Gameplay
             {
                 var round = Rounds[team.Round];
                 team.Round++;
-                // find out which index this team is in the round
-                int idx = -1;
-                for (int i = 0; i < round.Length; i++)
-                {
-                    if (team.Seed == round[i].Seed)
-                    {
-                        idx = i;
-                        break;
-                    }
-                    if (idx == -1)
-                    {
-                        // didn't find the team - weird!
-                        throw new IndexOutOfRangeException();
-                    }
-                }
+                int idx = indexInRound(team, round);
                 var opp = idx % 2 == 0 ? round[idx + 1] : round[idx - 1];
                 opp.Eliminate();
                 Rounds[team.Round][idx / 2] = team;
             }
             return team;
+        }
+
+        public BracketTeam Unadvance(BracketTeam team)
+        {
+            if (team.Round > 1)
+            {
+                var round = Rounds[team.Round];
+                int thisRoundIdx = indexInRound(team, round);
+                Rounds[team.Round][thisRoundIdx] = new BracketPlaceholder();
+                team.Round--;
+                int prevRoundIdx = indexInRound(team, round);
+                var opp = prevRoundIdx % 2 == 0 ? round[prevRoundIdx + 1] : round[prevRoundIdx - 1];
+                opp.Uneliminate();
+            }
+            return team;
+        }
+
+        private int indexInRound(BracketTeam team, BracketTeam[] round)
+        {
+            for (int i = 0; i < round.Length; i++)
+            {
+                if (team.Seed == round[i].Seed)
+                {
+                    return i;
+                }
+            }
+            throw new IndexOutOfRangeException();
         }
 
         private List<BracketTeam> seed(List<Standing> standings, List<PlayInGame> playInGames)
