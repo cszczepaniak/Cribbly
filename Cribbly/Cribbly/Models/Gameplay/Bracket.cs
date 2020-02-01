@@ -17,7 +17,7 @@ namespace Cribbly.Models.Gameplay
         }
         public List<BracketTeam> Teams { get; set; }
         public Dictionary<int, BracketTeam[]> Rounds { get; private set; }
-        public Bracket(List<Standing> standings, List<PlayInGame> playInGames, int numTeams)
+        public Bracket(List<Standing> standings, int numTeams)
         {
             if ((int)Math.Ceiling(Math.Log((double)numTeams, 2.0)) ==
                 (int)Math.Floor(Math.Log((double)numTeams, 2.0)))
@@ -29,7 +29,7 @@ namespace Cribbly.Models.Gameplay
             {
                 throw new ArgumentException();
             }
-            Teams = seed(standings, playInGames);
+            Teams = seed(standings);
             Rounds = buildBracket(Teams);
         }
 
@@ -74,7 +74,7 @@ namespace Cribbly.Models.Gameplay
             throw new IndexOutOfRangeException();
         }
 
-        private List<BracketTeam> seed(List<Standing> standings, List<PlayInGame> playInGames)
+        private List<BracketTeam> seed(List<Standing> standings)
         {
             var currSeed = 1;
             var bracketTeams = new List<BracketTeam>();
