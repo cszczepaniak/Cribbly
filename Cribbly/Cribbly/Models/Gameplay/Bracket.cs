@@ -37,7 +37,11 @@ namespace Cribbly.Models.Gameplay
         {
             var currSeed = 1;
             var bracketTeams = new List<BracketTeam>();
-            var divisions = standings.Select(s => s.Division).Distinct().Where(d => d != null).ToList();
+            var divisions = standings
+                .Select(s => s.Division)
+                .Distinct()
+                .Where(d => d != null)
+                .ToList();
             // First add the first team in each division to the bracket pool
             if (divisions.Count > 0)
             {
@@ -45,8 +49,7 @@ namespace Cribbly.Models.Gameplay
                 {
                     var divisionStandings = standings
                         .Where(s => s.Division.Equals(d))
-                        .OrderByDescending(s => s.TotalWins)
-                        .ThenByDescending(s => s.TotalWinLoss);
+                        .OrderByDescending(s => s.TotalWins);
                     var t = divisionStandings.First();
                     bracketTeams.Add(new BracketTeam(currSeed, t.TeamName));
                     currSeed++;
@@ -54,8 +57,9 @@ namespace Cribbly.Models.Gameplay
                 }
             }
             // Then fill the rest of the pool with top overall remaining teams
-            var remaining = standings.OrderByDescending(s => s.TotalWinLoss);
-            var wildcards = getWildcardTeams(standings, playInGames);
+            var wildcards = standings
+                .OrderByDescending(s => s.G1Score + s.G2Score + s.G3Score)
+                .Take(numTeams - bracketTeams.Count);
             foreach (var wc in wildcards)
             {
                 bracketTeams.Add(new BracketTeam(currSeed, wc.TeamName));
@@ -66,6 +70,7 @@ namespace Cribbly.Models.Gameplay
 
         private List<Standing> getWildcardTeams(List<Standing> notInTourney, List<PlayInGame> playInGames)
         {
+            notInTourney.OrderByDescending(s => s.G1Score + s.G2Score + s.G3Score);
             // TODO do this lol
             return null;
         }
