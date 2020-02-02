@@ -52,10 +52,11 @@ namespace Cribbly.Models.Gameplay
         {
             if (team.Round > 1)
             {
-                var round = Rounds[team.Round];
-                int thisRoundIdx = indexInRound(team, round);
+                int thisRoundIdx = indexInRound(team, Rounds[team.Round]);
                 Rounds[team.Round][thisRoundIdx] = new BracketPlaceholder();
                 team.Round--;
+
+                var round = Rounds[team.Round];
                 int prevRoundIdx = indexInRound(team, round);
                 var opp = prevRoundIdx % 2 == 0 ? round[prevRoundIdx + 1] : round[prevRoundIdx - 1];
                 opp.Uneliminate();
