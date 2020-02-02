@@ -101,7 +101,8 @@ namespace Cribbly.Models.Gameplay
             }
             // Then fill the rest of the pool with top overall remaining teams
             var wildcards = standings
-                .OrderByDescending(s => s.G1Score + s.G2Score + s.G3Score)
+                .OrderByDescending(s => s.TotalScoreCalc)
+                .ThenByDescending(s => s.TotalWins)
                 .Take(numTeams - bracketTeams.Count);
             foreach (var wc in wildcards)
             {

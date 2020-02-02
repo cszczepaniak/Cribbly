@@ -27,9 +27,10 @@ namespace Cribbly.Models
         public char G3WinLoss { get; set; }
         [Display(Name = "Total Score")]
         public int TotalScore { get; set; }
-        public int TotalWinLoss
+        // TODO merge TotalScore with TotalScoreCalc, but I don't want to break anything just now
+        public int TotalScoreCalc
         {
-            get { return (new int[] { G1WinLoss, G2WinLoss, G3WinLoss }).Sum(); }
+            get { return G1Score + G2Score + G3Score; }
         }
         public int TotalWins
         {
