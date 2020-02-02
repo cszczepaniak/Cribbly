@@ -4,6 +4,7 @@ using System.Text;
 using Xunit;
 using Cribbly.Models;
 using Cribbly.Models.Gameplay;
+using System.Linq;
 
 namespace Cribbly.Tests
 {
@@ -36,8 +37,49 @@ namespace Cribbly.Tests
         [Fact]
         public void TestAdvance()
         {
+            var standings = getMockStandings();
+            var bracket = new Bracket(standings, 8);
 
+            var teamToAdvance = getTeamInRound(bracket, 1, 1);
+            Assert.DoesNotContain(teamToAdvance, bracket.Rounds[2]);
+            Assert.False(bracket.Rounds[1][1].IsEliminated());
+            bracket.Advance(teamToAdvance);
+            Assert.Contains(teamToAdvance, bracket.Rounds[2]);
+            Assert.True(bracket.Rounds[1][1].IsEliminated());
+
+            teamToAdvance = getTeamInRound(bracket, 6, 1);
+            Assert.DoesNotContain(teamToAdvance, bracket.Rounds[2]);
+            Assert.False(bracket.Rounds[1][4].IsEliminated());
+            bracket.Advance(teamToAdvance);
+            Assert.Contains(teamToAdvance, bracket.Rounds[2]);
+            Assert.True(bracket.Rounds[1][4].IsEliminated());
         }
+
+        [Fact]
+        public void TestUnadvance()
+        {
+            var standings = getMockStandings();
+            var bracket = new Bracket(standings, 8);
+
+            // advance some teams
+            bracket.Advance(getTeamInRound(bracket, 1, 1));
+            bracket.Advance(getTeamInRound(bracket, 6, 1));
+
+            var team = getTeamInRound(bracket, 1, 2);
+            Assert.Contains(team, bracket.Rounds[2]);
+            Assert.True(bracket.Rounds[1][1].IsEliminated());
+            bracket.Unadvance(team);
+            Assert.DoesNotContain(team, bracket.Rounds[2]);
+            Assert.False(bracket.Rounds[1][1].IsEliminated());
+
+            team = getTeamInRound(bracket, 6, 2);
+            Assert.Contains(team, bracket.Rounds[2]);
+            Assert.True(bracket.Rounds[1][4].IsEliminated());
+            bracket.Unadvance(team);
+            Assert.DoesNotContain(team, bracket.Rounds[2]);
+            Assert.False(bracket.Rounds[1][4].IsEliminated());
+        }
+
         private List<Standing> getMockStandings()
         {
             return new List<Standing>()
@@ -53,6 +95,11 @@ namespace Cribbly.Tests
                 new Standing { Division="div1",TeamName="team8", G1Score=121, G2Score=96,  G3Score=112 }, // 329, 1-2
                 new Standing { Division="div1",TeamName="team9", G1Score=120, G2Score=120, G3Score=120 }, // 360, 0-3 but close games
             };
+        }
+
+        private BracketTeam getTeamInRound(Bracket bracket, int seed, int round)
+        {
+            return bracket.Rounds[round].Where(t => t.Seed == seed).First();
         }
     }
 
