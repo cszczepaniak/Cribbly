@@ -25,7 +25,7 @@
                                         <div class="team">
                                             <div class="team-name @(@t1.IsEliminated() && kv.Key == t1.Round ? "eliminated" : "")">@t1.TeamName</div>
                                             @{
-                                                if (t1.TeamName != "") 
+                                                if (t1.TeamName != "" && !t1.IsEliminated() && t1.Round == kv.Key) 
                                                 {
                                                     <div class="team-buttons">
                                                         <a class="btn btn-sm" href="@(@kv.Key == t1.Round ? @Url.Action("Advance", "Bracket", new{ round = kv.Key, seed = t1.Seed }) : "")">adv.</a>
@@ -37,7 +37,7 @@
                                         <div class="team">
                                             <div class="team-name @(@t2.IsEliminated() && kv.Key == t2.Round ? "eliminated" : "")">@t2.TeamName</div>
                                             @{
-                                                if (t2.TeamName != "") 
+                                                if (t2.TeamName != "" && !t2.IsEliminated() && t2.Round == kv.Key) 
                                                 {
                                                     <div class="team-buttons">
                                                         <a class="btn btn-sm" href="@(@kv.Key == t2.Round ? @Url.Action("Advance", "Bracket", new{ round = kv.Key, seed = t2.Seed }) : "")">adv.</a>
