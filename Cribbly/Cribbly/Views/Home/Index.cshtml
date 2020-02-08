@@ -31,13 +31,12 @@
                 <li class="list-group-item"><a asp-controller="Standings" asp-action="GetAllStandings"> View Tournament Standings</a></li>
                 <li class="list-group-item"><a asp-controller="Division" asp-action="Index">View Divisions</a></li>
                 <li class="list-group-item"><a asp-controller="Games" asp-action="Index">View Scheduled Games</a></li>
-                <li class="list-group-item"><a>View Bracket</a></li>
+                <li class="list-group-item"><a asp-controller="Bracket" asp-action="Index">View Bracket</a></li>
             </ul>
             <ul class="list-group">
                 <li class="list-group-item"><a asp-controller="Standings" asp-action="CreateStandingsSetup">Setup Standings</a></li>
                 <li class="list-group-item"><a asp-controller="Division" asp-action="Index">Setup Divisions</a></li>
                 <li class="list-group-item"><a asp-controller="Games" asp-action="CreateGamesSetup">Setup Play-In Games</a></li>
-                <li class="list-group-item"><a>Setup Bracket</a>
             </ul>
             <ul class="list-group">
                 <li class="list-group-item"><a asp-controller="Home" asp-action="ResetStandings">Reset Standings</a></li>
@@ -52,7 +51,7 @@
             <a class="btn" asp-controller="Teams" asp-action="MyTeam/@user.TeamId">My Team</a>
             <a class="btn" asp-controller="Division" asp-action="Index">View Divisions</a>
             <a class="btn" asp-controller="Standings" asp-action="GetAllStandings"> View Tournament Standings</a>
-            <a class="btn">Bracket</a>
+            <a class="btn" asp-controller="Bracket" asp-action="Index">Bracket</a>
         }
     </div>
     }
