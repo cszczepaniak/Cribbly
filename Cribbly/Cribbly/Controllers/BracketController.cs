@@ -18,15 +18,20 @@ namespace Cribbly.Controllers
         public BracketController(ApplicationDbContext context)
         {
             _context = context;
+            if (_context.BracketTeams.Count() > 0)
+            {
+                // the bracket has been seeded
+                bracket = new Bracket(_context.BracketTeams.ToList());
+            }
         }
 
         public IActionResult Index()
         {
-            if (bracket == null)
+            if (bracket != null)
             {
-                return View(new Dictionary<int, BracketTeam[]>());
+                return View(bracket.Rounds);
             }
-            return View(bracket.Rounds);
+            return View(new Dictionary<int, BracketTeam[]>());
         }
 
         [HttpGet]
@@ -81,7 +86,7 @@ namespace Cribbly.Controllers
         [Authorize(Roles = "Admin")]
         [Route("/Bracket/Unadvance/")]
         public IActionResult Unadvance(int round, int seed)
-        { 
+        {
             if (bracket == null)
             {
                 return Redirect("/Bracket");
