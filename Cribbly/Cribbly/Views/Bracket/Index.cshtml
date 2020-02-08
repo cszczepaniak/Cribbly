@@ -9,7 +9,10 @@
 @{
     if (Model.Count > 0)
     {
-        <a class="btn" href="@Url.Action("Unseed", "Bracket")">UNSEED BRACKET</a>
+        if (User.IsInRole("Admin"))
+        {
+            <a class="btn" href="@Url.Action("Unseed", "Bracket")">UNSEED BRACKET</a>
+        }
         <div class="bracket-container">
             @{
                 foreach(var kv in Model) 
@@ -25,7 +28,7 @@
                                         <div class="team">
                                             <div class="team-name @(@t1.IsEliminated() && kv.Key == t1.Round ? "eliminated" : "")">@t1.TeamName</div>
                                             @{
-                                                if (t1.TeamName != "" && !t1.IsEliminated() && t1.Round == kv.Key) 
+                                                if (t1.TeamName != "" && !t1.IsEliminated() && t1.Round == kv.Key && User.IsInRole("Admin")) 
                                                 {
                                                     <div class="team-buttons">
                                                         <a class="btn btn-sm" href="@(@kv.Key == t1.Round ? @Url.Action("Advance", "Bracket", new{ round = kv.Key, seed = t1.Seed }) : "")">adv.</a>
@@ -37,7 +40,7 @@
                                         <div class="team">
                                             <div class="team-name @(@t2.IsEliminated() && kv.Key == t2.Round ? "eliminated" : "")">@t2.TeamName</div>
                                             @{
-                                                if (t2.TeamName != "" && !t2.IsEliminated() && t2.Round == kv.Key) 
+                                                if (t2.TeamName != "" && !t2.IsEliminated() && t2.Round == kv.Key && User.IsInRole("Admin")) 
                                                 {
                                                     <div class="team-buttons">
                                                         <a class="btn btn-sm" href="@(@kv.Key == t2.Round ? @Url.Action("Advance", "Bracket", new{ round = kv.Key, seed = t2.Seed }) : "")">adv.</a>
@@ -54,7 +57,13 @@
                 }
             }
         </div>
-    } else {
-        <a class="btn" href="@Url.Action("Seed", "Bracket")">SEED BRACKET</a>
+    }
+    else
+    {
+        <h4><i>The bracket has not been seeded yet.</i></h4>
+        if (User.IsInRole("Admin"))
+        {
+            <a class="btn" href="@Url.Action("Seed", "Bracket")">SEED BRACKET</a>
+        }
     }
 }
