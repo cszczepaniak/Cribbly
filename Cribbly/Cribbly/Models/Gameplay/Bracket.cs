@@ -17,25 +17,37 @@ namespace Cribbly.Models.Gameplay
         }
         public List<BracketTeam> Teams { get; set; }
         public Dictionary<int, BracketTeam[]> Rounds { get; private set; }
-        public Bracket(List<Standing> standings, int numTeams)
+
+        // Use this constructor if the bracket has already been seeded
+        public Bracket(List<BracketTeam> teams)
         {
-            if ((int)Math.Ceiling(Math.Log((double)numTeams, 2.0)) ==
-                (int)Math.Floor(Math.Log((double)numTeams, 2.0)))
-            {
-                this.numTeams = numTeams;
-                numRounds = (int)Math.Log((double)numTeams, 2.0);
-            }
-            else
+            int numTeams = teams.Count();
+            if (!isPowerOfTwo(numTeams))
             {
                 throw new ArgumentException();
             }
+            this.numTeams = numTeams;
+            numRounds = (int)Math.Log(numTeams, 2.0);
+            Teams = teams;
+            Rounds = buildBracket(Teams);
+        }
+
+        // Use this constructor if the bracket has not been seeded
+        public Bracket(List<Standing> standings, int numTeams)
+        {
+            if (!isPowerOfTwo(numTeams))
+            {
+                throw new ArgumentException();
+            }
+            this.numTeams = numTeams;
+            numRounds = (int)Math.Log(numTeams, 2.0);
             Teams = seed(standings);
             Rounds = buildBracket(Teams);
         }
 
         public bool Advance(BracketTeam team)
         {
-            if (team.Round < numRounds)
+            if (team.Round < numRounds && !team.IsEliminated())
             {
                 var round = Rounds[team.Round];
                 team.Round++;
@@ -63,6 +75,11 @@ namespace Cribbly.Models.Gameplay
                 return true;
             }
             return false;
+        }
+
+        private bool isPowerOfTwo(int n)
+        {
+            return (int)Math.Ceiling(Math.Log(n, 2.0)) == (int)Math.Floor(Math.Log(n, 2.0));
         }
 
         private int indexInRound(BracketTeam team, BracketTeam[] round)
