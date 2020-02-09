@@ -1,18 +1,15 @@
-﻿using Cribbly.Data;
-using Cribbly.Models;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Cribbly.Data;
 using Cribbly.Models.Gameplay;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Cribbly.Controllers
 {
     public class BracketController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private const int _numTeams = 16;
         private Bracket bracket;
 
         public BracketController(ApplicationDbContext context)
@@ -39,12 +36,12 @@ namespace Cribbly.Controllers
         public IActionResult Seed()
         {
             var standings = _context.Standings.ToList();
-            if (standings.Count < _numTeams)
+            if (standings.Count < 2)
             {
                 // ope, not enough standings, return early
                 return Redirect("/Bracket");
             }
-            bracket = new Bracket(standings, _numTeams);
+            bracket = new Bracket(standings);
             _context.BracketTeams.AddRange(bracket.Teams);
             _context.SaveChanges();
             return Redirect("/Bracket");
