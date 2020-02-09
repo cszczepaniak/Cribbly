@@ -6,52 +6,40 @@ namespace Cribbly.Models.Gameplay
 {
     public class Bracket
     {
-        private int numTeams;
-        private int numRounds;
-        public int NumTeams
-        {
-            get
-            {
-                return numTeams;
-            }
-        }
+        private readonly int NumRounds;
+        public int NumTeams { get; private set; }
         public List<BracketTeam> Teams { get; set; }
         public Dictionary<int, BracketTeam[]> Rounds { get; private set; }
 
         // Use this constructor if the bracket has already been seeded
         public Bracket(List<BracketTeam> teams)
         {
-            int numTeams = teams.Count();
-            if (!isPowerOfTwo(numTeams))
+            if (!IsPowerOfTwo(teams.Count()))
             {
                 throw new ArgumentException();
             }
-            this.numTeams = numTeams;
-            numRounds = (int)Math.Log(numTeams, 2.0);
+            NumTeams = teams.Count();
+            NumRounds = (int)Math.Log(NumTeams, 2.0);
             Teams = teams;
-            Rounds = buildBracket(Teams);
+            Rounds = BuildBracket(Teams);
         }
 
         // Use this constructor if the bracket has not been seeded
-        public Bracket(List<Standing> standings, int numTeams)
+        public Bracket(List<Standing> standings)
         {
-            if (!isPowerOfTwo(numTeams))
-            {
-                throw new ArgumentException();
-            }
-            this.numTeams = numTeams;
-            numRounds = (int)Math.Log(numTeams, 2.0);
-            Teams = seed(standings);
-            Rounds = buildBracket(Teams);
+            NumRounds = (int)Math.Min(Math.Floor(Math.Log(standings.Count, 2)), 5);
+            NumTeams = 1 << NumRounds;
+            Teams = Seed(standings);
+            Rounds = BuildBracket(Teams);
         }
 
         public bool Advance(BracketTeam team)
         {
-            if (team.Round < numRounds && !team.IsEliminated())
+            if (team.Round < NumRounds && !team.IsEliminated())
             {
                 var round = Rounds[team.Round];
                 team.Round++;
-                int idx = indexInRound(team, round);
+                int idx = IndexInRound(team, round);
                 var opp = idx % 2 == 0 ? round[idx + 1] : round[idx - 1];
                 opp.Eliminate();
                 Rounds[team.Round][idx / 2] = team;
@@ -64,12 +52,12 @@ namespace Cribbly.Models.Gameplay
         {
             if (team.Round > 1)
             {
-                int thisRoundIdx = indexInRound(team, Rounds[team.Round]);
+                int thisRoundIdx = IndexInRound(team, Rounds[team.Round]);
                 Rounds[team.Round][thisRoundIdx] = new BracketPlaceholder();
                 team.Round--;
 
                 var round = Rounds[team.Round];
-                int prevRoundIdx = indexInRound(team, round);
+                int prevRoundIdx = IndexInRound(team, round);
                 var opp = prevRoundIdx % 2 == 0 ? round[prevRoundIdx + 1] : round[prevRoundIdx - 1];
                 opp.Uneliminate();
                 return true;
@@ -77,12 +65,12 @@ namespace Cribbly.Models.Gameplay
             return false;
         }
 
-        private bool isPowerOfTwo(int n)
+        private bool IsPowerOfTwo(int n)
         {
             return (int)Math.Ceiling(Math.Log(n, 2.0)) == (int)Math.Floor(Math.Log(n, 2.0));
         }
 
-        private int indexInRound(BracketTeam team, BracketTeam[] round)
+        private int IndexInRound(BracketTeam team, BracketTeam[] round)
         {
             for (int i = 0; i < round.Length; i++)
             {
@@ -94,7 +82,7 @@ namespace Cribbly.Models.Gameplay
             throw new IndexOutOfRangeException();
         }
 
-        private List<BracketTeam> seed(List<Standing> standings)
+        private List<BracketTeam> Seed(List<Standing> standings)
         {
             var currSeed = 1;
             var bracketTeams = new List<BracketTeam>();
@@ -121,7 +109,7 @@ namespace Cribbly.Models.Gameplay
             var wildcards = standings
                 .OrderByDescending(s => s.TotalScoreCalc)
                 .ThenByDescending(s => s.TotalWins)
-                .Take(numTeams - bracketTeams.Count);
+                .Take(NumTeams - bracketTeams.Count);
             foreach (var wc in wildcards)
             {
                 bracketTeams.Add(new BracketTeam(currSeed, wc.TeamName));
@@ -130,14 +118,14 @@ namespace Cribbly.Models.Gameplay
             return bracketTeams;
         }
 
-        private Dictionary<int, BracketTeam[]> buildBracket(List<BracketTeam> teams)
+        private Dictionary<int, BracketTeam[]> BuildBracket(List<BracketTeam> teams)
         {
             var b = new Dictionary<int, BracketTeam[]>();
             if (teams.Count == 0)
             {
                 return b;
             }
-            var bTeams = getFirstRound(teams);
+            var bTeams = GetFirstRound(teams);
             // Add the first round to the dictionary
             b[1] = bTeams.ToArray();
             var nTeamsThisRound = bTeams.Count >> 1;
@@ -173,7 +161,7 @@ namespace Cribbly.Models.Gameplay
             return b;
         }
 
-        private List<BracketTeam> getFirstRound(List<BracketTeam> teams)
+        private List<BracketTeam> GetFirstRound(List<BracketTeam> teams)
         {
             var bTeams = new List<BracketTeam>();
             for (int i = 0; i < teams.Count / 2; i++)

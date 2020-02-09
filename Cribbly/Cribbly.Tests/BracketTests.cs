@@ -11,10 +11,61 @@ namespace Cribbly.Tests
     public class BracketTests
     {
         [Fact]
+        public void TestNumTeams()
+        {
+            var standings = getMockStandings();
+            var bracket = new Bracket(standings);
+            Assert.Equal(8, bracket.NumTeams);
+            Assert.Equal(8, bracket.Teams.Count);
+
+            standings = new List<Standing>();
+            for (int i = 0; i < 2; i++)
+            {
+                var chunk = getMockStandings();
+                for (int j = 0; j < chunk.Count; j++)
+                {
+                    chunk[j].TeamName = $"team{i * 10 + j}";
+                }
+                standings.AddRange(chunk);
+            }
+            bracket = new Bracket(standings);
+            Assert.Equal(16, bracket.NumTeams);
+            Assert.Equal(16, bracket.Teams.Count);
+
+            standings = new List<Standing>();
+            for (int i = 0; i < 4; i++)
+            {
+                var chunk = getMockStandings();
+                for (int j = 0; j < chunk.Count; j++)
+                {
+                    chunk[j].TeamName = $"team{i * 10 + j}";
+                }
+                standings.AddRange(chunk);
+            }
+            bracket = new Bracket(standings);
+            Assert.Equal(32, bracket.NumTeams);
+            Assert.Equal(32, bracket.Teams.Count);
+
+            standings = new List<Standing>();
+            for (int i = 0; i < 7; i++)
+            {
+                var chunk = getMockStandings();
+                for (int j = 0; j < chunk.Count; j++)
+                {
+                    chunk[j].TeamName = $"team{i * 10 + j}";
+                }
+                standings.AddRange(chunk);
+            }
+            bracket = new Bracket(standings);
+            Assert.Equal(32, bracket.NumTeams);
+            Assert.Equal(32, bracket.Teams.Count);
+        }
+        [Fact]
         public void TestSeedBracket()
         {
             var standings = getMockStandings();
-            var bracket = new Bracket(standings, 8);
+            var bracket = new Bracket(standings);
+            Assert.Equal(8, bracket.NumTeams);
             var expTeams = new List<BracketTeam>()
             {
                 new BracketTeam { Round=1, Seed=1, TeamName="team0" },
@@ -38,7 +89,8 @@ namespace Cribbly.Tests
         public void TestAdvance()
         {
             var standings = getMockStandings();
-            var bracket = new Bracket(standings, 8);
+            var bracket = new Bracket(standings);
+            Assert.Equal(8, bracket.NumTeams);
 
             var teamToAdvance = getTeamInRound(bracket, 1, 1);
             Assert.DoesNotContain(teamToAdvance, bracket.Rounds[2]);
@@ -59,7 +111,8 @@ namespace Cribbly.Tests
         public void TestUnadvance()
         {
             var standings = getMockStandings();
-            var bracket = new Bracket(standings, 8);
+            var bracket = new Bracket(standings);
+            Assert.Equal(8, bracket.NumTeams);
 
             // advance some teams
             bracket.Advance(getTeamInRound(bracket, 1, 1));
