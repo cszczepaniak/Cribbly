@@ -21,13 +21,14 @@
 }
 
 .game {
-  border: 1px solid #ececec;
-  border-radius: 3px;
-  box-shadow: 2px 2px 4px #cccccc;
-  min-height: 70px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+    border: 1px solid #ececec;
+    border-radius: 3px;
+    box-shadow: 2px 2px 4px #cccccc;
+    min-height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background-color: #bf876cc4 !important;
 }
 
 .team {

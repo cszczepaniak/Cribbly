@@ -29,3 +29,7 @@ tr.divTeams {
 .green-bg {
     background-color: #29a129;
 }
+
+.isSeeded {
+    background-color: #bf876cc4 !important;
+}

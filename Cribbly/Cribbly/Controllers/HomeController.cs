@@ -70,6 +70,9 @@ namespace Cribbly.Controllers
             var teams = _context.Teams.ToList();
             _context.Teams.RemoveRange(teams);
 
+            var bracketTeams = _context.BracketTeams.ToList();
+            _context.BracketTeams.RemoveRange(bracketTeams);
+
             var players = _context.ApplicationUsers.ToList();
             foreach (var player in players)
             {

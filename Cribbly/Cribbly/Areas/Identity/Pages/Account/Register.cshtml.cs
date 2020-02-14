@@ -111,6 +111,9 @@ namespace Cribbly.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     //Send confirmation email
+                    /*
+                     * Might have users get an email sent later
+                     * 
                     string api = "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";
                     var client = new SendGridClient(api);
                     var from = new EmailAddress("szcz0047@umn.edu", "Cribbly Admin");
@@ -131,7 +134,7 @@ namespace Cribbly.Areas.Identity.Pages.Account
                     );
 
                     var response = await client.SendEmailAsync(msg);
-
+                    */
                     //Sign in and redirect to home page
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);

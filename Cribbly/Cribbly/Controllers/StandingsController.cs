@@ -6,6 +6,7 @@ using System.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Cribbly.Data;
 using Cribbly.Models;
+using Cribbly.Models.Gameplay;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Routing;
@@ -16,6 +17,7 @@ namespace Cribbly.Controllers
     public class StandingsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        public List<Standing> standings;
 
         public StandingsController(ApplicationDbContext context)
         {
@@ -29,16 +31,17 @@ namespace Cribbly.Controllers
          */
         public IActionResult GetAllStandings()
         {
-            //Find all standings 
+            //Get all standings
             var standings = _context.Standings.OrderByDescending(m => m.TotalScore).ToList();
-            //Return all results to the view
             return View(standings);
         }
 
         [Authorize(Roles = "Admin")]
         public IActionResult StandingsDisplay()
         {
-            //Find all standings 
+
+            updateSeeds();
+            //Get all standings
             var standings = _context.Standings.OrderByDescending(m => m.TotalScore).ToList();
             Response.Headers.Add("Refresh", "25");
             //Return all results to the view
@@ -174,6 +177,26 @@ namespace Cribbly.Controllers
                 _context.SaveChanges();
             }
             return RedirectToAction(nameof(GetAllStandings));
+        }
+
+        private void updateSeeds()
+        {
+            var oldSeeds = _context.Standings.Where(m => m.Seed == 1);
+            foreach (var seed in oldSeeds)
+            {
+                seed.Seed = 0;
+            }
+            var standings = _context.Standings.OrderByDescending(m => m.TotalScore).ToList();
+            Bracket bracket = new Bracket(standings);
+            List<BracketTeam> teamsInTourney = bracket.Teams;
+
+            foreach (var team in teamsInTourney)
+            {
+                var standingObj = _context.Standings.FirstOrDefault(m => m.TeamName == team.TeamName);
+                standingObj.Seed = 1;
+            }
+
+            _context.SaveChanges();
         }
     }
 }

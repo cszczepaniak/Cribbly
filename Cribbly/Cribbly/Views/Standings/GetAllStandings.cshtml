@@ -31,14 +31,28 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <th>@Html.DisplayFor(modelItem => item.TeamName)</th>
-                <td>@Html.DisplayFor(modelItem => item.Division)</td>
-                <td>@Html.DisplayFor(modelItem => item.G1Score) (@Html.DisplayFor(modelItem => item.G1WinLoss))</td>
-                <td>@Html.DisplayFor(modelItem => item.G2Score) (@Html.DisplayFor(modelItem => item.G2WinLoss))</td>
-                <td>@Html.DisplayFor(modelItem => item.G3Score) (@Html.DisplayFor(modelItem => item.G3WinLoss))</td>
-                <th>@Html.DisplayFor(modelItem => item.TotalScore)</th>
-            </tr>
+            if (item.Seed == 1)
+            {
+                <tr class="isSeeded">
+                    <th>@Html.DisplayFor(modelItem => item.TeamName)</th>
+                    <td>@Html.DisplayFor(modelItem => item.Division)</td>
+                    <td>@Html.DisplayFor(modelItem => item.G1Score) (@Html.DisplayFor(modelItem => item.G1WinLoss))</td>
+                    <td>@Html.DisplayFor(modelItem => item.G2Score) (@Html.DisplayFor(modelItem => item.G2WinLoss))</td>
+                    <td>@Html.DisplayFor(modelItem => item.G3Score) (@Html.DisplayFor(modelItem => item.G3WinLoss))</td>
+                    <th>@Html.DisplayFor(modelItem => item.TotalScore)</th>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <th>@Html.DisplayFor(modelItem => item.TeamName)</th>
+                    <td>@Html.DisplayFor(modelItem => item.Division)</td>
+                    <td>@Html.DisplayFor(modelItem => item.G1Score) (@Html.DisplayFor(modelItem => item.G1WinLoss))</td>
+                    <td>@Html.DisplayFor(modelItem => item.G2Score) (@Html.DisplayFor(modelItem => item.G2WinLoss))</td>
+                    <td>@Html.DisplayFor(modelItem => item.G3Score) (@Html.DisplayFor(modelItem => item.G3WinLoss))</td>
+                    <th>@Html.DisplayFor(modelItem => item.TotalScore)</th>
+                </tr>
+            }
         }
     </tbody>
 </table>
