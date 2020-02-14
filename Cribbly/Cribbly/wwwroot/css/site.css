@@ -1,37 +1,51 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
-for details on configuring this project to bundle and minify static web assets. */
-body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-}
-
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
-}
-
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
+﻿.body-content {
+    color: black;
+    padding: 50px 15px 20px 15px;
     width: 100%;
 }
 
-/* QR code generator */
-#qrCode {
-    margin: 15px;
+h2, h3, h4, h5, h6 {
+    font-family: 'Times New Roman', Times, serif;
 }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
+a {
+    color: maroon;
 }
+
+p {
+    font-size: 11px !important;
+}
+
+table, dl {
+    background-color: #c5b493c4;
+}
+
+dl {
+    text-align: center;
+}
+
+.form-control {
+    background-color: #825a20;
+    color: white;
+}
+
+body:not(nav) {
+    background-image: url("../images/wood_bg.jpg");
+}
+
+.navbar {
+    background-color: rgba(93, 47, 1, 0.99);
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #f1f1f1;
+}
+
+.btn:not(.navbar-btn) {
+    background-color: #825a20;
+    color: white;
+    border: 2px solid #4c290c;
+}
+
+
+

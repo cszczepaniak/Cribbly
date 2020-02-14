@@ -10,17 +10,6 @@ namespace Cribbly.Models
     {
         RoleManager<IdentityRole> _rolemanager;
 
-        public bool AdminTag(string lastName)
-        {
-            string a = "_admin";
-            if (lastName == a) {
-                return true;
-            } else
-            {
-                return false;
-            }
-        }
-
         public async Task CreateRoles()
         {
             if (!await _rolemanager.RoleExistsAsync("Admin"))

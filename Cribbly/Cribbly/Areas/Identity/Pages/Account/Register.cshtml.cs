@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace Cribbly.Areas.Identity.Pages.Account
 {
@@ -21,20 +23,17 @@ namespace Cribbly.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
-        //private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             RoleManager<IdentityRole> roleManager,
-            ILogger<RegisterModel> logger)//,  
-            //IEmailSender emailSender)
+            ILogger<RegisterModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _logger = logger;
-            //_emailSender = emailSender;
         }
 
         [BindProperty]
@@ -100,17 +99,8 @@ namespace Cribbly.Areas.Identity.Pages.Account
                     var roleInit = new RoleInit(_roleManager);
                     await roleInit.CreateRoles();
 
-                    //Give them the role of "user", unless they pass the AdminTag test
-                    if (roleInit.AdminTag(Input.LastName))
-                    {
-
-                        IdentityResult addAdmin = await _userManager.AddToRoleAsync(user, "Admin");
-
-                    }
-                    else
-                    {
-                        IdentityResult addUser = await _userManager.AddToRoleAsync(user, "User");
-                    };
+                    //Give them the role of "user"
+                    IdentityResult addUser = await _userManager.AddToRoleAsync(user, "User");
 
                     _logger.LogInformation("User created a new account with password.");
                     
@@ -121,9 +111,30 @@ namespace Cribbly.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     //Send confirmation email
-                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        //$"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    /*
+                     * Might have users get an email sent later
+                     * 
+                    string api = "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";
+                    var client = new SendGridClient(api);
+                    var from = new EmailAddress("szcz0047@umn.edu", "Cribbly Admin");
+                    var to = new EmailAddress(Input.Email);
+                    var subject = "Welcome to Cribbly!";
+                    var body = "Hello!" +
+                        "" +
+                        "Thanks for participating in this year's Cribbage tournament. " +
+                        "" +
 
+                        "Please confirm your account by <a href=" + HtmlEncoder.Default.Encode(callbackUrl) + ">clicking here</a>.";
+                    var msg = MailHelper.CreateSingleEmail(
+                        from,
+                        to, 
+                        subject, 
+                        null,
+                        body
+                    );
+
+                    var response = await client.SendEmailAsync(msg);
+                    */
                     //Sign in and redirect to home page
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);

@@ -12,10 +12,6 @@
 <h2>Tournament Standings</h2>
 
 <hr />
-@if(User.IsInRole("Admin"))
-{
-    <a class="btn" asp-action="StandingsDisplay">Display Friendly</a>
-}
 
 <table class="table table-responsive">
     <thead>
@@ -55,4 +51,5 @@
             }
         }
     </tbody>
+
 </table>

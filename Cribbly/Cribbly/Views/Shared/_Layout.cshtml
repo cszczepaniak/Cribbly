@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Cribbly</title>
 
+    @if (IsSectionDefined("cssLink"))
+    {
+        @RenderSection("cssLink", required: false);
+    }
+
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
@@ -21,11 +26,11 @@
         <partial name="_Navbar" />
     </nav>
 
-    <div class="container body-content">
+    <div class="body-content container">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2019 - Cribbly</p>
+            <p>&copy; 2019 - Adam and Connor Szczepaniak</p>
         </footer>
     </div>
 
