@@ -24,7 +24,7 @@
 
                     if (user.HasTeam == true)
                     {
-                        <li><a asp-controller="Teams" asp-action="MyTeam/@user.TeamId">My Team</a></li>
+                        <li><a asp-controller="Teams" asp-action="MyTeam" asp-route-id="@user.TeamId">My Team</a></li>
                     };
 
                     if (user.HasTeam == false)

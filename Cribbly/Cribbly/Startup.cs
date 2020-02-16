@@ -84,7 +84,7 @@ namespace Cribbly
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
-                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}");
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
 
         }
