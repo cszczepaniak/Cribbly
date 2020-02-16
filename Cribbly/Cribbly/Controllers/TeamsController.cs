@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Cribbly.Data;
@@ -17,10 +18,12 @@ namespace Cribbly.Controllers
     public class TeamsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _user;
 
-        public TeamsController(ApplicationDbContext context)
+        public TeamsController(ApplicationDbContext context, UserManager<IdentityUser> user)
         {
             _context = context;
+            _user = user;
         }
 
         /*
@@ -30,9 +33,7 @@ namespace Cribbly.Controllers
          */
 
         // GET: Teams
-        //User must be Admin to access
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AdminView()
+        public async Task<IActionResult> AllTeams()
         {
             return View(await _context.Teams.ToListAsync());
         }
@@ -46,6 +47,8 @@ namespace Cribbly.Controllers
         // GET: Teams/MyTeam
         public async Task<IActionResult> MyTeam(int id)
         {
+            var loggedInUser = _context.ApplicationUsers.FirstOrDefault(m => m.Email == _user.GetUserName(User));
+
             //User does not have a TeamID yet
             if (id == 0)
             {
@@ -61,12 +64,17 @@ namespace Cribbly.Controllers
             {
                 return RedirectToAction(nameof(TeamNotFound));
             }
+            //Return 401 if the id in URL does not match the team ID of the logged in user
+            if (team.Id != loggedInUser.TeamId)
+            {
+                return StatusCode(401);
+            }
             //Get the user's team's standing
-            List<Standing> userStanding = _context.Standings.Where(m => m.TeamName == team.Name).ToList();
+            Standing userStanding = _context.Standings.FirstOrDefault(m => m.id == team.Id);
             List<PlayInGame> userGames = _context.PlayInGames.Where(m => m.Team1Id == id || m.Team2Id == id).ToList();
             List<_3WayGame> user3wayGames = _context.PlayInGames.OfType<_3WayGame>().Where(m => m.Team1Id == id || m.Team2Id == id).ToList();
             //Instantiaste UserDataView object to pass to the view
-            UserDataView data = new UserDataView(_context, team, userStanding[0], userGames, user3wayGames);
+            UserDataView data = new UserDataView(_context, team, userStanding, userGames, user3wayGames);
             //No errors, return View with team obj
             return View(data);
         }
@@ -152,8 +160,15 @@ namespace Cribbly.Controllers
             {
                 return NotFound();
             }
-            //Find team
 
+            var loggedInUser = _context.ApplicationUsers.FirstOrDefault(m => m.Email == _user.GetUserName(User));
+            //Return 401 if the id in URL does not match the team ID of the logged in user
+            if (id != loggedInUser.TeamId)
+            {
+                return StatusCode(401);
+            }
+
+            //Find team
             var team = await _context.Teams.FindAsync(id);
 
             //Something went wrong fetching the data, return 404
@@ -178,14 +193,19 @@ namespace Cribbly.Controllers
             //Data validated, update DB with changes
             if (ModelState.IsValid)
             {
+                _context.Update(team);
+
                 try
                 {
                     //Get the team's Standing 
                     Standing standingName = _context.Standings.Find(team.Id);
                     //Update DB
                     standingName.TeamName = team.Name;
-                    _context.Update(team);
+                }
+                catch (NullReferenceException)
+                {
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(MyTeam), new { id = team.Id });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -199,10 +219,11 @@ namespace Cribbly.Controllers
                         throw;
                     }
                 }
+                await _context.SaveChangesAsync();
                 //If user is an admin, go back to the AdminView route
                 if (User.IsInRole("Admin"))
                 {
-                    return RedirectToAction(nameof(AdminView));
+                    return RedirectToAction(nameof(AllTeams));
                 }
                 //If they are a regular user, redirect to the MyTeam page
                 else
@@ -220,7 +241,7 @@ namespace Cribbly.Controllers
         * DELETE YOUR TEAM
         * ==============================
         */
-
+        [Authorize(Roles = "Admin")]
         // GET: Teams/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

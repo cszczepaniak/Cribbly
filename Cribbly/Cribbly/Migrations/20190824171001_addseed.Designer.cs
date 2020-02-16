@@ -3,85 +3,26 @@ using System;
 using Cribbly.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cribbly.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190824171001_addseed")]
+    partial class addseed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Cribbly.Models.Gameplay.Bracket", b =>
-            modelBuilder.Entity("Cribbly.Models.Division", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("IsSeeded");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Bracket");
-                    b.Property<string>("DivName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Divisions");
-                }));
-
-            modelBuilder.Entity("Cribbly.Models.Gameplay.PlayInGame", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
-                    b.Property<string>("Division");
-
-                    b.Property<int>("GameNumber");
-
-                    b.Property<DateTime>("LastUpdated");
-
-                    b.Property<int>("ScoreDifference");
-
-                    b.Property<int>("Team1Id");
-
-                    b.Property<string>("Team1Name");
-
-                    b.Property<int>("Team1TotalScore");
-
-                    b.Property<int>("Team2Id");
-
-                    b.Property<string>("Team2Name");
-
-                    b.Property<int>("Team2TotalScore");
-
-                    b.Property<string>("UpdatedBy");
-
-                    b.Property<int>("WinningTeamId");
-
-                    b.Property<string>("WinningTeamName");
-
-                    b.HasKey("id");
-
-                    b.ToTable("PlayInGames");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("PlayInGame");
-                });
-
             modelBuilder.Entity("Cribbly.Models.Standing", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("BracketId");
 
                     b.Property<string>("Division");
 
@@ -110,8 +51,6 @@ namespace Cribbly.Migrations
                     b.Property<int>("TotalScore");
 
                     b.HasKey("id");
-
-                    b.HasIndex("BracketId");
 
                     b.ToTable("Standings");
                 });
@@ -298,21 +237,6 @@ namespace Cribbly.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Cribbly.Models.Gameplay._3WayGame", b =>
-                {
-                    b.HasBaseType("Cribbly.Models.Gameplay.PlayInGame");
-
-                    b.Property<int>("Team3Id");
-
-                    b.Property<string>("Team3Name");
-
-                    b.Property<int>("Team3TotalScore");
-
-                    b.ToTable("_3WayGame");
-
-                    b.HasDiscriminator().HasValue("_3WayGame");
-                });
-
             modelBuilder.Entity("Cribbly.Models.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -328,13 +252,6 @@ namespace Cribbly.Migrations
                     b.ToTable("ApplicationUser");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
-                });
-
-            modelBuilder.Entity("Cribbly.Models.Standing", b =>
-                {
-                    b.HasOne("Cribbly.Models.Gameplay.Bracket")
-                        .WithMany("Teams")
-                        .HasForeignKey("BracketId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

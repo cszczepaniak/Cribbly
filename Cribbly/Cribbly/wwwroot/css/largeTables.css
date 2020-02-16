@@ -1,0 +1,35 @@
+﻿td {
+    font-size: 10px;
+}
+
+thead th, tr.headRow {
+    font-size: 8px;
+    background-color: #333333 !important;
+    color: white;
+}
+
+tbody tr th {
+    font-size: 11px;
+    color: white;
+    font-weight: 600;
+}
+
+tr.divTeams {
+    background-color: #e6a04891 !important;
+}
+
+.red-bg {
+    background-color: #d51e1e;
+}
+
+.blue-bg {
+    background-color: #6060ff;
+}
+
+.green-bg {
+    background-color: #29a129;
+}
+
+.isSeeded {
+    background-color: #bf876cc4 !important;
+}
