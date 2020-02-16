@@ -68,7 +68,7 @@ namespace Cribbly
                 app.UseHsts();
             }
             app.UseRouting();
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
