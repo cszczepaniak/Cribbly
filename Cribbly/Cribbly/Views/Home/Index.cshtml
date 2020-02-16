@@ -48,7 +48,7 @@
         else
         {
             <a class="btn" asp-controller="Teams" asp-action="AllTeams">Teams</a>
-            <a class="btn" asp-controller="Teams" asp-action="MyTeam/@user.TeamId">My Team</a>
+            <a class="btn" asp-controller="Teams" asp-action="MyTeam" asp-route-id="@user.TeamId">My Team</a>
             <a class="btn" asp-controller="Division" asp-action="Index">View Divisions</a>
             <a class="btn" asp-controller="Standings" asp-action="GetAllStandings"> View Tournament Standings</a>
             <a class="btn" asp-controller="Bracket" asp-action="Index">Bracket</a>
