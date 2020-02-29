@@ -48,6 +48,7 @@ namespace Cribbly
                 options.Password.RequireNonAlphanumeric = false;
             })
                 .AddRoles<IdentityRole>()
+                .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);

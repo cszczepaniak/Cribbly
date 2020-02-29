@@ -43,10 +43,14 @@ namespace Cribbly.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [StringLength(20, ErrorMessage = "Is your first name really more than 20 characters?")]
+            [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Names can only include letters")]
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
 
             [Required]
+            [StringLength(20, ErrorMessage = "Is your last name really more than 20 characters?")]
+            [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Names can only include letters")]
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
 

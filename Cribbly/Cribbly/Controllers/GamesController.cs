@@ -218,7 +218,6 @@ namespace Cribbly.Controllers
         {
             string username = _context.ApplicationUsers.FirstOrDefault(m => m.Email == _userManager.GetUserName(User)).UserName;
 
-            //Client side validation logic ensures data is clean
             //Find your team's standing
             var standing = _context.Standings.FirstOrDefault(m => m.id == model.TeamId);
             //Find the correct PlayInGame object
