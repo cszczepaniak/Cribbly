@@ -349,10 +349,15 @@ namespace Cribbly.Controllers
          */
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult EditGame(int? id)
+        public IActionResult Edit(int? id)
         {
             //Return the team that matches the appropriate Id
-            return View();
+            var game = _context.PlayInGames.Where(g => g.id == id).FirstOrDefault();
+            if (game == null)
+            {
+                return StatusCode(404);
+            }
+            return View(game);
         }
         /*
          * ==============================
@@ -361,10 +366,27 @@ namespace Cribbly.Controllers
          */
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult SaveGame()
+        public IActionResult Save(PlayInGame formGame)
         {
-            //Return the team that matches the appropriate Id
-            return View();
+            var game = _context.PlayInGames.Where(g => g.id == formGame.id).FirstOrDefault();
+            if (game == null)
+            {
+                return StatusCode(404);
+            }
+            game.Team1TotalScore = formGame.Team1TotalScore;
+            game.Team2TotalScore = formGame.Team2TotalScore;
+            game.ScoreDifference = game.Team1TotalScore - game.Team2TotalScore;
+            if (game.ScoreDifference < 0)
+            {
+                game.ScoreDifference *= -1;
+            }
+            game.WinningTeamId = game.Team1TotalScore == 121 ? game.Team1Id : game.Team2Id;
+            game.LastUpdated = DateTime.Now;
+            game.UpdatedBy = User.Identity.Name;
+
+            _context.Update(game);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
     }
 }
