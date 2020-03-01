@@ -373,6 +373,7 @@ namespace Cribbly.Controllers
             {
                 return StatusCode(404);
             }
+            // First edit the game
             game.Team1TotalScore = formGame.Team1TotalScore;
             game.Team2TotalScore = formGame.Team2TotalScore;
             game.ScoreDifference = game.Team1TotalScore - game.Team2TotalScore;
@@ -383,8 +384,44 @@ namespace Cribbly.Controllers
             game.WinningTeamId = game.Team1TotalScore == 121 ? game.Team1Id : game.Team2Id;
             game.LastUpdated = DateTime.Now;
             game.UpdatedBy = User.Identity.Name;
-
             _context.Update(game);
+
+            // Then edit the standings
+            var s1 = _context.Standings.Where(s => s.TeamName == game.Team1Name).First();
+            var s2 = _context.Standings.Where(s => s.TeamName == game.Team2Name).First();
+            switch (game.GameNumber)
+            {
+                case 1:
+                    s1.G1Score = game.Team1TotalScore;
+                    s1.TotalScore = s1.TotalScoreCalc;
+                    s1.G1WinLoss = s1.G1Score == 121 ? 'W' : 'L';
+
+                    s2.G1Score = game.Team2TotalScore;
+                    s2.TotalScore = s2.TotalScoreCalc;
+                    s2.G1WinLoss = s2.G1Score == 121 ? 'W' : 'L';
+                    break;
+                case 2:
+                    s1.G2Score = game.Team1TotalScore;
+                    s1.TotalScore = s1.TotalScoreCalc;
+                    s1.G2WinLoss = s1.G1Score == 121 ? 'W' : 'L';
+
+                    s2.G2Score = game.Team2TotalScore;
+                    s2.TotalScore = s2.TotalScoreCalc;
+                    s2.G2WinLoss = s2.G1Score == 121 ? 'W' : 'L';
+                    break;
+                case 3:
+                    s1.G3Score = game.Team1TotalScore;
+                    s1.TotalScore = s1.TotalScoreCalc;
+                    s1.G3WinLoss = s1.G1Score == 121 ? 'W' : 'L';
+
+                    s2.G3Score = game.Team2TotalScore;
+                    s2.TotalScore = s2.TotalScoreCalc;
+                    s2.G3WinLoss = s2.G1Score == 121 ? 'W' : 'L';
+                    break;
+            }
+            _context.Update(s1);
+            _context.Update(s2);
+
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
