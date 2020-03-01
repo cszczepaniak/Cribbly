@@ -14,7 +14,7 @@ namespace Cribbly.Models.ViewModels
         public int GameNumber { get; set; }
         public int TeamId { get; set; }
         public string TeamName { get; set; }
-        public int TotalScore { get; set; }
-        public PlayInGame Game { get; set; }
+        public Standing standing { get; set; }
+        public List<PlayInGame> Games { get; set; }
     }
 }

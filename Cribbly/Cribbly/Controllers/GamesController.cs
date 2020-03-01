@@ -186,29 +186,9 @@ namespace Cribbly.Controllers
 
             PostScoreView model = new PostScoreView();
 
-            //Check for game 1 score data
-            if (standing.G1Score == 0)
-            {
-                model.GameNumber = 1;
-            }
-            //If it exists, check for game 2 score data
-            else if (standing.G2Score == 0)
-            {
-                model.GameNumber = 2;
-            }
-            //If that exists, check for game 3 score data
-            else if (standing.G3Score == 0)
-            {
-                model.GameNumber = 3;
-            }
-            //If that exists, return error page
-            else
-            {
-                return BadRequest();
-            }
-
-            var game = _context.PlayInGames.FirstOrDefault(m => m.GameNumber == model.GameNumber && m.Team1Id == userId || m.Team2Id == userId);
-            model.Game = game;
+            var games = _context.PlayInGames.Where(m => m.Team1Id == userId || m.Team2Id == userId).OrderBy(m => m.GameNumber).ToList();
+            model.Games = games;
+            model.standing = standing;
 
             return View(model);
         }
@@ -216,72 +196,82 @@ namespace Cribbly.Controllers
         [HttpPost]
         public IActionResult PostScore(PostScoreView model)
         {
+            int i = 0;
+            int userId = _context.ApplicationUsers.FirstOrDefault(m => m.Email == _userManager.GetUserName(User)).TeamId;
             string username = _context.ApplicationUsers.FirstOrDefault(m => m.Email == _userManager.GetUserName(User)).UserName;
 
             //Find your team's standing
             var standing = _context.Standings.FirstOrDefault(m => m.id == model.TeamId);
-            //Find the correct PlayInGame object
-            PlayInGame gameData = _context.PlayInGames
-                .FirstOrDefault(m => m.Team1Id == model.TeamId || m.Team2Id == model.TeamId && m.GameNumber == model.GameNumber); 
-            
-            if (gameData.Team1Name == standing.TeamName)
+            var games = _context.PlayInGames.Where(m => m.Team1Id == userId || m.Team2Id == userId).OrderBy(m => m.GameNumber).ToList();
+
+            foreach (PlayInGame game in games)
             {
-                //User is team1 in the gameData object
-                gameData.Team1TotalScore = model.TotalScore;
-                try
+                if (game.Team1Name == standing.TeamName)
                 {
-                    FindWinner(gameData, model, standing, 1);
+                    //User is team1 in the gameData object
+                    try
+                    {
+                        FindWinner(game, model, standing, 1, i);
+                    }
+                    catch
+                    {
+                        ModelState.AddModelError("Game", "Error posting score. Please confirm with the other team that scores were submitted correctly.");
+                        return RedirectToAction("PostScore");
+                    }
+
                 }
-                catch
+                else
                 {
-                    ModelState.AddModelError("Game", "Error posting score. Please confirm with the other team that scores were submitted correctly.");
-                    return RedirectToAction("PostScore");
+                    //User is team2 in the gameData object
+                    try
+                    {
+                        FindWinner(game, model, standing, 2, i);
+                    }
+                    catch
+                    {
+                        ModelState.AddModelError("Game", "Error posting score. Please confirm with the other team that scores were submitted correctly.");
+                        return RedirectToAction("PostScore");
+                    }
+
                 }
-                
-            }
-            else
-            {
-                //User is team2 in the gameData object
-                gameData.Team2TotalScore = model.TotalScore;
-                try
-                {
-                    FindWinner(gameData, model, standing, 2);
-                }
-                catch
-                {
-                    ModelState.AddModelError("Game", "Error posting score. Please confirm with the other team that scores were submitted correctly.");
-                    return RedirectToAction("PostScore");
-                }
-                
+
+                game.LastUpdated = DateTime.Now;
+                game.UpdatedBy = username;
+                i++;
             }
 
-            gameData.LastUpdated = DateTime.Now;
-            gameData.UpdatedBy = username;
+
+
+
             _context.SaveChanges();
 
             return RedirectToAction("MyTeam", "Teams", new { id = model.TeamId });
         }
 
-        public void FindWinner(PlayInGame gameData, PostScoreView model, Standing standing, int key)
+        public void FindWinner(PlayInGame gameData, PostScoreView model, Standing standing, int key, int i)
         {
             char resultCode = 'X';
             char oppResultCode = 'X';
             int oppTeamScore = -1;
+            int teamScore = -1;
             string oppTeamName = "";
+            List<int> teamScores = new List<int>{ model.Game1Score, model.Game2Score, model.Game3Score };
 
             //Set variables for the opposite team name and score 
             if (key == 1)
             {
                 oppTeamScore = gameData.Team2TotalScore;
+                teamScore = teamScores[i];
                 oppTeamName = gameData.Team2Name;
 
             } else if (key == 2)
             {
                 oppTeamScore = gameData.Team1TotalScore;
+                teamScore = teamScores[i];
                 oppTeamName = gameData.Team1Name;
             }
 
-            if (oppTeamScore == 121 && model.TotalScore == 121)
+            if (oppTeamScore == 121 && teamScore == 121)
             {
                 //Both teams said they won. Throw error
                 throw new System.ArgumentException("Bad value was provided");
@@ -294,7 +284,7 @@ namespace Cribbly.Controllers
                     break;
                 case 121:
                     //Other team won, find score difference
-                    gameData.ScoreDifference = oppTeamScore - model.TotalScore;
+                    gameData.ScoreDifference = oppTeamScore - teamScore;
                     gameData.WinningTeamName = oppTeamName;
                     gameData.WinningTeamId = _context.Teams.FirstOrDefault(m => m.Name == oppTeamName).Id;
                     resultCode = 'L';
@@ -302,9 +292,9 @@ namespace Cribbly.Controllers
                     break;
                 default:
                     //Your team won. Double check to make sure you submitted a score of 121
-                    if (model.TotalScore == 121)
+                    if (teamScore == 121)
                     {
-                        gameData.ScoreDifference = model.TotalScore - oppTeamScore;
+                        gameData.ScoreDifference = teamScore - oppTeamScore;
                         gameData.WinningTeamName = model.TeamName;
                         gameData.WinningTeamId = model.TeamId;
                         resultCode = 'W';
@@ -318,28 +308,28 @@ namespace Cribbly.Controllers
                     break;
             }
             //Fill in the appropriate properties depending on which game number is being posted
-            switch (model.GameNumber)
+            switch (gameData.GameNumber)
             {
                 case 1:
-                    standing.G1Score = model.TotalScore;
+                    standing.G1Score = teamScore;
                     standing.G1WinLoss = resultCode;
                     _context.Standings.FirstOrDefault(m => m.TeamName == oppTeamName).G1WinLoss = oppResultCode;
                     break;
 
                 case 2:
-                    standing.G2Score = model.TotalScore;
+                    standing.G2Score = teamScore;
                     standing.G2WinLoss = resultCode;
                     _context.Standings.FirstOrDefault(m => m.TeamName == oppTeamName).G2WinLoss = oppResultCode;
                     break;
 
                 case 3:
-                    standing.G3Score = model.TotalScore;
+                    standing.G3Score = teamScore;
                     standing.G2WinLoss = resultCode;
                     _context.Standings.FirstOrDefault(m => m.TeamName == oppTeamName).G3WinLoss = oppResultCode;
                     break;
             }
 
-            standing.TotalScore += model.TotalScore;
+            standing.TotalScore = standing.G1Score + standing.G2Score + standing.G3Score;
             _context.SaveChanges();
         }
         /*
