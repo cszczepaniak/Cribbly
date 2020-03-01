@@ -67,7 +67,7 @@ namespace Cribbly.Controllers
             //Return 401 if the id in URL does not match the team ID of the logged in user
             if (team.Id != loggedInUser.TeamId)
             {
-                return StatusCode(401);
+                return RedirectToAction(nameof(WrongTeam));
             }
             //Get the user's team's standing
             Standing userStanding = _context.Standings.FirstOrDefault(m => m.id == team.Id);
@@ -83,6 +83,12 @@ namespace Cribbly.Controllers
         {
             return View();
         }
+
+        public IActionResult WrongTeam()
+        {
+            return View();
+        }
+
         /*
          * ==============================
          * REGISTER TEAM
@@ -158,14 +164,14 @@ namespace Cribbly.Controllers
             //Invalid route. Team ID must be specified
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(TeamNotFound));
             }
 
             var loggedInUser = _context.ApplicationUsers.FirstOrDefault(m => m.Email == _user.GetUserName(User));
             //Return 401 if the id in URL does not match the team ID of the logged in user
             if (id != loggedInUser.TeamId)
             {
-                return StatusCode(401);
+                return RedirectToAction(nameof(WrongTeam));
             }
 
             //Find team
@@ -174,7 +180,7 @@ namespace Cribbly.Controllers
             //Something went wrong fetching the data, return 404
             if (team == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(TeamNotFound));
             }
             return View(team);
         }
@@ -187,7 +193,7 @@ namespace Cribbly.Controllers
             //The wrong team is attempting to be edited, return error
             if (id != team.Id)
             {
-                return NotFound();
+                return RedirectToAction(nameof(WrongTeam));
             }
 
             //Data validated, update DB with changes
@@ -255,7 +261,7 @@ namespace Cribbly.Controllers
 
             if (team == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(TeamNotFound));
             }
 
             return View(team);
