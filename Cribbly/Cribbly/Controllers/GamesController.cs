@@ -262,12 +262,14 @@ namespace Cribbly.Controllers
             {
                 oppTeamScore = gameData.Team2TotalScore;
                 teamScore = teamScores[i];
+                gameData.Team1TotalScore = teamScore;
                 oppTeamName = gameData.Team2Name;
 
             } else if (key == 2)
             {
                 oppTeamScore = gameData.Team1TotalScore;
                 teamScore = teamScores[i];
+                gameData.Team2TotalScore = teamScore;
                 oppTeamName = gameData.Team1Name;
             }
 
