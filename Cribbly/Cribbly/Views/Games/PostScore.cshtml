@@ -29,7 +29,7 @@
     </tbody>
 </table>
 
-<form asp-action="PostScore">
+<form method="post" asp-action="PostScore">
     @{
         var user = @_context.ApplicationUsers.FirstOrDefault(m => m.Email == UserManager.GetUserName(User));
         <input asp-for="TeamId" type="hidden" value="@user.TeamId" />

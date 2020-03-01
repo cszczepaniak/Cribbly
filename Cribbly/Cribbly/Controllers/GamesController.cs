@@ -228,13 +228,31 @@ namespace Cribbly.Controllers
             {
                 //User is team1 in the gameData object
                 gameData.Team1TotalScore = model.TotalScore;
-                FindWinner(gameData, model, standing, 1);
+                try
+                {
+                    FindWinner(gameData, model, standing, 1);
+                }
+                catch
+                {
+                    ModelState.AddModelError("Game", "Error posting score. Please confirm with the other team that scores were submitted correctly.");
+                    return RedirectToAction("PostScore");
+                }
+                
             }
             else
             {
                 //User is team2 in the gameData object
                 gameData.Team2TotalScore = model.TotalScore;
-                FindWinner(gameData, model, standing, 2);
+                try
+                {
+                    FindWinner(gameData, model, standing, 2);
+                }
+                catch
+                {
+                    ModelState.AddModelError("Game", "Error posting score. Please confirm with the other team that scores were submitted correctly.");
+                    return RedirectToAction("PostScore");
+                }
+                
             }
 
             gameData.LastUpdated = DateTime.Now;
@@ -263,6 +281,12 @@ namespace Cribbly.Controllers
                 oppTeamName = gameData.Team1Name;
             }
 
+            if (oppTeamScore == 121 && model.TotalScore == 121)
+            {
+                //Both teams said they won. Throw error
+                throw new System.ArgumentException("Bad value was provided");
+            }
+
             switch (oppTeamScore)
             {
                 case 0:
@@ -289,7 +313,7 @@ namespace Cribbly.Controllers
                     //Neither team has a score of 121. Something is wrong
                     else
                     {
-                        //Error
+                        throw new System.ArgumentException("Bad value was provided");
                     }
                     break;
             }
@@ -325,7 +349,7 @@ namespace Cribbly.Controllers
          */
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult EditGame()
+        public IActionResult EditGame(int? id)
         {
             //Return the team that matches the appropriate Id
             return View();
