@@ -106,6 +106,7 @@ namespace Cribbly.Controllers
                             Team2Name = teams[3].TeamName,
                             Team3Id = teams[4].id,
                             Team3Name = teams[4].TeamName,
+                            GameNumber = 3,
                             Division = div.DivName,
                             WinningTeamId = 0
                         };
@@ -158,6 +159,7 @@ namespace Cribbly.Controllers
                             Team2Name = teams[1].TeamName,
                             Team3Id = teams[2].id,
                             Team3Name = teams[2].TeamName,
+                            GameNumber = 3,
                             Division = div.DivName,
                             WinningTeamId = 0
                         };
@@ -187,8 +189,10 @@ namespace Cribbly.Controllers
             PostScoreView model = new PostScoreView();
 
             var games = _context.PlayInGames.Where(m => m.Team1Id == userId || m.Team2Id == userId).OrderBy(m => m.GameNumber).ToList();
+            var _3way = _context.ThreeWayGames.Where(m => m.Team3Id == userId).ToList();
             model.Games = games;
             model.standing = standing;
+            model.ThreeWayGames = _3way;
 
             return View(model);
         }
@@ -203,8 +207,9 @@ namespace Cribbly.Controllers
             //Find your team's standing
             var standing = _context.Standings.FirstOrDefault(m => m.id == model.TeamId);
             var games = _context.PlayInGames.Where(m => m.Team1Id == userId || m.Team2Id == userId).OrderBy(m => m.GameNumber).ToList();
+            var _3way = _context.ThreeWayGames.Where(m => m.Team1Id == userId || m.Team2Id == userId || m.Team3Id == userId).ToList();
 
-            foreach (PlayInGame game in games)
+            foreach (var game in games)
             {
                 if (game.Team1Name == standing.TeamName)
                 {
@@ -239,10 +244,6 @@ namespace Cribbly.Controllers
                 game.UpdatedBy = username;
                 i++;
             }
-
-
-
-
             _context.SaveChanges();
 
             return RedirectToAction("MyTeam", "Teams", new { id = model.TeamId });
@@ -265,14 +266,14 @@ namespace Cribbly.Controllers
                 gameData.Team1TotalScore = teamScore;
                 oppTeamName = gameData.Team2Name;
 
-            } else if (key == 2)
+            } 
+            else if (key == 2)
             {
                 oppTeamScore = gameData.Team1TotalScore;
                 teamScore = teamScores[i];
                 gameData.Team2TotalScore = teamScore;
                 oppTeamName = gameData.Team1Name;
             }
-
             if (oppTeamScore == 121 && teamScore == 121)
             {
                 //Both teams said they won. Throw error
@@ -334,6 +335,9 @@ namespace Cribbly.Controllers
             standing.TotalScore = standing.G1Score + standing.G2Score + standing.G3Score;
             _context.SaveChanges();
         }
+
+
+
         /*
          * ==============================
          * EDIT GAME SCORE (Admin)

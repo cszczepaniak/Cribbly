@@ -16,5 +16,6 @@ namespace Cribbly.Models.ViewModels
         public string TeamName { get; set; }
         public Standing standing { get; set; }
         public List<PlayInGame> Games { get; set; }
+        public List<_3WayGame> ThreeWayGames { get; set; }
     }
 }

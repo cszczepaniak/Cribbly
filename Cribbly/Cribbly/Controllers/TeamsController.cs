@@ -72,7 +72,7 @@ namespace Cribbly.Controllers
             //Get the user's team's standing
             Standing userStanding = _context.Standings.FirstOrDefault(m => m.id == team.Id);
             List<PlayInGame> userGames = _context.PlayInGames.Where(m => m.Team1Id == id || m.Team2Id == id).ToList();
-            List<_3WayGame> user3wayGames = _context.PlayInGames.OfType<_3WayGame>().Where(m => m.Team1Id == id || m.Team2Id == id).ToList();
+            List<_3WayGame> user3wayGames = _context.PlayInGames.OfType<_3WayGame>().Where(m => m.Team1Id == id || m.Team2Id == id || m.Team3Id == id).ToList();
             //Instantiaste UserDataView object to pass to the view
             UserDataView data = new UserDataView(_context, team, userStanding, userGames, user3wayGames);
             //No errors, return View with team obj

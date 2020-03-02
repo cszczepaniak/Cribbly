@@ -40,9 +40,19 @@
     <br />
     <hr />
     <div class="form-group">
-        <label>Game @Model.Games[2].GameNumber Score</label>
-        <p>@Model.Games[2].Team1Name vs. @Model.Games[2].Team2Name</p>
-        <input class="col-sm-6 form-control" asp-for="Game3Score" type="number" value="@Model.standing.G3Score" min="0" max="121" />
+        @if (Model.ThreeWayGames.Count > 0)
+        {
+            <label>Game @Model.ThreeWayGames[0].GameNumber Score</label>
+            <p>@Model.ThreeWayGames[0].Team1Name vs. @Model.ThreeWayGames[0].Team2Name vs. @Model.ThreeWayGames[0].Team3Name</p>
+            <input class="col-sm-6 form-control" asp-for="Game3Score" type="number" value="@Model.standing.G3Score" min="0" max="121" />
+        }
+        else
+        {
+            <label>Game @Model.Games[2].GameNumber Score</label>
+            <p>@Model.Games[2].Team1Name vs. @Model.Games[2].Team2Name</p>
+            <input class="col-sm-6 form-control" asp-for="Game3Score" type="number" value="@Model.standing.G3Score" min="0" max="121" />
+        }
+
     </div>
     <br />
     <hr />

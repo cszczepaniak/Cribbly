@@ -71,7 +71,7 @@
 
 
 
-@if (Model._games.Count == 3)
+@if (Model._games.Count > 0)
 {
     <table id="games" class="table table-responsive">
         <tr class="headRow">
@@ -109,18 +109,24 @@
             </tr>
             <tr>
                 <th><strong>Game 3 Info</strong></th>
-                <td>@Html.DisplayFor(model => model._games[2].Team1Name)</td>
-                <td>@Html.DisplayFor(model => model._games[2].Team2Name)</td>
+
                 @if (Model._3waygames.Count != 0)
                 {
+                    <td>@Html.DisplayFor(model => model._3waygames[0].Team1Name)</td>
+                    <td>@Html.DisplayFor(model => model._3waygames[0].Team2Name)</td>
                     <td>@Html.DisplayFor(model => model._3waygames[0].Team3Name)</td>
+                    <td>@Html.DisplayFor(model => model._3waygames[0].WinningTeamName)</td>
+                    <td>@Html.DisplayFor(model => model._3waygames[0].ScoreDifference)</td>
                 }
                 else
                 {
+                    <td>@Html.DisplayFor(model => model._games[2].Team1Name)</td>
+                    <td>@Html.DisplayFor(model => model._games[2].Team2Name)</td>
                     <td></td>
+                    <td>@Html.DisplayFor(model => model._games[2].WinningTeamName)</td>
+                    <td>@Html.DisplayFor(model => model._games[2].ScoreDifference)</td>
                 }
-                <td>@Html.DisplayFor(model => model._games[2].WinningTeamName)</td>
-                <td>@Html.DisplayFor(model => model._games[2].ScoreDifference)</td>
+
             </tr>
         </tbody>
     </table>
