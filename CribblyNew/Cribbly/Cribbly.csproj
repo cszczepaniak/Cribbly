@@ -6,4 +6,18 @@
 
 
 
+  <ItemGroup>
+    <Content Remove="Cribbly.Data\obj\project.assets.json" />
+    <Content Remove="Cribbly.Data\obj\Cribbly.Data.csproj.nuget.dgspec.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Cribbly.Data\obj\Debug\netcoreapp3.1\Cribbly.Data.csprojAssemblyReference.cache" />
+    <None Remove="Cribbly.Data\obj\Cribbly.Data.csproj.nuget.g.props" />
+    <None Remove="Cribbly.Data\obj\Cribbly.Data.csproj.nuget.g.targets" />
+    <None Remove="Cribbly.Data\obj\Cribbly.Data.csproj.nuget.cache" />
+    <None Remove="Cribbly.Data\obj\Debug\netcoreapp3.1\Cribbly.Data.assets.cache" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Infrastructure\" />
+  </ItemGroup>
 </Project>
