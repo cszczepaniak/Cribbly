@@ -1,3 +1,4 @@
+using Cribbly.Data;
 using Cribbly.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,6 +20,7 @@ namespace Cribbly
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddScoped<CribblyDbContext>(_ => new CribblyDbContext());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
