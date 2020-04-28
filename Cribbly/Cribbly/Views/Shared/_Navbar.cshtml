@@ -1,0 +1,50 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Cribbly.Data;
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject ApplicationDbContext _context;
+
+<div class="container">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand"><img id="navLogo" class="img-responsive" src="~/images/logo_notext_small.png" /></a>
+    </div>
+    <div class="navbar-collapse collapse">
+        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="~/Identity/Account/Login" method="post" id="logoutForm" class="navbar-right">
+            <ul class="nav navbar-nav">
+
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    var user = @_context.ApplicationUsers.FirstOrDefault(m => m.Email == UserManager.GetUserName(User));
+
+                    if (user.HasTeam == true)
+                    {
+                        <li><a asp-controller="Teams" asp-action="MyTeam" asp-route-id="@user.TeamId">My Team</a></li>
+                    };
+
+                    if (user.HasTeam == false)
+                    {
+                        <li><a asp-controller="Teams" asp-action="Register">Register Team</a></li>
+                    }
+
+                    <li><a asp-area="" asp-controller="Teams" asp-action="AllTeams">View All Teams</a></li>
+                    <li><a asp-area="" asp-controller="Standings" asp-action="GetAllStandings">Standings</a></li>
+                    <li><a asp-area="" asp-controller="Bracket" asp-action="Index">Bracket</a></li>
+                    <li><a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@user.FirstName @user.LastName</a></li>
+                    <li><button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button></li>
+                }
+                else
+                {
+                    <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+                    <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+                }
+
+            </ul>
+        </form>
+    </div>
+</div>

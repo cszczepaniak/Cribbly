@@ -1,0 +1,70 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Cribbly.Data;
+
+@inject UserManager<IdentityUser> UserManager
+@inject ApplicationDbContext _context;
+
+@model Cribbly.Models.ViewModels.PostScoreView;
+
+
+<link rel="stylesheet" href="~/css/largeTables.css" type="text/css" />
+
+@{
+    ViewData["Title"] = "PostScore";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Post Score</h2>
+
+@Html.ValidationSummary()
+
+
+<form method="post" asp-action="PostScore">
+    @{
+        var user = @_context.ApplicationUsers.FirstOrDefault(m => m.Email == UserManager.GetUserName(User));
+        <input asp-for="TeamId" type="hidden" value="@user.TeamId" />
+    }
+
+    <div class="form-group">
+        <label>Game @Model.Games[0].GameNumber Score</label>
+        <p>@Model.Games[0].Team1Name vs. @Model.Games[0].Team2Name</p>
+        <input class="col-sm-6 form-control" asp-for="Game1Score" type="number" value="@Model.standing.G1Score" min="0" max="121" />
+    </div>
+    <br />
+    <hr />
+    <div class="form-group">
+        <label>Game @Model.Games[1].GameNumber Score</label>
+        <p>@Model.Games[1].Team1Name vs. @Model.Games[1].Team2Name</p>
+        <input class="col-sm-6 form-control" asp-for="Game2Score" type="number" value="@Model.standing.G2Score" min="0" max="121" />
+    </div>
+    <br />
+    <hr />
+    <div class="form-group">
+        @if (Model.ThreeWayGames.Count > 0)
+        {
+            <label>Game @Model.ThreeWayGames[0].GameNumber Score</label>
+            <p>@Model.ThreeWayGames[0].Team1Name vs. @Model.ThreeWayGames[0].Team2Name vs. @Model.ThreeWayGames[0].Team3Name</p>
+            <input class="col-sm-6 form-control" asp-for="Game3Score" type="number" value="@Model.standing.G3Score" min="0" max="121" />
+        }
+        else
+        {
+            <label>Game @Model.Games[2].GameNumber Score</label>
+            <p>@Model.Games[2].Team1Name vs. @Model.Games[2].Team2Name</p>
+            <input class="col-sm-6 form-control" asp-for="Game3Score" type="number" value="@Model.standing.G3Score" min="0" max="121" />
+        }
+
+    </div>
+    <br />
+    <hr />
+    <h3>IMPORTANT, PLEASE READ!</h3>
+    <ul>
+        <li>
+            If you are not directed back to the My Team page, there was an issue with the scores. Talk to the team you played, as both teams or neither team entering 121 for a score will result in an error
+        </li>
+        <li>
+            Be sure you have put your game score(s) in the correct field, and do not change any non-zero scores if you do not intend to. ALL three scores are saved each time you click submit. 
+        </li>
+    </ul>
+
+    <button class="btn" type="submit">Submit Scores</button>
+</form>
