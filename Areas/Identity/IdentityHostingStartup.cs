@@ -14,7 +14,15 @@ namespace Cribbly.Areas.Identity
     {
         public void Configure(IWebHostBuilder builder)
         {
-            builder.ConfigureServices((context, services) => {
+            builder.ConfigureServices((context, services) =>
+            {
+                services.AddDefaultIdentity<IdentityUser>(options =>
+                {
+                    options.Password.RequiredLength = 8;
+                    options.Password.RequireNonAlphanumeric = true;
+                    options.Password.RequireUppercase = true;
+                    options.User.RequireUniqueEmail = true;
+                }).AddEntityFrameworkStores<AppDbContext>();
             });
         }
     }
