@@ -46,6 +46,7 @@ namespace Cribbly
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseStaticFiles();
             app.UseMvc(options =>
             {
                 options.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
