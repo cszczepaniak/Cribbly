@@ -20,12 +20,19 @@ namespace Cribbly.Data
                 .HasOne<Team>(p => p.Team)
                 .WithMany(t => t.Players);
 
+            // many-to-many relationship for teams and play in games
             modelBuilder.Entity<TeamPlayInGame>()
                 .HasKey(t => new { t.TeamID, t.PlayInGameID });
 
             modelBuilder.Entity<TeamPlayInGame>()
                 .HasOne(tg => tg.Team)
-                .WithMany(t => )
+                .WithMany(t => t.TeamPlayInGames)
+                .HasForeignKey(tg => tg.TeamID);
+
+            modelBuilder.Entity<TeamPlayInGame>()
+                .HasOne(tg => tg.PlayInGame)
+                .WithMany(t => t.TeamPlayInGames)
+                .HasForeignKey(tg => tg.PlayInGameID);
         }
 
         public DbSet<Team> Teams { get; set; }
