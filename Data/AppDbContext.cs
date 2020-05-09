@@ -1,4 +1,4 @@
-using Cribbly.Models;
+using Cribbly.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Cribbly.Models
+namespace Cribbly.Data
 {
     public class Player : IdentityUser
     {
