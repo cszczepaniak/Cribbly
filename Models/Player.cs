@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Cribbly.Models
+namespace Cribbly.Data
 {
-    public class Player
+    public class Player : IdentityUser
     {
         public Team Team { get; set; }
     }

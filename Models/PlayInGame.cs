@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 
-namespace Cribbly.Models
+namespace Cribbly.Data
 {
     public class PlayInGame
     {
-        public List<Team> Teams { get; set; }
-        public List<int> Scores { get; set; }
+        public int ID { get; set; }
+        public List<TeamPlayInGame> TeamPlayInGames { get; set; }
+        public int Team1Score { get; set; }
+        public int Team2Score { get; set; }
     }
 }
