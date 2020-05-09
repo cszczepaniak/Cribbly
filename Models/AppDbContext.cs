@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Cribbly.Models
@@ -21,12 +23,20 @@ namespace Cribbly.Models
                 .HasOne<Team>(p => p.Team)
                 .WithMany(t => t.Players);
 
+            // gotta do some ef gymnastics to make ef work with a list
             modelBuilder.Entity<PlayInGame>()
                 .Property(g => g.Scores)
                 .HasConversion(
                     s => string.Join(',', s.Select(s => s.ToString())),
                     s => s.Split(',', StringSplitOptions.None).Select(s => int.Parse(s)).ToList()
                 );
+            modelBuilder.Entity<PlayInGame>()
+                .Property(g => g.Scores)
+                .Metadata
+                .SetValueComparer(new ValueComparer<List<int>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode()))
+                ));
 
             // many-to-many relationship for teams and play in games
             modelBuilder.Entity<TeamPlayInGame>()
