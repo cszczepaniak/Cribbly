@@ -27,6 +27,16 @@ namespace Cribbly.Models.Relationships
                 .HasColumnType("VARCHAR(7)");
         }
 
+        public static void ConfigureTeamDbSettings(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Team>()
+                .Property(t => t.TournamentRound)
+                .HasDefaultValue(-1);
+            modelBuilder.Entity<Team>()
+                .Property(t => t.TournamentSeed)
+                .HasDefaultValue(-1);
+        }
+
         public static void ConfigureTeamAndPlayInGameMapping(this ModelBuilder modelBuilder)
         {
             // we have to use an entity to represent the join table to do a many-to-many mapping

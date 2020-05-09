@@ -18,5 +18,7 @@ namespace Cribbly.Models
         public List<TeamPlayInGame> TeamPlayInGames { get; set; }
 
         public Division Division { get; set; }
+        public int TournamentSeed { get; set; }
+        public int TournamentRound { get; set; }
     }
 }
