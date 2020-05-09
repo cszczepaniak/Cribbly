@@ -1,3 +1,4 @@
+using Cribbly.Models.Relationships;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -23,34 +24,8 @@ namespace Cribbly.Models
                 .HasOne<Team>(p => p.Team)
                 .WithMany(t => t.Players);
 
-            // gotta do some ef gymnastics to make ef work with a list
-            modelBuilder.Entity<PlayInGame>()
-                .Property(g => g.Scores)
-                .HasConversion(
-                    s => string.Join(',', s.Select(s => s.ToString())),
-                    s => s.Split(',', StringSplitOptions.None).Select(s => int.Parse(s)).ToList()
-                );
-            modelBuilder.Entity<PlayInGame>()
-                .Property(g => g.Scores)
-                .Metadata
-                .SetValueComparer(new ValueComparer<List<int>>(
-                    (c1, c2) => c1.SequenceEqual(c2),
-                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode()))
-                ));
-
-            // many-to-many relationship for teams and play in games
-            modelBuilder.Entity<TeamPlayInGame>()
-                .HasKey(t => new { t.TeamID, t.PlayInGameID });
-
-            modelBuilder.Entity<TeamPlayInGame>()
-                .HasOne(tg => tg.Team)
-                .WithMany(t => t.TeamPlayInGames)
-                .HasForeignKey(tg => tg.TeamID);
-
-            modelBuilder.Entity<TeamPlayInGame>()
-                .HasOne(tg => tg.PlayInGame)
-                .WithMany(t => t.TeamPlayInGames)
-                .HasForeignKey(tg => tg.PlayInGameID);
+            modelBuilder.ConfigurePlayInGameRelationships();
+            modelBuilder.ConfigureTeamAndPlayInGameMapping();
         }
 
         public DbSet<Team> Teams { get; set; }
