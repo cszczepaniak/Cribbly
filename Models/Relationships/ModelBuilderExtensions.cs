@@ -15,14 +15,16 @@ namespace Cribbly.Models.Relationships
                 .HasConversion(
                     s => string.Join(',', s.Select(s => s.ToString())),
                     s => s.Split(',', StringSplitOptions.None).Select(s => int.Parse(s)).ToList()
-                );
-            modelBuilder.Entity<PlayInGame>()
-                .Property(g => g.Scores)
+                )
                 .Metadata
                 .SetValueComparer(new ValueComparer<List<int>>(
                     (c1, c2) => c1.SequenceEqual(c2),
                     c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode()))
                 ));
+            // max length string could be "1xx,1xx" => 7 characters
+            modelBuilder.Entity<PlayInGame>()
+                .Property(g => g.Scores)
+                .HasColumnType("VARCHAR(7)");
         }
 
         public static void ConfigureTeamAndPlayInGameMapping(this ModelBuilder modelBuilder)

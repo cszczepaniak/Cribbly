@@ -11,6 +11,7 @@ namespace Cribbly.Models
         public List<TeamPlayInGame> TeamPlayInGames { get; set; }
         [MinLength(2)]
         [MaxLength(2)]
+        [Range(0, 121)]
         public List<int> Scores { get; set; }
     }
 }
