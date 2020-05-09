@@ -16,5 +16,7 @@ namespace Cribbly.Models
         [MinLength(0)]
         [MaxLength(3)]
         public List<TeamPlayInGame> TeamPlayInGames { get; set; }
+
+        public Division Division { get; set; }
     }
 }

@@ -24,10 +24,17 @@ namespace Cribbly.Models
                 .HasOne<Team>(p => p.Team)
                 .WithMany(t => t.Players);
 
+            modelBuilder.Entity<Team>()
+                .HasOne<Division>(t => t.Division)
+                .WithMany(d => d.Teams);
+
             modelBuilder.ConfigurePlayInGameRelationships();
             modelBuilder.ConfigureTeamAndPlayInGameMapping();
         }
 
         public DbSet<Team> Teams { get; set; }
+        public DbSet<Division> Divisions { get; set; }
+        public DbSet<PlayInGame> PlayInGames { get; set; }
+        
     }
 }
