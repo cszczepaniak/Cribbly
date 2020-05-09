@@ -3,50 +3,40 @@ using System;
 using Cribbly.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cribbly.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200509151438_TeamsAndPlayInGames")]
+    partial class TeamsAndPlayInGames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Cribbly.Models.Division", b =>
+            modelBuilder.Entity("Cribbly.Data.PlayInGame", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Divisions");
-                });
-
-            modelBuilder.Entity("Cribbly.Models.PlayInGame", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("Team1Score")
                         .HasColumnType("int");
 
-                    b.Property<string>("Scores")
-                        .HasColumnType("VARCHAR(7)")
-                        .HasMaxLength(2);
+                    b.Property<int>("Team2Score")
+                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.ToTable("PlayInGames");
+                    b.ToTable("PlayInGame");
                 });
 
-            modelBuilder.Entity("Cribbly.Models.Player", b =>
+            modelBuilder.Entity("Cribbly.Data.Player", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
@@ -115,37 +105,21 @@ namespace Cribbly.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Cribbly.Models.Team", b =>
+            modelBuilder.Entity("Cribbly.Data.Team", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("DivisionID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4")
-                        .HasMaxLength(255);
-
-                    b.Property<int>("TournamentRound")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(-1);
-
-                    b.Property<int>("TournamentSeed")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(-1);
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("DivisionID");
 
                     b.ToTable("Teams");
                 });
 
-            modelBuilder.Entity("Cribbly.Models.TeamPlayInGame", b =>
+            modelBuilder.Entity("Cribbly.Data.TeamPlayInGame", b =>
                 {
                     b.Property<int>("TeamID")
                         .HasColumnType("int");
@@ -292,29 +266,22 @@ namespace Cribbly.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Cribbly.Models.Player", b =>
+            modelBuilder.Entity("Cribbly.Data.Player", b =>
                 {
-                    b.HasOne("Cribbly.Models.Team", "Team")
+                    b.HasOne("Cribbly.Data.Team", "Team")
                         .WithMany("Players")
                         .HasForeignKey("TeamID");
                 });
 
-            modelBuilder.Entity("Cribbly.Models.Team", b =>
+            modelBuilder.Entity("Cribbly.Data.TeamPlayInGame", b =>
                 {
-                    b.HasOne("Cribbly.Models.Division", "Division")
-                        .WithMany("Teams")
-                        .HasForeignKey("DivisionID");
-                });
-
-            modelBuilder.Entity("Cribbly.Models.TeamPlayInGame", b =>
-                {
-                    b.HasOne("Cribbly.Models.PlayInGame", "PlayInGame")
+                    b.HasOne("Cribbly.Data.PlayInGame", "PlayInGame")
                         .WithMany("TeamPlayInGames")
                         .HasForeignKey("PlayInGameID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cribbly.Models.Team", "Team")
+                    b.HasOne("Cribbly.Data.Team", "Team")
                         .WithMany("TeamPlayInGames")
                         .HasForeignKey("TeamID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -332,7 +299,7 @@ namespace Cribbly.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Cribbly.Models.Player", null)
+                    b.HasOne("Cribbly.Data.Player", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -341,7 +308,7 @@ namespace Cribbly.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Cribbly.Models.Player", null)
+                    b.HasOne("Cribbly.Data.Player", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -356,7 +323,7 @@ namespace Cribbly.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cribbly.Models.Player", null)
+                    b.HasOne("Cribbly.Data.Player", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -365,7 +332,7 @@ namespace Cribbly.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Cribbly.Models.Player", null)
+                    b.HasOne("Cribbly.Data.Player", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

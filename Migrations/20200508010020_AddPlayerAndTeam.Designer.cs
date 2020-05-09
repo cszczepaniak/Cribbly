@@ -3,48 +3,21 @@ using System;
 using Cribbly.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cribbly.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200508010020_AddPlayerAndTeam")]
+    partial class AddPlayerAndTeam
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("Cribbly.Models.Division", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Divisions");
-                });
-
-            modelBuilder.Entity("Cribbly.Models.PlayInGame", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Scores")
-                        .HasColumnType("VARCHAR(7)")
-                        .HasMaxLength(2);
-
-                    b.HasKey("ID");
-
-                    b.ToTable("PlayInGames");
-                });
 
             modelBuilder.Entity("Cribbly.Models.Player", b =>
                 {
@@ -121,43 +94,12 @@ namespace Cribbly.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("DivisionID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4")
-                        .HasMaxLength(255);
-
-                    b.Property<int>("TournamentRound")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(-1);
-
-                    b.Property<int>("TournamentSeed")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(-1);
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("DivisionID");
-
                     b.ToTable("Teams");
-                });
-
-            modelBuilder.Entity("Cribbly.Models.TeamPlayInGame", b =>
-                {
-                    b.Property<int>("TeamID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlayInGameID")
-                        .HasColumnType("int");
-
-                    b.HasKey("TeamID", "PlayInGameID");
-
-                    b.HasIndex("PlayInGameID");
-
-                    b.ToTable("TeamPlayInGame");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -297,28 +239,6 @@ namespace Cribbly.Migrations
                     b.HasOne("Cribbly.Models.Team", "Team")
                         .WithMany("Players")
                         .HasForeignKey("TeamID");
-                });
-
-            modelBuilder.Entity("Cribbly.Models.Team", b =>
-                {
-                    b.HasOne("Cribbly.Models.Division", "Division")
-                        .WithMany("Teams")
-                        .HasForeignKey("DivisionID");
-                });
-
-            modelBuilder.Entity("Cribbly.Models.TeamPlayInGame", b =>
-                {
-                    b.HasOne("Cribbly.Models.PlayInGame", "PlayInGame")
-                        .WithMany("TeamPlayInGames")
-                        .HasForeignKey("PlayInGameID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cribbly.Models.Team", "Team")
-                        .WithMany("TeamPlayInGames")
-                        .HasForeignKey("TeamID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

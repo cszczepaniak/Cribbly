@@ -1,5 +1,5 @@
 using System;
-using Cribbly.Services;
+using Cribbly.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -16,7 +16,7 @@ namespace Cribbly.Areas.Identity
         {
             builder.ConfigureServices((context, services) =>
             {
-                services.AddDefaultIdentity<IdentityUser>(options =>
+                services.AddDefaultIdentity<Player>(options =>
                 {
                     options.Password.RequiredLength = 8;
                     options.Password.RequireNonAlphanumeric = true;

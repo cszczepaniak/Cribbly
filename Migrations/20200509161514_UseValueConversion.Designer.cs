@@ -3,33 +3,21 @@ using System;
 using Cribbly.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cribbly.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200509161514_UseValueConversion")]
+    partial class UseValueConversion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("Cribbly.Models.Division", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Divisions");
-                });
 
             modelBuilder.Entity("Cribbly.Models.PlayInGame", b =>
                 {
@@ -38,12 +26,11 @@ namespace Cribbly.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Scores")
-                        .HasColumnType("VARCHAR(7)")
-                        .HasMaxLength(2);
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("ID");
 
-                    b.ToTable("PlayInGames");
+                    b.ToTable("PlayInGame");
                 });
 
             modelBuilder.Entity("Cribbly.Models.Player", b =>
@@ -121,26 +108,10 @@ namespace Cribbly.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("DivisionID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4")
-                        .HasMaxLength(255);
-
-                    b.Property<int>("TournamentRound")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(-1);
-
-                    b.Property<int>("TournamentSeed")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(-1);
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("DivisionID");
 
                     b.ToTable("Teams");
                 });
@@ -297,13 +268,6 @@ namespace Cribbly.Migrations
                     b.HasOne("Cribbly.Models.Team", "Team")
                         .WithMany("Players")
                         .HasForeignKey("TeamID");
-                });
-
-            modelBuilder.Entity("Cribbly.Models.Team", b =>
-                {
-                    b.HasOne("Cribbly.Models.Division", "Division")
-                        .WithMany("Teams")
-                        .HasForeignKey("DivisionID");
                 });
 
             modelBuilder.Entity("Cribbly.Models.TeamPlayInGame", b =>
