@@ -1,9 +1,8 @@
-using Cribbly.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cribbly.Data
+namespace Cribbly.Models
 {
     public class AppDbContext : IdentityDbContext<Player>
     {

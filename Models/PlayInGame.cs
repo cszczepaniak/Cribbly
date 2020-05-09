@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Cribbly.Data
+namespace Cribbly.Models
 {
     public class PlayInGame
     {

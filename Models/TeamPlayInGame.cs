@@ -1,4 +1,4 @@
-namespace Cribbly.Data
+namespace Cribbly.Models
 {
     // This class is an intermediate object to map the many-to-many relationship between teams and play in games
     public class TeamPlayInGame
