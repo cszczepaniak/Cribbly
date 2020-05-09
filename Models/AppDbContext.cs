@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 
 namespace Cribbly.Models
 {
@@ -18,6 +20,13 @@ namespace Cribbly.Models
             modelBuilder.Entity<Player>()
                 .HasOne<Team>(p => p.Team)
                 .WithMany(t => t.Players);
+
+            modelBuilder.Entity<PlayInGame>()
+                .Property(g => g.Scores)
+                .HasConversion(
+                    s => string.Join(',', s.Select(s => s.ToString())),
+                    s => s.Split(',', StringSplitOptions.None).Select(s => int.Parse(s)).ToList()
+                );
 
             // many-to-many relationship for teams and play in games
             modelBuilder.Entity<TeamPlayInGame>()
