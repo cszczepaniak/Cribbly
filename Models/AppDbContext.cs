@@ -26,6 +26,7 @@ namespace Cribbly.Models
             modelBuilder.ConfigureTeamDbSettings();
             modelBuilder.ConfigurePlayInGameRelationships();
             modelBuilder.ConfigureTeamAndPlayInGameMapping();
+            modelBuilder.ConfigurePlayerDbSettings();
         }
 
         public DbSet<Team> Teams { get; set; }

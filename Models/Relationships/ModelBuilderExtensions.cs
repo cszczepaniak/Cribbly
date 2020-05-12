@@ -30,6 +30,13 @@ namespace Cribbly.Models.Relationships
                 .Ignore(g => g.Teams);
         }
 
+        public static void ConfigurePlayerDbSettings(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Player>()
+                .Ignore(p => p.PhoneNumber)
+                .Ignore(p => p.PhoneNumberConfirmed);
+        }
+
         public static void ConfigureTeamDbSettings(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Team>()
