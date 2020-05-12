@@ -4,7 +4,7 @@ using Cribbly.Models;
 
 namespace Cribbly.Services
 {
-    public class PlayerService
+    public class PlayerService : IPlayerService
     {
         private AppDbContext db;
         public PlayerService(AppDbContext db)
