@@ -11,5 +11,12 @@ namespace Cribbly.Services
         {
             this.db = db;
         }
+
+        public Player GetPlayerByID(string id) =>
+            db.Users.Where(u => u.Id == id).FirstOrDefault();
+
+        public Player GetByFirstAndLastName(string first, string last) =>
+            db.Users.Where(u => u.FirstName.Equals(first) && u.LastName.Equals(last)).FirstOrDefault();
+
     }
 }
