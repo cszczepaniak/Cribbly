@@ -26,22 +26,22 @@ namespace Cribbly.Services
 
         public async void ReportWinAsync(Team winner, Team loser, int loserScore)
         {
-            if (loserScore < 0 || loserScore > 120)
+            if (loserScore < 0 || loserScore > Constants.WinningScore - 1)
             {
-                throw new ArgumentException("Opponent's score must be between 0 and 120 since they lost.");
+                throw new ArgumentException($"Opponent's score must be between 0 and {Constants.WinningScore - 1} since they lost.");
             }
-            if (winner.PlayInGames.Count > 2)
+            if (winner.PlayInGames.Count > Constants.NumPlayInGames - 1)
             {
-                throw new Exception($"Team '{winner.Name}' already has three play in games.");
+                throw new Exception($"Team '{winner.Name}' already has {Constants.NumPlayInGames} play in games.");
             }
-            if (loser.PlayInGames.Count > 2)
+            if (loser.PlayInGames.Count > Constants.NumPlayInGames - 1)
             {
-                throw new Exception($"Team '{loser.Name}' already has three play in games.");
+                throw new Exception($"Team '{loser.Name}' already has {Constants.NumPlayInGames} play in games.");
             }
             var game = new PlayInGame()
             {
                 Teams = new List<Team>() { winner, loser },
-                Scores = new List<int>() { 121, loserScore }
+                Scores = new List<int>() { Constants.WinningScore, loserScore }
             };
             await db.PlayInGames.AddAsync(game);
         }
