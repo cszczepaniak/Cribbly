@@ -23,7 +23,7 @@ namespace Cribbly.Services
             await db.Teams.AddAsync(team);
             return team;
         }
-
+        // TODO maybe this should be in PlayInGameService?
         public async void ReportWinAsync(Team winner, Team loser, int loserScore)
         {
             if (loserScore < 0 || loserScore > Constants.WinningScore - 1)
