@@ -25,6 +25,9 @@ namespace Cribbly.Models.Relationships
             modelBuilder.Entity<PlayInGame>()
                 .Property(g => g.Scores)
                 .HasColumnType("VARCHAR(7)");
+
+            modelBuilder.Entity<PlayInGame>()
+                .Ignore(g => g.Teams);
         }
 
         public static void ConfigureTeamDbSettings(this ModelBuilder modelBuilder)
@@ -35,6 +38,8 @@ namespace Cribbly.Models.Relationships
             modelBuilder.Entity<Team>()
                 .Property(t => t.TournamentSeed)
                 .HasDefaultValue(-1);
+            modelBuilder.Entity<Team>()
+                .Ignore(t => t.PlayInGames);
         }
 
         public static void ConfigureTeamAndPlayInGameMapping(this ModelBuilder modelBuilder)
