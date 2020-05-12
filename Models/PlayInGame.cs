@@ -22,7 +22,6 @@ namespace Cribbly.Models
             }).ToList();
         }
 
-
         // TODO will the indices of scores and teams align properly? i.e. will team 0's score be at index 0?
         [MinLength(2)]
         [MaxLength(2)]
