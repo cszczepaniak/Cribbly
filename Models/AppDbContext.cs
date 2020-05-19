@@ -1,3 +1,4 @@
+using Cribbly.Data;
 using Cribbly.Models.Relationships;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,7 @@ namespace Cribbly.Models
         public DbSet<Team> Teams { get; set; }
         public DbSet<Division> Divisions { get; set; }
         public DbSet<PlayInGame> PlayInGames { get; set; }
+        public DbSet<PlayInGameDataModel> PlayInGameDataModels { get; set; }
 
     }
 }
