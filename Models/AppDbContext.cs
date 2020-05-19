@@ -34,6 +34,7 @@ namespace Cribbly.Models
         public DbSet<Division> Divisions { get; set; }
         public DbSet<PlayInGame> PlayInGames { get; set; }
         public DbSet<PlayInGameDataModel> PlayInGameDataModels { get; set; }
+        public DbSet<TeamDataModel> TeamDataModels { get; set; }
 
     }
 }
