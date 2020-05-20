@@ -1,11 +1,13 @@
+using System.Collections.Generic;
 using Cribbly.Models;
 
 namespace Cribbly.Services
 {
     public interface IPlayerService
     {
-        public Player GetPlayerByID(string id);
+        Player GetPlayerByID(string id);
+        List<Player> GetPlayersByIDs(List<string> ids);
 
-        public Player GetByFirstAndLastName(string first, string last);
+        Player GetByFirstAndLastName(string first, string last);
     }
 }
