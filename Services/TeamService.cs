@@ -10,10 +10,12 @@ namespace Cribbly.Services
     public class TeamService : ITeamService
     {
         private AppDbContext db;
+        private IPlayerService playerService;
 
-        public TeamService(AppDbContext db)
+        public TeamService(AppDbContext db, IPlayerService playerService)
         {
             this.db = db;
+            this.playerService = playerService;
         }
         public async Task<Team> CreateTeamAsync(Player p1, Player p2)
         {
@@ -66,9 +68,7 @@ namespace Cribbly.Services
 
         private Team teamFromDataModel(TeamDataModel team)
         {
-            // TODO make a player service to fetch these instead of doing it below
-            var p1 = db.Users.Where(p => p.Id == team.Player1ID).FirstOrDefault();
-            var p2 = db.Users.Where(p => p.Id == team.Player2ID).FirstOrDefault();
+            var players = playerService.GetPlayersByIDs(new List<string>() { team.Player1ID, team.Player2ID });
             // TODO make a game service to fetch these instead of doing it below
             var g1 = db.PlayInGames.Where(g => g.ID == team.PlayInGame1ID).FirstOrDefault();
             var g2 = db.PlayInGames.Where(g => g.ID == team.PlayInGame2ID).FirstOrDefault();
@@ -77,7 +77,7 @@ namespace Cribbly.Services
             {
                 ID = team.ID,
                 Name = team.Name,
-                Players = new List<Player> { p1, p2 },
+                Players = players,
                 PlayInGames = new List<PlayInGame>() { g1, g2, g3 },
                 Division = team.Division,
                 TournamentSeed = team.TournamentSeed,
