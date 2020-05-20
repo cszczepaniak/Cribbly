@@ -15,6 +15,9 @@ namespace Cribbly.Services
         public Player GetPlayerByID(string id) =>
             db.Users.Where(u => u.Id == id).FirstOrDefault();
 
+        public List<Player> GetPlayersByIDs(List<string> ids) =>
+             db.Users.Where(u => ids.Contains(u.Id)).ToList();
+
         public Player GetByFirstAndLastName(string first, string last) =>
             db.Users.Where(u => u.FirstName.Equals(first) && u.LastName.Equals(last)).FirstOrDefault();
 
