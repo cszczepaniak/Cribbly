@@ -4,6 +4,10 @@
 @inject SignInManager<Player> SignInManager
 @inject UserManager<Player> UserManager
 
+
+<link href="~/css/login.css" rel="stylesheet">
+
+
 @if (SignInManager.IsSignedIn(User))
 {
     <partial name="_UserHome"/>

@@ -19,6 +19,9 @@
             <input type="password" name="Input.Password" class="form-control" />
         </div>
         <div class="form-group">
+            <button type="submit" class="btn btn-primary">Log in</button>
+        </div>
+        <div class="form-group">
             <div class="checkbox">
                 <label name="Input.RememberMe">
                     <input type="checkbox" name="Input.RememberMe" />
@@ -27,18 +30,15 @@
             </div>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">Log in</button>
-        </div>
-        <div class="form-group">
-            <p>
+            <span>
                 <a id="forgot-password" asp-area="Identity" asp-page="/Account/ForgotPassword">Forgot your password?</a>
-            </p>
-            <p>
+            </span>
+            <span>
                 <a asp-page="/Account/Register" asp-area="Identity">Register as a new user</a>
-            </p>
-            <p>
+            </span>
+            <span>
                 <a id="resend-confirmation" asp-area="Identity" asp-page="/Account/ResendEmailConfirmation">Resend email confirmation</a>
-            </p>
+            </span>
         </div>
     </form>
 </div>
