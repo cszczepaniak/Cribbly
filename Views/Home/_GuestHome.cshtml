@@ -1,0 +1,44 @@
+@page
+@using Cribbly.Areas.Identity.Pages.Account;
+@model LoginModel;
+
+<div class="container">
+    <div id="heading">
+        <h1 class="cribblyRed">Welcome to Cribbly!</h1>
+        <p>please log in or register below</p>
+    </div>
+    <form id="account" method="post" asp-area="Identity" asp-page="/Account/Login">
+        <hr />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label name="Input.Email"></label>
+            <input name="Input.Email" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label name="Input.Password"></label>
+            <input type="password" name="Input.Password" class="form-control" />
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label name="Input.RememberMe">
+                    <input type="checkbox" name="Input.RememberMe" />
+                    @Html.DisplayNameFor(m => m.Input.RememberMe)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Log in</button>
+        </div>
+        <div class="form-group">
+            <p>
+                <a id="forgot-password" asp-area="Identity" asp-page="/Account/ForgotPassword">Forgot your password?</a>
+            </p>
+            <p>
+                <a asp-page="/Account/Register" asp-area="Identity">Register as a new user</a>
+            </p>
+            <p>
+                <a id="resend-confirmation" asp-area="Identity" asp-page="/Account/ResendEmailConfirmation">Resend email confirmation</a>
+            </p>
+        </div>
+    </form>
+</div>

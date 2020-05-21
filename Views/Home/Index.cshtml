@@ -1,1 +1,14 @@
-<h2>Hello, world!</h2>
+@using Microsoft.AspNetCore.Identity
+@using Cribbly.Models
+
+@inject SignInManager<Player> SignInManager
+@inject UserManager<Player> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <partial name="_UserHome"/>
+}
+else
+{
+    <partial name="_GuestHome"/>
+}
