@@ -1,5 +1,13 @@
 h1 {
-    font-size: 50px;
+    font-size: 100px;
+    font-weight: bold;
+}
+p {
+    font-size: 20px;
+}
+form {
+    margin-top: 100px !important;
+    margin-bottom: 100px !important;
 }
 .form-control {
     font-size: 45px !important;
@@ -9,4 +17,8 @@ h1 {
     font-size: 45px !important;
     height: 100px !important;
     width: 100% !important;
+    border-radius: 50px !important;
+}
+#heading {
+    margin-top: 100px;
 }

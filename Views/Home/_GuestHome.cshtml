@@ -3,23 +3,28 @@
 @model LoginModel;
 
 <div class="container">
-    <div id="heading">
+    <div id="heading" class="text-center">
         <h1 class="cribblyRed">Welcome to Cribbly!</h1>
         <p>please log in or register below</p>
     </div>
     <form id="account" method="post" asp-area="Identity" asp-page="/Account/Login">
-        <hr />
-        <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
-            <label name="Input.Email"></label>
+            <label name="Email">email</label>
             <input name="Input.Email" class="form-control" />
         </div>
         <div class="form-group">
-            <label name="Input.Password"></label>
+            <label name="Password">password</label>
             <input type="password" name="Input.Password" class="form-control" />
         </div>
         <div class="form-group">
+            <label name="Input.Login"></label>
             <button type="submit" class="btn btn-primary">Log in</button>
+        </div>
+        <div class="form-group">
+            <label name="Login"></label>
+            <a asp-page="/Account/Register" asp-area="Identity">
+                <input type="button" class="btn" value="Sign Up"/>
+            </a>
         </div>
         <div class="form-group">
             <div class="checkbox">
@@ -29,15 +34,9 @@
                 </label>
             </div>
         </div>
-        <div class="form-group">
-            <span>
+        <div class="form-group row">
+            <span class="col-sm-6"> 
                 <a id="forgot-password" asp-area="Identity" asp-page="/Account/ForgotPassword">Forgot your password?</a>
-            </span>
-            <span>
-                <a asp-page="/Account/Register" asp-area="Identity">Register as a new user</a>
-            </span>
-            <span>
-                <a id="resend-confirmation" asp-area="Identity" asp-page="/Account/ResendEmailConfirmation">Resend email confirmation</a>
             </span>
         </div>
     </form>

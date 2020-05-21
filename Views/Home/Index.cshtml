@@ -5,7 +5,7 @@
 @inject UserManager<Player> UserManager
 
 
-<link href="~/css/login.css" rel="stylesheet">
+
 
 
 @if (SignInManager.IsSignedIn(User))
@@ -14,5 +14,6 @@
 }
 else
 {
+    <link href="~/css/login.css" rel="stylesheet">
     <partial name="_GuestHome"/>
 }
