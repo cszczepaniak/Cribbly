@@ -5,9 +5,11 @@ h1 {
 p {
     font-size: 20px;
 }
+body {
+    font-size: 25px !important;
+}
 form {
     margin-top: 100px !important;
-    margin-bottom: 100px !important;
 }
 .form-control {
     font-size: 45px !important;
