@@ -1,6 +1,13 @@
-﻿body {
-  padding-top: 50px;
-  padding-bottom: 20px;
+﻿h1 {
+  font-size: 100px;
+  font-weight: bold;
+}
+h2 {
+  font-size: 75px;
+  font-weight: bold;
+}
+body {
+  font-size: 25px;
 }
 nav {
   background-color: #9E0101;
@@ -8,9 +15,14 @@ nav {
 nav a, button#logout {
   color: white;
 }
-.btn-primary {
-  background-color: #7316D1;
-  border-color: #7316D1;
+.btn:not(#logout) {
+  font-size: 45px;
+  height: 100px;
+  width: 100%;
+  border-radius: 50px;
+}
+.btn-secondary {
+  background-color: darkgrey;
 }
 .body-content {
   padding-left: 15px;
@@ -32,4 +44,7 @@ nav a, button#logout {
 }
 .cribblyYellow {
   color: #CEC86D;
+}
+#notLoggedIn {
+  margin: 100px 0px 100px 0px;
 }

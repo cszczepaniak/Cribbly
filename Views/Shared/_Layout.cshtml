@@ -2,7 +2,7 @@
 <html>
     <head>
         <!-- bootstrap stuff -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <!-- custom stuff -->
@@ -10,14 +10,10 @@
     </head>
     <body>
         <nav class="navbar navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-bav">
-                        <li><a asp-controller="Home" asp-action="Index" class="navbar-brand">Cribbly</a></li>
-                        <partial name="_LoginPartial" />
-                    </ul>
-                </div>
-            </div>
+            <ul class="nav navbar-bav">
+                <li><a asp-controller="Home" asp-action="Index" class="navbar-brand">Cribbly</a></li>
+                <partial name="_LoginPartial" />
+            </ul>
         </nav>
         <div class="container body-content">
             <div class="row">
