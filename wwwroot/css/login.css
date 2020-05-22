@@ -6,20 +6,20 @@ p {
     font-size: 20px;
 }
 body {
-    font-size: 25px !important;
+    font-size: 25px;
 }
 form {
-    margin-top: 100px !important;
+    margin-top: 100px;
 }
 .form-control {
-    font-size: 45px !important;
-    height: 100px !important;
+    font-size: 45px;
+    height: 100px;
 }
 .btn {
-    font-size: 45px !important;
-    height: 100px !important;
-    width: 100% !important;
-    border-radius: 50px !important;
+    font-size: 45px;
+    height: 100px;
+    width: 100%;
+    border-radius: 50px;
 }
 #heading {
     margin-top: 100px;
