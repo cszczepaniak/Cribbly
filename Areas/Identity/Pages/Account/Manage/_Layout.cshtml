@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/account.css" rel="stylesheet">
+<div id="accountMain" class="text-center">
+    <h1 class="cribblyRed">Manage Account</h1>
+    <p>Change your account settings</p>
+    <div id="accountContent">
+        <hr />
+        <div>
+            <div id="pillMenu" class="row text-center">
+                <partial name="_ManageNav" />
+            </div>
+            <div id="accountSubContent" class="col-md-12 justify-content-md-center">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

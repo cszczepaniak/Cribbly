@@ -10,13 +10,13 @@
     </head>
     <body>
         <nav class="navbar navbar-fixed-top">
-            <ul class="nav navbar-bav">
+            <ul class="nav">
                 <li><a asp-controller="Home" asp-action="Index" class="navbar-brand">Cribbly</a></li>
                 <partial name="_LoginPartial" />
             </ul>
         </nav>
         <div class="container body-content">
-            <div class="row">
+            <div class="row justify-content-md-center">
                 @RenderBody()
             </div>
         </div>

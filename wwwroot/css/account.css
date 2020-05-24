@@ -1,0 +1,20 @@
+#accountContent {
+    margin-bottom: 23vh;
+    margin-top: 5vh;
+}
+#accountMain {
+    margin-top: 100px;
+}
+#accountSubContent {
+    margin-top: 5vh;
+}
+#pillMenu {
+    font-size: 35px;
+}
+.form-control {
+    font-size: 2.5rem;
+    height: 100px;
+}
+#email-verification {
+    margin-top: 3rem;
+}
