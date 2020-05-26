@@ -159,7 +159,7 @@ a {
 }
 
 a:hover {
-  color: #0056b3;
+  color: #1f1f1f;
   text-decoration: underline;
 }
 
@@ -2423,14 +2423,14 @@ fieldset:disabled a.btn {
 
 .btn-primary {
   color: #fff;
-  background-color: #7316D1;
-  border-color: #7316D1;
+  background-color: #0F5A88;;
+  border-color: #0F5A88;;
 }
 
 .btn-primary:hover {
   color: #fff;
-  background-color: #7316D1;
-  border-color: #7316D1;
+  background-color: #093753;
+  border-color: #093753;
 }
 
 .btn-primary:focus, .btn-primary.focus {
@@ -2951,8 +2951,6 @@ fieldset:disabled a.btn {
 
 .btn-link {
   font-weight: 400;
-  color: #7316D1;
-  background-color: rgb(172, 172, 172);
   text-decoration: none;
 }
 
@@ -4175,7 +4173,7 @@ input[type="button"].btn-block {
 .navbar-brand {
   display: inline-block;
   margin-right: 1rem;
-  font-size: 1.25rem;
+  font-size: 2.5rem;
   line-height: inherit;
   white-space: nowrap;
 }

@@ -1,11 +1,9 @@
-﻿nav {
-  background-color: #9E0101;
-}
-nav a, button#logout {
-  color: white;
+﻿nav a, button#logout {
+  color: black;
 }
 .btn:not(#logout) {
   font-size: 3rem;
+  height: 5.5rem;
   width: 100%;
   border-radius: 50px;
 }

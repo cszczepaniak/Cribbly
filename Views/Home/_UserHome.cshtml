@@ -1,16 +1,26 @@
 @using Cribbly.Models;
 @model Team;
 
-
-@if(Model == null)
-{
-    <form id="notLoggedIn" class="text-center">
-        <h2>Looks like you don't have a team yet</h2>
-        <br/>
-        <button class="btn btn-primary" type="submit">MAKE A TEAM</button>
-    </form>
-}
-else
-{
-
-}
+<div class="row col-md-12">
+    <div id="team" class="col-md-6 text-center">
+        @if(Model == null)
+        {
+            <a href="/">MAKE A TEAM</a>
+        }
+        else
+        {
+            <a href="/">MY TEAM</a>
+        }
+    </div>
+    <div id="standings" class="col-md-6 text-center">
+        <a href="/">TEAM STANDINGS</a>
+    </div>
+</div>
+<div class="row col-md-12">
+    <div id="games" class="col-md-6 text-center">
+        <a href="/">GAMES</a>
+    </div>
+    <div id="settings" class="col-md-6 text-center">
+        <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">APP SETTINGS</a>
+    </div>
+</div>
