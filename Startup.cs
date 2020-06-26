@@ -5,6 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Http;
+using JavaScriptEngineSwitcher.ChakraCore;
+using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
+using React.AspNet;
 
 namespace Cribbly
 {
@@ -28,6 +32,10 @@ namespace Cribbly
             {
                 options.UseMySql(Configuration.GetConnectionString("DefaultConnection"));
             });
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddReact();
+            services.AddJsEngineSwitcher(options => options.DefaultEngineName = ChakraCoreJsEngine.EngineName)
+                .AddChakraCore();
             services.AddMvc(options =>
             {
                 options.EnableEndpointRouting = false;
@@ -44,6 +52,11 @@ namespace Cribbly
                 app.UseDeveloperExceptionPage();
             }
             app.UseStatusCodePages();
+            app.UseReact(config => 
+            {
+                config
+                    .AddScript("~/js/userDashboard.jsx");
+            });
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseMvc(options =>
